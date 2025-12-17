@@ -8,9 +8,10 @@ interface RecommendationSectionProps {
   title: string;
   investments: Investment[];
   description?: string;
+  onAddToComparison?: (investment: Investment) => void;
 }
 
-export default function RecommendationSection({ title, investments, description }: RecommendationSectionProps) {
+export default function RecommendationSection({ title, investments, description, onAddToComparison }: RecommendationSectionProps) {
   return (
     <section className="mb-12">
       <div className="flex items-center mb-4">
@@ -22,7 +23,11 @@ export default function RecommendationSection({ title, investments, description 
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {investments.map((investment) => (
-          <InvestmentCard key={investment.symbol} investment={investment} />
+          <InvestmentCard
+            key={investment.symbol}
+            investment={investment}
+            onAddToComparison={onAddToComparison}
+          />
         ))}
       </div>
     </section>

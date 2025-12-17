@@ -288,12 +288,125 @@ export const getSP500Investments = (): Investment[] => {
   }));
 };
 
+// Individual stocks for broader search coverage
+export const getIndividualStocks = (): Investment[] => {
+  const stocks: Investment[] = [
+    {
+      symbol: 'F',
+      name: 'Ford Motor Company',
+      type: 'Stock',
+      exchange: 'NYSE',
+      currentPrice: generateMockPrice(12.50),
+      changePercent: generateMockReturn(0.3),
+      volume: 45000000,
+      marketCap: 50000000000,
+      peRatio: 8.5,
+      dividendYield: 4.2,
+      ytdReturn: 15.3,
+      oneYearReturn: 12.8,
+      fiveYearReturn: 8.5,
+      riskLevel: 'Medium',
+      recommendation: 'Buy',
+      recommendationScore: 75,
+      description: 'Ford Motor Company - American multinational automobile manufacturer. Strong dividend yield and value play.',
+      sector: 'Automotive',
+    },
+    {
+      symbol: 'AAPL',
+      name: 'Apple Inc.',
+      type: 'Stock',
+      exchange: 'NASDAQ',
+      currentPrice: generateMockPrice(175),
+      changePercent: generateMockReturn(0.5),
+      volume: 55000000,
+      marketCap: 2800000000000,
+      peRatio: 28.5,
+      dividendYield: 0.5,
+      ytdReturn: 35.2,
+      oneYearReturn: 32.1,
+      fiveYearReturn: 22.5,
+      riskLevel: 'Low',
+      recommendation: 'Strong Buy',
+      recommendationScore: 95,
+      description: 'Apple Inc. - Technology giant known for iPhone, Mac, and services. Strong brand and cash position.',
+      sector: 'Technology',
+    },
+    {
+      symbol: 'MSFT',
+      name: 'Microsoft Corporation',
+      type: 'Stock',
+      exchange: 'NASDAQ',
+      currentPrice: generateMockPrice(380),
+      changePercent: generateMockReturn(0.4),
+      volume: 25000000,
+      marketCap: 2800000000000,
+      peRatio: 32.1,
+      dividendYield: 0.7,
+      ytdReturn: 38.5,
+      oneYearReturn: 35.2,
+      fiveYearReturn: 24.8,
+      riskLevel: 'Low',
+      recommendation: 'Strong Buy',
+      recommendationScore: 96,
+      description: 'Microsoft Corporation - Leading software and cloud services company. Strong enterprise presence.',
+      sector: 'Technology',
+    },
+    {
+      symbol: 'TSLA',
+      name: 'Tesla, Inc.',
+      type: 'Stock',
+      exchange: 'NASDAQ',
+      currentPrice: generateMockPrice(250),
+      changePercent: generateMockReturn(1.2),
+      volume: 85000000,
+      marketCap: 800000000000,
+      peRatio: 65.2,
+      dividendYield: 0.0,
+      ytdReturn: 45.8,
+      oneYearReturn: 42.3,
+      fiveYearReturn: 35.2,
+      riskLevel: 'High',
+      recommendation: 'Buy',
+      recommendationScore: 82,
+      description: 'Tesla, Inc. - Electric vehicle and clean energy company. High growth, high volatility.',
+      sector: 'Automotive',
+    },
+    {
+      symbol: 'JPM',
+      name: 'JPMorgan Chase & Co.',
+      type: 'Stock',
+      exchange: 'NYSE',
+      currentPrice: generateMockPrice(155),
+      changePercent: generateMockReturn(0.2),
+      volume: 12000000,
+      marketCap: 450000000000,
+      peRatio: 11.2,
+      dividendYield: 2.8,
+      ytdReturn: 18.5,
+      oneYearReturn: 16.2,
+      fiveYearReturn: 12.5,
+      riskLevel: 'Medium',
+      recommendation: 'Buy',
+      recommendationScore: 85,
+      description: 'JPMorgan Chase & Co. - Largest U.S. bank by assets. Strong dividend and financial stability.',
+      sector: 'Financial',
+    },
+  ];
+
+  return stocks.map(stock => ({
+    ...stock,
+    currentPrice: generateMockPrice(stock.currentPrice),
+    changePercent: generateMockReturn(stock.changePercent),
+  }));
+};
+
 export const analyzeInvestments = (): InvestmentAnalysis => {
   const nasdaq = getNASDAQInvestments();
   const nyse = getNYSEInvestments();
   const sp500 = getSP500Investments();
+  const stocks = getIndividualStocks();
   
-  const allInvestments = [...nasdaq, ...nyse, ...sp500];
+  const allInvestments = [...nasdaq, ...nyse, ...sp500, ...stocks];
   
   // Calculate average returns
   const nasdaqAvg = nasdaq.reduce((sum, inv) => sum + (inv.ytdReturn || 0), 0) / nasdaq.length;

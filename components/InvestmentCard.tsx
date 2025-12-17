@@ -1,13 +1,18 @@
 'use client';
 
 import { Investment } from '@/lib/types';
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Shield } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Shield, Plus } from 'lucide-react';
+import { useState } from 'react';
+import HistoricalChart from './HistoricalChart';
 
 interface InvestmentCardProps {
   investment: Investment;
+  onAddToComparison?: (investment: Investment) => void;
+  showChart?: boolean;
 }
 
-export default function InvestmentCard({ investment }: InvestmentCardProps) {
+export default function InvestmentCard({ investment, onAddToComparison, showChart = false }: InvestmentCardProps) {
+  const [showChartState, setShowChartState] = useState(showChart);
   const isPositive = investment.changePercent >= 0;
   const recommendationColors = {
     'Strong Buy': 'bg-green-100 text-green-800 border-green-300',
@@ -109,7 +114,7 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
       </div>
 
       <div className="border-t pt-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <span className="text-sm text-gray-500">Recommendation Score</span>
           <div className="flex items-center">
             <div className="w-32 bg-gray-200 rounded-full h-2 mr-2">
@@ -121,7 +126,31 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
             <span className="text-sm font-semibold text-gray-900">{investment.recommendationScore}/100</span>
           </div>
         </div>
+        <div className="flex gap-2">
+          {onAddToComparison && (
+            <button
+              onClick={() => onAddToComparison(investment)}
+              className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center justify-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Compare
+            </button>
+          )}
+          <button
+            onClick={() => setShowChartState(!showChartState)}
+            className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm font-medium flex items-center justify-center gap-2"
+          >
+            <BarChart3 className="w-4 h-4" />
+            {showChartState ? 'Hide' : 'Show'} Chart
+          </button>
+        </div>
       </div>
+
+      {showChartState && (
+        <div className="mt-4">
+          <HistoricalChart investment={investment} />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,27 +1,58 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { InvestmentAnalysis } from '@/lib/types';
+import { useEffect, useState, useCallback } from 'react';
+import { InvestmentAnalysis, Investment } from '@/lib/types';
 import { analyzeInvestments } from '@/lib/financialData';
+import { enhanceInvestmentWithRealData, batchFetchQuotes } from '@/lib/api';
 import MarketSummary from '@/components/MarketSummary';
 import RecommendationSection from '@/components/RecommendationSection';
+import FilterAndSort from '@/components/FilterAndSort';
+import ComparisonTool, { ComparisonToolHandle } from '@/components/ComparisonTool';
 import { RefreshCw, TrendingUp } from 'lucide-react';
 
 export default function Home() {
   const [analysis, setAnalysis] = useState<InvestmentAnalysis | null>(null);
+  const [filteredInvestments, setFilteredInvestments] = useState<Investment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [useRealAPI, setUseRealAPI] = useState(false);
+  const comparisonToolRef = useState<ComparisonToolHandle | null>(null)[0];
 
-  const loadData = async () => {
+  // Memoize the callback to prevent infinite loops
+  const handleFilteredChange = useCallback((filtered: Investment[]) => {
+    setFilteredInvestments(filtered);
+  }, []);
+
+  const loadData = async (useAPI: boolean = false) => {
     setLoading(true);
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
-    const data = analyzeInvestments();
+    let data = analyzeInvestments();
+
+    // Optionally enhance with real API data
+    if (useAPI && process.env.NEXT_PUBLIC_USE_REAL_API === 'true') {
+      try {
+        const symbols = data.investments.map(inv => inv.symbol);
+        const quotes = await batchFetchQuotes(symbols);
+        
+        data = {
+          ...data,
+          investments: data.investments.map(inv => {
+            const quote = quotes.get(inv.symbol);
+            return quote ? { ...inv, ...quote } : inv;
+          }),
+        };
+      } catch (error) {
+        console.error('Error fetching real data:', error);
+      }
+    }
+
     setAnalysis(data);
+    setFilteredInvestments(data.investments);
     setLoading(false);
   };
 
   useEffect(() => {
-    loadData();
+    loadData(useRealAPI);
   }, []);
 
   if (loading || !analysis) {
@@ -52,7 +83,7 @@ export default function Home() {
               </p>
             </div>
             <button
-              onClick={loadData}
+              onClick={() => loadData(useRealAPI)}
               className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center"
             >
               <RefreshCw className="w-5 h-5 mr-2" />
@@ -67,11 +98,55 @@ export default function Home() {
         {/* Market Summary */}
         <MarketSummary analysis={analysis} />
 
+        {/* Comparison Tool */}
+        <ComparisonTool
+          investments={analysis.investments}
+          ref={(ref) => {
+            if (ref) {
+              (window as any).comparisonTool = ref;
+            }
+          }}
+        />
+
+        {/* Filter and Sort */}
+        <FilterAndSort
+          investments={analysis.investments}
+          onFilteredChange={handleFilteredChange}
+        />
+
+        {/* Display filtered results count */}
+        {filteredInvestments.length !== analysis.investments.length && (
+          <div className="mb-4 text-sm text-gray-600">
+            Showing {filteredInvestments.length} of {analysis.investments.length} investments
+          </div>
+        )}
+
+        {/* All Investments (Filtered) */}
+        {filteredInvestments.length > 0 ? (
+          <RecommendationSection
+            title="All Investments"
+            investments={filteredInvestments}
+            description="Browse and compare all available investment opportunities. Use filters and sorting to find exactly what you're looking for."
+            onAddToComparison={(inv) => {
+              const tool = (window as any).comparisonTool;
+              if (tool) tool.addToComparison(inv);
+            }}
+          />
+        ) : (
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <p className="text-gray-600">No investments match your current filters. Try adjusting your search criteria.</p>
+          </div>
+        )}
+
         {/* Top Recommendations */}
         <RecommendationSection
           title="Top Recommendations for New Investors"
           investments={analysis.topRecommendations}
           description="These investments have been carefully analyzed and scored based on performance, risk level, and growth potential. Perfect for investors just starting their journey."
+          onAddToComparison={(inv) => {
+            const tool = (window as any).comparisonTool;
+            if (tool) tool.addToComparison(inv);
+          }}
         />
 
         {/* NASDAQ Technology Investments */}
@@ -79,6 +154,10 @@ export default function Home() {
           title="NASDAQ Technology Index Funds & ETFs"
           investments={nasdaqInvestments}
           description="Technology-focused investments tracking NASDAQ indices. Higher growth potential with moderate to high risk."
+          onAddToComparison={(inv) => {
+            const tool = (window as any).comparisonTool;
+            if (tool) tool.addToComparison(inv);
+          }}
         />
 
         {/* NYSE Investments */}
@@ -86,6 +165,10 @@ export default function Home() {
           title="NYSE Index Funds & ETFs"
           investments={nyseInvestments}
           description="Broad market exposure through NYSE-listed ETFs. Balanced risk and return profiles."
+          onAddToComparison={(inv) => {
+            const tool = (window as any).comparisonTool;
+            if (tool) tool.addToComparison(inv);
+          }}
         />
 
         {/* S&P 500 Investments */}
@@ -93,6 +176,10 @@ export default function Home() {
           title="S&P 500 Index Funds & ETFs"
           investments={sp500Investments}
           description="The most popular and reliable S&P 500 investments. Low risk, steady returns - ideal for long-term wealth building."
+          onAddToComparison={(inv) => {
+            const tool = (window as any).comparisonTool;
+            if (tool) tool.addToComparison(inv);
+          }}
         />
 
         {/* Footer Info */}

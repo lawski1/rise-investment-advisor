@@ -17,7 +17,22 @@ export interface Investment {
   recommendationScore: number; // 0-100
   description: string;
   sector?: string;
+  historicalData?: HistoricalDataPoint[];
 }
+
+export interface HistoricalDataPoint {
+  date: string;
+  price: number;
+  volume?: number;
+}
+
+export type SortOption = 'recommendationScore' | 'ytdReturn' | 'oneYearReturn' | 'currentPrice' | 'dividendYield' | 'changePercent';
+export type FilterOption = {
+  exchange?: ('NASDAQ' | 'NYSE' | 'SP500')[];
+  riskLevel?: ('Low' | 'Medium' | 'High')[];
+  type?: ('ETF' | 'Index Fund' | 'Stock')[];
+  sector?: string[];
+};
 
 export interface InvestmentAnalysis {
   investments: Investment[];
