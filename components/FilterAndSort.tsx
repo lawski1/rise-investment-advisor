@@ -145,7 +145,7 @@ export default function FilterAndSort({ investments, onFilteredChange }: FilterA
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white placeholder:text-gray-400"
           />
         </div>
 
@@ -156,7 +156,7 @@ export default function FilterAndSort({ investments, onFilteredChange }: FilterA
             onChange={(e) => {
               setSortBy(e.target.value as SortOption);
             }}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
           >
             <option value="recommendationScore">Recommendation Score</option>
             <option value="ytdReturn">YTD Return</option>
