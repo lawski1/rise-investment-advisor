@@ -3,36 +3,40 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 15, 23, 42;
-  /* Sunshine color scheme - warm yellows and oranges */
-  --background-start-rgb: 255, 247, 237; /* Warm cream */
-  --background-mid-rgb: 254, 243, 199; /* Light yellow */
-  --background-end-rgb: 255, 251, 235; /* Soft cream */
+  --foreground-rgb: 255, 255, 255;
+  /* Dark theme with sunrise iconography - deep blues to dark grays */
+  --background-start-rgb: 15, 23, 42; /* Slate 900 */
+  --background-mid-rgb: 30, 41, 59; /* Slate 800 */
+  --background-end-rgb: 51, 65, 85; /* Slate 700 */
+  /* Sunrise accent colors */
+  --sunrise-orange: 251, 146, 60; /* Orange 400 */
+  --sunrise-red: 239, 68, 68; /* Red 500 */
+  --sunrise-yellow: 250, 204, 21; /* Yellow 400 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    /* Keep sunshine theme even in dark mode preference, but slightly darker */
-    --background-start-rgb: 254, 240, 138; /* Warm yellow */
-    --background-mid-rgb: 253, 224, 71; /* Golden yellow */
-    --background-end-rgb: 254, 243, 199; /* Light yellow */
+    --background-start-rgb: 15, 23, 42;
+    --background-mid-rgb: 30, 41, 59;
+    --background-end-rgb: 51, 65, 85;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  /* Sunshine gradient - warm yellows to cream */
+  /* Dark gradient with subtle sunrise accents */
   background: linear-gradient(
       to bottom,
       rgb(var(--background-start-rgb)) 0%,
       rgb(var(--background-mid-rgb)) 50%,
       rgb(var(--background-end-rgb)) 100%
     );
-  /* Add subtle radial gradient for sunshine effect */
+  /* Subtle sunrise iconography - radial gradients for dawn effect */
   background-image: 
-    radial-gradient(circle at 20% 10%, rgba(255, 237, 213, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 10% 5%, rgba(var(--sunrise-orange), 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(var(--sunrise-red), 0.06) 0%, transparent 35%),
+    radial-gradient(circle at 50% 0%, rgba(var(--sunrise-yellow), 0.05) 0%, transparent 50%),
     linear-gradient(
       to bottom,
       rgb(var(--background-start-rgb)) 0%,
@@ -196,15 +200,17 @@ header {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
-/* Enhanced Card Styles - Enhanced contrast for sunshine background */
+/* Enhanced Card Styles - Dark theme with sunrise accents */
 .card-polished {
-  background: white;
+  background: rgba(30, 41, 59, 0.8); /* Slate 800 with transparency */
+  backdrop-filter: blur(10px);
   border-radius: 16px;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  /* Stronger shadows for better contrast against sunshine background */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(71, 85, 105, 0.5); /* Slate 600 */
+  /* Glowing shadows with sunrise accent */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 
+              0 4px 16px rgba(0, 0, 0, 0.2),
+              0 0 0 1px rgba(251, 146, 60, 0.1); /* Subtle sunrise border glow */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Add subtle inner shadow for depth */
   position: relative;
 }
 
@@ -216,15 +222,17 @@ header {
   right: 0;
   bottom: 0;
   border-radius: 16px;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
   pointer-events: none;
 }
 
 .card-polished:hover {
   transform: translateY(-2px);
-  /* Even stronger shadows on hover for maximum contrast */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.15);
-  border-color: rgba(59, 130, 246, 0.4);
+  /* Enhanced glow with sunrise accent on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 
+              0 8px 24px rgba(0, 0, 0, 0.3),
+              0 0 20px rgba(251, 146, 60, 0.15); /* Sunrise glow */
+  border-color: rgba(251, 146, 60, 0.3); /* Sunrise orange border */
 }
 
 /* Enhanced Button Styles */
@@ -273,25 +281,25 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* Smooth scrollbar - Sunshine theme colors */
+/* Smooth scrollbar - Dark theme with sunrise accents */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(254, 243, 199, 0.5); /* Light yellow track */
+  background: rgba(30, 41, 59, 0.5); /* Dark slate track */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%); /* Golden yellow thumb */
+  background: linear-gradient(180deg, rgba(251, 146, 60, 0.8) 0%, rgba(239, 68, 68, 0.8) 100%); /* Sunrise gradient thumb */
   border-radius: 4px;
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  border: 1px solid rgba(251, 146, 60, 0.3);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); /* Darker golden on hover */
+  background: linear-gradient(180deg, rgba(251, 146, 60, 1) 0%, rgba(239, 68, 68, 1) 100%); /* Brighter sunrise on hover */
 }
 
 /* Ticker Tape Animation */

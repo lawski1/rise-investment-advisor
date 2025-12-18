@@ -192,22 +192,22 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-700">
       {/* Header */}
-      <header className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-strong sticky top-0 z-50 animate-slideIn backdrop-blur-xl">
+      <header className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white shadow-strong sticky top-0 z-50 animate-slideIn backdrop-blur-xl border-b border-orange-500/20">
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
               <RiseLogo size="md" showText={true} />
               <div>
-                <p className="text-blue-50 text-sm font-medium leading-relaxed">
+                <p className="text-slate-200 text-sm font-medium leading-relaxed">
                   Discover profitable stocks, index funds, ETFs, and S&P 500 opportunities
                 </p>
               </div>
             </div>
             <button
               onClick={() => loadData(useRealAPI)}
-              className="bg-white text-blue-600 px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-50 transition-all hover:scale-105 flex items-center gap-2 shadow-medium hover:shadow-strong"
+              className="bg-orange-500 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-orange-600 transition-all hover:scale-105 flex items-center gap-2 shadow-medium hover:shadow-strong"
               title="Refresh investment data"
               aria-label="Refresh data"
             >
@@ -284,16 +284,16 @@ export default function Home() {
             
             return (
               <FadeWrapper delay={0.15}>
-                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-strong p-8 mb-8 border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5)' }}>
+                <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong p-8 mb-8 border border-slate-700/50" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.1)' }}>
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h2 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
-                        <div className="p-2 bg-indigo-100 rounded-xl">
-                          <Target className="w-7 h-7 text-indigo-600" />
+                      <h2 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                        <div className="p-2 bg-orange-500/20 rounded-xl border border-orange-500/30">
+                          <Target className="w-7 h-7 text-orange-400" />
                         </div>
                         Options Strategy Research
                       </h2>
-                      <p className="text-sm text-gray-600 mt-2 font-medium">
+                      <p className="text-sm text-gray-300 mt-2 font-medium">
                         Covered calls, cash-secured puts, and protective strategies for {fordStock ? 'Ford' : 'lower-priced'} stocks
                       </p>
                     </div>
@@ -307,27 +307,27 @@ export default function Home() {
                     ))}
                   </div>
                   
-                  <div className="mt-6 p-5 bg-white/80 backdrop-blur-sm rounded-xl border border-indigo-200/50">
-                    <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                      <Info className="w-5 h-5 text-indigo-600" />
+                  <div className="mt-6 p-5 bg-slate-700/50 backdrop-blur-sm rounded-xl border border-orange-500/20">
+                    <h3 className="font-bold text-white mb-3 flex items-center gap-2">
+                      <Info className="w-5 h-5 text-orange-400" />
                       Why Options Strategies Work for Lower-Priced Stocks
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-300">
                       <div className="flex items-start gap-2">
-                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
-                        <span><strong className="text-gray-900">Lower Capital Requirements:</strong> Options on stocks under $20 require less capital, making strategies more accessible.</span>
+                        <span className="text-orange-400 font-bold mt-0.5">•</span>
+                        <span><strong className="text-white">Lower Capital Requirements:</strong> Options on stocks under $20 require less capital, making strategies more accessible.</span>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
-                        <span><strong className="text-gray-900">Higher Percentage Returns:</strong> Premium collection as a percentage of stock price is more significant on lower-priced stocks.</span>
+                        <span className="text-orange-400 font-bold mt-0.5">•</span>
+                        <span><strong className="text-white">Higher Percentage Returns:</strong> Premium collection as a percentage of stock price is more significant on lower-priced stocks.</span>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
-                        <span><strong className="text-gray-900">Better Risk/Reward:</strong> Covered calls on lower-priced stocks provide better income-to-capital ratios.</span>
+                        <span className="text-orange-400 font-bold mt-0.5">•</span>
+                        <span><strong className="text-white">Better Risk/Reward:</strong> Covered calls on lower-priced stocks provide better income-to-capital ratios.</span>
                       </div>
                       <div className="flex items-start gap-2">
-                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
-                        <span><strong className="text-gray-900">Ford-Specific Benefits:</strong> Ford's dividend yield and price range make it ideal for income-generating options strategies.</span>
+                        <span className="text-orange-400 font-bold mt-0.5">•</span>
+                        <span><strong className="text-white">Ford-Specific Benefits:</strong> Ford's dividend yield and price range make it ideal for income-generating options strategies.</span>
                       </div>
                     </div>
                   </div>
@@ -363,13 +363,13 @@ export default function Home() {
             style={{ transitionDelay: '0.2s' }}
           >
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Investment Opportunities</h2>
+              <h2 className="text-3xl font-bold text-white tracking-tight">Investment Opportunities</h2>
               <div className="flex items-center gap-4 mt-2">
-                <p className="text-sm text-gray-600 font-medium">
-                  Showing <span className="font-bold text-gray-900">{filteredInvestments.length}</span> of <span className="font-bold text-gray-900">{analysis.investments.length}</span> investments
+                <p className="text-sm text-gray-300 font-medium">
+                  Showing <span className="font-bold text-white">{filteredInvestments.length}</span> of <span className="font-bold text-white">{analysis.investments.length}</span> investments
                 </p>
                 {filteredInvestments.length < analysis.investments.length && (
-                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-md text-xs font-semibold">
+                  <span className="px-2 py-1 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-md text-xs font-semibold">
                     Filtered
                   </span>
                 )}
@@ -396,14 +396,14 @@ export default function Home() {
             <FadeWrapper>
               <div className="card-polished p-12 text-center">
                 <div className="max-w-md mx-auto">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-600/50">
                     <BarChart3 className="w-8 h-8 text-gray-400" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">No investments found</h3>
-                  <p className="text-gray-600 mb-4">No investments match your current filters. Try adjusting your search criteria.</p>
+                  <h3 className="text-xl font-bold text-white mb-2">No investments found</h3>
+                  <p className="text-gray-300 mb-4">No investments match your current filters. Try adjusting your search criteria.</p>
                   <button
                     onClick={clearFilters}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
                   >
                     Clear All Filters
                   </button>
@@ -415,42 +415,42 @@ export default function Home() {
           {/* Footer Info */}
           <div 
             ref={footerRef}
-            className={`card-polished p-8 border-l-4 border-blue-500 fade-on-scroll transition-all duration-1000 ease-out ${
+            className={`card-polished p-8 border-l-4 border-orange-500 fade-on-scroll transition-all duration-1000 ease-out ${
               footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
             style={{ transitionDelay: '0.3s' }}
           >
-            <h3 className="text-2xl font-bold text-gray-900 mb-5 flex items-center tracking-tight">
-              <div className="p-2 bg-blue-100 rounded-lg mr-3">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
+            <h3 className="text-2xl font-bold text-white mb-5 flex items-center tracking-tight">
+              <div className="p-2 bg-orange-500/20 rounded-lg mr-3 border border-orange-500/30">
+                <TrendingUp className="w-6 h-6 text-orange-400" />
               </div>
               Investment Tips for Beginners
             </h3>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
-                <span className="leading-relaxed"><strong className="text-gray-900">Diversify:</strong> Don't put all your money in one investment. Spread it across different sectors and asset types.</span>
+            <ul className="space-y-3 text-gray-300">
+              <li className="flex items-start p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
+                <span className="text-orange-400 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-white">Diversify:</strong> Don't put all your money in one investment. Spread it across different sectors and asset types.</span>
               </li>
-              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
-                <span className="leading-relaxed"><strong className="text-gray-900">Start with Low Risk:</strong> S&P 500 index funds are excellent starting points for new investors.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
+                <span className="text-orange-400 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-white">Start with Low Risk:</strong> S&P 500 index funds are excellent starting points for new investors.</span>
               </li>
-              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
-                <span className="leading-relaxed"><strong className="text-gray-900">Long-term Focus:</strong> Index funds work best when held for 5+ years. Avoid frequent trading.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
+                <span className="text-orange-400 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-white">Long-term Focus:</strong> Index funds work best when held for 5+ years. Avoid frequent trading.</span>
               </li>
-              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
-                <span className="leading-relaxed"><strong className="text-gray-900">Low Fees Matter:</strong> Look for expense ratios under 0.10% for index funds.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
+                <span className="text-orange-400 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-white">Low Fees Matter:</strong> Look for expense ratios under 0.10% for index funds.</span>
               </li>
-              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
-                <span className="leading-relaxed"><strong className="text-gray-900">Dollar-Cost Averaging:</strong> Invest regularly (monthly) rather than trying to time the market.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
+                <span className="text-orange-400 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-white">Dollar-Cost Averaging:</strong> Invest regularly (monthly) rather than trying to time the market.</span>
               </li>
             </ul>
-            <div className="mt-6 p-5 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border border-yellow-200/80 shadow-soft">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <strong className="text-gray-900">Disclaimer:</strong> This platform provides educational information only. Always consult with a licensed financial advisor before making investment decisions. Past performance does not guarantee future results. All investments carry risk of loss.
+            <div className="mt-6 p-5 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-xl border border-orange-500/20 shadow-soft">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                <strong className="text-white">Disclaimer:</strong> This platform provides educational information only. Always consult with a licensed financial advisor before making investment decisions. Past performance does not guarantee future results. All investments carry risk of loss.
               </p>
             </div>
           </div>

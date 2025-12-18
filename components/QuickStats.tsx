@@ -70,21 +70,21 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
   ];
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-strong p-6 mb-6 border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5)' }}>
-      <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">Quick Stats</h3>
+    <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong p-6 mb-6 border border-slate-700/50" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.1)' }}>
+      <h3 className="text-xl font-bold text-white mb-4 tracking-tight">Quick Stats</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div
               key={index}
-              className="bg-gradient-to-br from-gray-50 to-white p-4 rounded-xl border border-gray-100 hover:shadow-md transition-all hover:scale-105"
+              className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-4 rounded-xl border border-slate-600/50 hover:shadow-md transition-all hover:scale-105 hover:border-orange-500/30"
             >
               <div className={`${stat.bgColor} p-2 rounded-lg w-fit mb-2`}>
                 <Icon className={`w-5 h-5 ${stat.iconColor}`} />
               </div>
-              <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
-              <p className="text-xs text-gray-600 font-medium">{stat.label}</p>
+              <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
+              <p className="text-xs text-gray-400 font-medium">{stat.label}</p>
             </div>
           );
         })}

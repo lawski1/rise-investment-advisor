@@ -125,7 +125,7 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
           <div className={`p-3 ${iconBg} rounded-xl`}>
             <Icon className={`w-6 h-6 ${iconColor}`} />
           </div>
-          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{name}</span>
+          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{name}</span>
         </div>
         
         {/* Gain/Loss Display */}
@@ -140,28 +140,28 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
               {isPositive ? '+' : ''}{actualGainLoss.toFixed(2)}%
             </p>
           </div>
-          <p className="text-xs text-gray-500 font-medium">{periodLabels[selectedPeriod]} Gain/Loss</p>
+          <p className="text-xs text-gray-400 font-medium">{periodLabels[selectedPeriod]} Gain/Loss</p>
         </div>
 
-        <p className="text-2xl font-bold text-gray-900 mb-1 tracking-tight">{avgReturn.toFixed(2)}%</p>
-        <p className="text-xs text-gray-600 mb-4 font-medium">Average YTD Return</p>
+        <p className="text-2xl font-bold text-white mb-1 tracking-tight">{avgReturn.toFixed(2)}%</p>
+        <p className="text-xs text-gray-400 mb-4 font-medium">Average YTD Return</p>
         
         {/* Enhanced Detailed Chart */}
-        <div className="h-40 w-full bg-gradient-to-b from-gray-50 to-white rounded-lg p-2 border border-gray-100">
+        <div className="h-40 w-full bg-gradient-to-b from-slate-700/50 to-slate-800/50 rounded-lg p-2 border border-slate-600/50">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
               <defs>
                 <linearGradient id={`gradient-${name}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={lineColor} stopOpacity={0.3} />
-                  <stop offset="100%" stopColor={lineColor} stopOpacity={0.05} />
+                  <stop offset="0%" stopColor={lineColor} stopOpacity={0.4} />
+                  <stop offset="100%" stopColor={lineColor} stopOpacity={0.1} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.3} />
               <XAxis 
                 dataKey="time" 
-                tick={{ fontSize: 10, fill: '#6b7280' }}
-                stroke="#d1d5db"
-                tickLine={{ stroke: '#d1d5db' }}
+                tick={{ fontSize: 10, fill: '#cbd5e1' }}
+                stroke="#94a3b8"
+                tickLine={{ stroke: '#94a3b8' }}
               />
               <YAxis 
                 hide={true}
@@ -169,13 +169,14 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #475569',
                   borderRadius: '8px',
                   padding: '8px 12px',
                   fontSize: '12px',
+                  color: '#f1f5f9',
                 }}
-                labelStyle={{ fontWeight: 600, marginBottom: '4px' }}
+                labelStyle={{ fontWeight: 600, marginBottom: '4px', color: '#f1f5f9' }}
                 formatter={(value: number) => [`$${value.toFixed(2)}`, 'Value']}
               />
               <Area
@@ -190,18 +191,18 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-xs text-gray-500 mt-2 text-center font-medium">{periodLabels[selectedPeriod]} Performance</p>
+        <p className="text-xs text-gray-400 mt-2 text-center font-medium">{periodLabels[selectedPeriod]} Performance</p>
       </div>
     );
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-strong p-8 mb-8 border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5)' }}>
+    <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong p-8 mb-8 border border-slate-700/50" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.1)' }}>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-        <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Market Overview</h2>
+        <h2 className="text-3xl font-bold text-white tracking-tight">Market Overview</h2>
         
         {/* Time Period Selector */}
-        <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-soft border border-gray-200 w-full sm:w-auto">
+        <div className="flex items-center gap-2 bg-slate-700/50 rounded-lg p-1 shadow-soft border border-slate-600/50 w-full sm:w-auto">
           {(['today', 'week', 'month'] as TimePeriod[]).map((period) => (
             <button
               key={period}
@@ -209,8 +210,8 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
               onClick={() => setSelectedPeriod(period)}
               className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all ${
                 selectedPeriod === period
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-orange-500 text-white shadow-md'
+                  : 'text-gray-300 hover:text-white hover:bg-slate-600/50'
               }`}
             >
               {periodLabels[period]}
