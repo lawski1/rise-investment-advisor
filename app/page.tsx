@@ -76,6 +76,13 @@ export default function Home() {
     loadData(useRealAPI);
   }, []);
 
+  const clearFilters = useCallback(() => {
+    setFilters({});
+    setSearchTerm('');
+    setSortBy('recommendationScore');
+    setSortOrder('desc');
+  }, []);
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -88,14 +95,17 @@ export default function Home() {
         }
       }
       // Escape to clear filters
-      if (e.key === 'Escape' && (searchTerm || Object.keys(filters).length > 0)) {
-        clearFilters();
+      if (e.key === 'Escape') {
+        const hasFilters = searchTerm || Object.keys(filters).length > 0;
+        if (hasFilters) {
+          clearFilters();
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [searchTerm, filters]);
+  }, [searchTerm, filters, clearFilters]);
 
   // Apply filters and sorting
   const filteredAndSorted = useMemo(() => {
@@ -173,13 +183,6 @@ export default function Home() {
   useEffect(() => {
     setFilteredInvestments(filteredAndSorted);
   }, [filteredAndSorted]);
-
-  const clearFilters = () => {
-    setFilters({});
-    setSearchTerm('');
-    setSortBy('recommendationScore');
-    setSortOrder('desc');
-  };
 
   if (loading || !analysis) {
     return <LoadingSkeleton />;
