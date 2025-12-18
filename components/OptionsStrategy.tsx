@@ -169,7 +169,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
             <Target className="w-6 h-6 text-blue-600" />
             Options Strategy Research
           </h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-300 mt-1">
             Best strategies for {investment.symbol} at ${investment.currentPrice.toFixed(2)}
           </p>
         </div>
@@ -182,10 +182,10 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
         {strategies.map((strategy, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all"
+            className="border border-slate-600/50 rounded-xl overflow-hidden hover:shadow-md transition-all"
           >
             <div
-              className="p-5 bg-gradient-to-r from-gray-50 to-white cursor-pointer"
+              className="p-5 bg-gradient-to-r from-slate-700/50 to-slate-800/50 cursor-pointer border border-slate-600/50"
               onClick={() => toggleDetails(strategy.name)}
             >
               <div className="flex items-start justify-between">
@@ -205,13 +205,13 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                       <TrendingUp className="w-4 h-4" />
                       <span className="font-semibold">{strategy.potentialReturn}</span>
                     </div>
-                    <div className="flex items-center gap-1 text-gray-600">
+                    <div className="flex items-center gap-1 text-gray-300">
                       <Info className="w-4 h-4" />
                       <span>{strategy.bestFor}</span>
                     </div>
                   </div>
                 </div>
-                <button className="ml-4 p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <button className="ml-4 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
                   {showDetails[strategy.name] ? (
                     <ChevronUp className="w-5 h-5 text-gray-600" />
                   ) : (
@@ -222,7 +222,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
             </div>
 
             {showDetails[strategy.name] && (
-              <div className="border-t border-gray-200 bg-white p-5 animate-fadeIn">
+              <div className="border-t border-slate-600/50 bg-slate-800/50 p-5 animate-fadeIn">
                 <h5 className="font-bold text-yellow-50 mb-4 flex items-center gap-2">
                   <DollarSign className="w-5 h-5 text-blue-600" />
                   Example Trade Details
@@ -247,7 +247,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+                  <div className="bg-gradient-to-br from-green-500/20 to-green-500/30 p-4 rounded-lg border border-green-500/30">
                     <div className="flex items-center gap-2 mb-2">
                       <TrendingUp className="w-5 h-5 text-green-600" />
                       <p className="font-bold text-yellow-50">Max Profit</p>
@@ -255,33 +255,33 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                     <p className="text-2xl font-bold text-green-700">
                       {strategy.example.maxProfit === Infinity ? 'Unlimited' : `$${strategy.example.maxProfit.toFixed(2)}`}
                     </p>
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-gray-300 mt-1">
                       {strategy.type === 'Covered Call' && 'If stock called away at strike'}
                       {strategy.type === 'Cash-Secured Put' && 'If put expires worthless'}
                       {strategy.type === 'Protective Put' && 'Unlimited upside potential'}
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg border border-red-200">
+                  <div className="bg-gradient-to-br from-red-500/20 to-red-500/30 p-4 rounded-lg border border-red-500/30">
                     <div className="flex items-center gap-2 mb-2">
                       <TrendingDown className="w-5 h-5 text-red-600" />
                       <p className="font-bold text-gray-900">Max Loss</p>
                     </div>
                     <p className="text-2xl font-bold text-red-700">${strategy.example.maxLoss.toFixed(2)}</p>
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-gray-300 mt-1">
                       {strategy.type === 'Covered Call' && 'If stock drops to $0'}
                       {strategy.type === 'Cash-Secured Put' && 'If assigned at strike price'}
                       {strategy.type === 'Protective Put' && 'Stock price - strike + premium'}
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                  <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/30 p-4 rounded-lg border border-blue-500/30">
                     <div className="flex items-center gap-2 mb-2">
                       <Target className="w-5 h-5 text-blue-600" />
                       <p className="font-bold text-gray-900">Breakeven</p>
                     </div>
                     <p className="text-2xl font-bold text-blue-700">${strategy.example.breakeven.toFixed(2)}</p>
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-gray-300 mt-1">
                       {strategy.type === 'Covered Call' && 'Stock price - premium received'}
                       {strategy.type === 'Cash-Secured Put' && 'Strike price - premium'}
                       {strategy.type === 'Protective Put' && 'Stock price + premium paid'}
@@ -289,12 +289,12 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                   </div>
                 </div>
 
-                <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="mt-4 p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-lg">
                   <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-sm font-semibold text-yellow-900 mb-1">Strategy Notes</p>
-                      <ul className="text-xs text-yellow-800 space-y-1">
+                      <p className="text-sm font-semibold text-yellow-50 mb-1">Strategy Notes</p>
+                      <ul className="text-xs text-yellow-100 space-y-1">
                         {strategy.type === 'Covered Call' && (
                           <>
                             <li>• Best for stocks you're willing to sell at the strike price</li>
@@ -335,12 +335,12 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
         ))}
       </div>
 
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="mt-6 p-4 bg-blue-500/20 border border-blue-500/30 rounded-lg">
         <div className="flex items-start gap-2">
-          <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+          <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-blue-900 mb-1">Why These Strategies Work for {investment.symbol === 'F' ? 'Ford' : 'Lower-Priced Stocks'}</p>
-            <ul className="text-xs text-blue-800 space-y-1">
+            <p className="text-sm font-semibold text-blue-50 mb-1">Why These Strategies Work for {investment.symbol === 'F' ? 'Ford' : 'Lower-Priced Stocks'}</p>
+            <ul className="text-xs text-blue-100 space-y-1">
               {investment.symbol === 'F' ? (
                 <>
                   <li>• Ford's price range ($10-15) makes options strategies cost-effective</li>

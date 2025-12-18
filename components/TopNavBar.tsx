@@ -106,7 +106,7 @@ export default function TopNavBar({
   const sectors = Array.from(new Set(investments.map(inv => inv.sector).filter(Boolean)));
 
   return (
-    <nav className="bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-soft relative z-[45]">
+    <nav className="bg-slate-800/95 backdrop-blur-xl border-b border-slate-700/80 shadow-soft relative z-[45]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Logo area (will be handled by header) */}
@@ -128,7 +128,7 @@ export default function TopNavBar({
                         }
                       }}
                       autoFocus
-                      className="pl-10 pr-4 py-2 w-48 sm:w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 bg-white placeholder:text-gray-400 transition-all shadow-soft"
+                      className="pl-10 pr-4 py-2 w-48 sm:w-64 border border-slate-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm text-yellow-50 bg-slate-700/50 placeholder:text-gray-400 transition-all shadow-soft"
                     />
                   </div>
                   {searchTerm && (
@@ -137,7 +137,7 @@ export default function TopNavBar({
                         setSearchTerm('');
                         setShowSearch(false);
                       }}
-                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                      className="p-2 hover:bg-slate-700/50 rounded-full transition-colors"
                     >
                       <X className="w-4 h-4 text-gray-500" />
                     </button>
@@ -147,7 +147,7 @@ export default function TopNavBar({
               <button
                 data-search-trigger
                 onClick={() => setShowSearch(true)}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all"
                 title="Search (⌘K or Ctrl+K)"
               >
                 <Search className="w-4 h-4" />
@@ -166,7 +166,7 @@ export default function TopNavBar({
                   e.stopPropagation();
                   toggleDropdown('sort');
                 }}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all"
               >
                 <TrendingUp className="w-4 h-4" />
                 <span className="hidden sm:inline">Sort</span>
@@ -174,16 +174,16 @@ export default function TopNavBar({
               </button>
               {activeDropdown === 'sort' && (
                 <div 
-                  className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn overflow-hidden"
+                  className="absolute top-full left-0 mt-1 w-56 bg-slate-800 rounded-xl shadow-strong border border-slate-700 py-2 z-[60] animate-fadeIn overflow-hidden"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="px-3 py-2 border-b border-gray-100/50">
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sort By</label>
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Sort By</label>
                   </div>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as SortOption)}
-                    className="w-full px-3 py-2 text-sm text-gray-900 bg-transparent border-0 focus:ring-0 focus:outline-none cursor-pointer"
+                    className="w-full px-3 py-2 text-sm text-yellow-50 bg-transparent border-0 focus:ring-0 focus:outline-none cursor-pointer"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <option value="recommendationScore">Recommendation Score</option>
@@ -199,7 +199,7 @@ export default function TopNavBar({
                         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
                         setActiveDropdown(null);
                       }}
-                      className="w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50/80 rounded-lg transition-colors text-left"
+                      className="w-full px-3 py-2 text-sm text-gray-300 hover:bg-slate-700/50 rounded-lg transition-colors text-left"
                     >
                       {sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'}
                     </button>
@@ -217,7 +217,7 @@ export default function TopNavBar({
                   e.stopPropagation();
                   toggleDropdown('exchange');
                 }}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all"
               >
                 <Building2 className="w-4 h-4" />
                 <span className="hidden sm:inline">Exchange</span>
@@ -238,7 +238,7 @@ export default function TopNavBar({
                       className={`w-full px-3 py-2 text-sm text-left transition-colors ${
                         filters.exchange?.includes(exchange)
                           ? 'bg-blue-50 text-blue-700 font-medium'
-                          : 'text-gray-700 hover:bg-gray-50/80'
+                          : 'text-gray-300 hover:bg-slate-700/50'
                       }`}
                     >
                       {exchange}
@@ -257,7 +257,7 @@ export default function TopNavBar({
                   e.stopPropagation();
                   toggleDropdown('risk');
                 }}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all"
               >
                 <BarChart className="w-4 h-4" />
                 <span className="hidden sm:inline">Risk</span>
@@ -282,7 +282,7 @@ export default function TopNavBar({
                             : risk === 'Medium'
                             ? 'bg-yellow-50 text-yellow-700 font-medium'
                             : 'bg-red-50 text-red-700 font-medium'
-                          : 'text-gray-700 hover:bg-gray-50/80'
+                          : 'text-gray-300 hover:bg-slate-700/50'
                       }`}
                     >
                       {risk}
@@ -301,7 +301,7 @@ export default function TopNavBar({
                   e.stopPropagation();
                   toggleDropdown('type');
                 }}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all"
               >
                 <Layers className="w-4 h-4" />
                 <span className="hidden sm:inline">Type</span>
@@ -322,7 +322,7 @@ export default function TopNavBar({
                       className={`w-full px-3 py-2 text-sm text-left transition-colors ${
                         filters.type?.includes(type)
                           ? 'bg-blue-50 text-blue-700 font-medium'
-                          : 'text-gray-700 hover:bg-gray-50/80'
+                          : 'text-gray-300 hover:bg-slate-700/50'
                       }`}
                     >
                       {type}
@@ -337,15 +337,15 @@ export default function TopNavBar({
           <div className="flex items-center gap-2 sm:gap-4">
             {hasActiveFilters && (
               <>
-                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 bg-blue-50 rounded-full">
-                  <Filter className="w-3 h-3 text-blue-600" />
-                  <span className="text-xs font-medium text-blue-700 hidden sm:inline">
+                <div                   className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 bg-orange-500/20 border border-orange-500/30 rounded-full">
+                  <Filter className="w-3 h-3 text-orange-400" />
+                  <span className="text-xs font-medium text-orange-400 hidden sm:inline">
                     {Object.keys(filters).length + (searchTerm ? 1 : 0)} active
                   </span>
                 </div>
                 <button
                   onClick={onClearFilters}
-                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-300 hover:text-red-400 hover:bg-red-500/20 rounded-lg transition-all"
                 >
                   <X className="w-4 h-4" />
                   <span className="hidden sm:inline">Clear</span>

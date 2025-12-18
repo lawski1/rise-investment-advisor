@@ -152,7 +152,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
           )}
           <button
             onClick={() => setShowChartState(!showChartState)}
-            className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 text-sm font-semibold flex items-center justify-center gap-2 border border-gray-200 hover:border-gray-300 transition-all"
+            className="flex-1 px-4 py-2.5 bg-slate-700/50 text-gray-300 rounded-xl hover:bg-slate-600/50 text-sm font-semibold flex items-center justify-center gap-2 border border-slate-600/50 hover:border-slate-500/50 transition-all"
             title={showChartState ? 'Hide historical chart' : 'Show historical chart'}
           >
             <BarChart3 className="w-4 h-4" />
