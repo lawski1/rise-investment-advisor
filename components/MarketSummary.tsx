@@ -197,16 +197,17 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl shadow-strong p-8 mb-8 border border-blue-100/50">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
         <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Market Overview</h2>
         
         {/* Time Period Selector */}
-        <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-soft border border-gray-200">
+        <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-soft border border-gray-200 w-full sm:w-auto">
           {(['today', 'week', 'month'] as TimePeriod[]).map((period) => (
             <button
               key={period}
+              type="button"
               onClick={() => setSelectedPeriod(period)}
-              className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+              className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all ${
                 selectedPeriod === period
                   ? 'bg-blue-600 text-white shadow-md'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
