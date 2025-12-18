@@ -93,11 +93,11 @@ export default function TopNavBar({
   const sectors = Array.from(new Set(investments.map(inv => inv.sector).filter(Boolean)));
 
   return (
-    <nav className="bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-soft">
+    <nav className="bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-soft relative z-[45]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Logo area (will be handled by header) */}
-          <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 overflow-x-auto">
+          <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
             {/* Search */}
             <div className="relative">
               {showSearch ? (
@@ -144,7 +144,10 @@ export default function TopNavBar({
             {/* Sort Dropdown */}
             <div className="relative" ref={(el) => { dropdownRefs.current['sort'] = el; }}>
               <button
-                onClick={() => toggleDropdown('sort')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleDropdown('sort');
+                }}
                 className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <TrendingUp className="w-4 h-4" />
@@ -152,7 +155,7 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'sort' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'sort' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200/80 py-2 z-50 animate-fadeIn overflow-hidden">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn overflow-hidden">
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sort By</label>
                   </div>
@@ -187,7 +190,10 @@ export default function TopNavBar({
             {/* Exchange Filter */}
             <div className="relative" ref={(el) => { dropdownRefs.current['exchange'] = el; }}>
               <button
-                onClick={() => toggleDropdown('exchange')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleDropdown('exchange');
+                }}
                 className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <Building2 className="w-4 h-4" />
@@ -195,7 +201,7 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'exchange' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'exchange' && (
-                <div className="absolute top-full left-0 mt-1 w-48 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200/80 py-2 z-50 animate-fadeIn">
+                <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn">
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select Exchange</label>
                   </div>
@@ -219,7 +225,10 @@ export default function TopNavBar({
             {/* Risk Level Filter */}
             <div className="relative" ref={(el) => { dropdownRefs.current['risk'] = el; }}>
               <button
-                onClick={() => toggleDropdown('risk')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleDropdown('risk');
+                }}
                 className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <BarChart className="w-4 h-4" />
@@ -227,7 +236,7 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'risk' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'risk' && (
-                <div className="absolute top-full left-0 mt-1 w-40 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200/80 py-2 z-50 animate-fadeIn">
+                <div className="absolute top-full left-0 mt-1 w-40 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn">
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Risk Level</label>
                   </div>
@@ -255,7 +264,10 @@ export default function TopNavBar({
             {/* Type Filter */}
             <div className="relative" ref={(el) => { dropdownRefs.current['type'] = el; }}>
               <button
-                onClick={() => toggleDropdown('type')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleDropdown('type');
+                }}
                 className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <Layers className="w-4 h-4" />
@@ -263,7 +275,7 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'type' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'type' && (
-                <div className="absolute top-full left-0 mt-1 w-44 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200/80 py-2 z-50 animate-fadeIn">
+                <div className="absolute top-full left-0 mt-1 w-44 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn">
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Investment Type</label>
                   </div>

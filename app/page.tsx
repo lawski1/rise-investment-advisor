@@ -194,7 +194,7 @@ export default function Home() {
       </header>
 
       {/* Top Navigation Bar - positioned below header */}
-      <div className="sticky top-[73px] z-40">
+      <div className="sticky top-[73px] z-[45]">
         <TopNavBar
         investments={analysis.investments}
         searchTerm={searchTerm}
