@@ -1,7 +1,5 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
-
 interface RiseLogoProps {
   size?: 'sm' | 'md' | 'lg';
   showText?: boolean;
@@ -23,7 +21,7 @@ export default function RiseLogo({ size = 'md', showText = true, className = '' 
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* Logo Icon */}
+      {/* Logo Icon - New Design: Rising Sun with Mountains */}
       <div className={`${sizeClasses[size]} relative flex items-center justify-center`}>
         <svg
           viewBox="0 0 100 100"
@@ -31,51 +29,50 @@ export default function RiseLogo({ size = 'md', showText = true, className = '' 
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Background Circle with Gradient */}
           <defs>
             <linearGradient id="riseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#3b82f6" />
               <stop offset="100%" stopColor="#6366f1" />
             </linearGradient>
+            <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#fbbf24" />
+              <stop offset="100%" stopColor="#f59e0b" />
+            </linearGradient>
           </defs>
           
-          {/* Main Circle */}
+          {/* Background Circle */}
           <circle cx="50" cy="50" r="45" fill="url(#riseGradient)" />
           
-          {/* Rising Arrow/Chart Line - Made thicker and more visible */}
+          {/* Mountain Range - Bottom */}
           <path
-            d="M 25 70 L 40 52 L 55 35 L 70 22"
-            stroke="white"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-          
-          {/* Arrow Head - Larger and more prominent */}
-          <path
-            d="M 65 15 L 72 22 L 65 29"
-            stroke="white"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M 10 70 L 30 50 L 50 60 L 70 45 L 90 70 L 90 100 L 10 100 Z"
             fill="white"
+            fillOpacity="0.9"
           />
           
-          {/* Larger dots representing data points for better visibility */}
-          <circle cx="40" cy="52" r="4.5" fill="white" />
-          <circle cx="55" cy="35" r="4.5" fill="white" />
-          <circle cx="70" cy="22" r="4.5" fill="white" />
-          
-          {/* Additional glow/shadow effect for the line */}
+          {/* Second Mountain Layer - More Depth */}
           <path
-            d="M 25 70 L 40 52 L 55 35 L 70 22"
-            stroke="rgba(255, 255, 255, 0.3)"
-            strokeWidth="10"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
+            d="M 15 75 L 35 55 L 55 65 L 75 50 L 85 75 L 85 100 L 15 100 Z"
+            fill="white"
+            fillOpacity="0.7"
           />
+          
+          {/* Rising Sun - Half Circle at Horizon */}
+          <circle
+            cx="50"
+            cy="65"
+            r="18"
+            fill="url(#sunGradient)"
+          />
+          
+          {/* Sun Rays - Subtle */}
+          <g opacity="0.6">
+            <line x1="50" y1="40" x2="50" y2="30" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
+            <line x1="65" y1="50" x2="75" y2="50" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
+            <line x1="35" y1="50" x2="25" y2="50" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
+            <line x1="58" y1="42" x2="65" y2="35" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
+            <line x1="42" y1="42" x2="35" y2="35" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
+          </g>
         </svg>
       </div>
 
@@ -93,4 +90,3 @@ export default function RiseLogo({ size = 'md', showText = true, className = '' 
     </div>
   );
 }
-
