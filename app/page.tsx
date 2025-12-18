@@ -8,6 +8,7 @@ import MarketSummary from '@/components/MarketSummary';
 import RecommendationSection from '@/components/RecommendationSection';
 import FilterAndSort from '@/components/FilterAndSort';
 import ComparisonTool, { ComparisonToolHandle } from '@/components/ComparisonTool';
+import RiseLogo from '@/components/RiseLogo';
 import { RefreshCw, TrendingUp } from 'lucide-react';
 
 export default function Home() {
@@ -76,11 +77,13 @@ export default function Home() {
       <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Rise Investment Advisor</h1>
-              <p className="text-blue-100 text-lg">
-                Discover profitable index funds, ETFs, and S&P 500 investment opportunities
-              </p>
+            <div className="flex items-center gap-6">
+              <RiseLogo size="lg" showText={true} />
+              <div>
+                <p className="text-blue-100 text-lg">
+                  Discover profitable index funds, ETFs, and S&P 500 investment opportunities
+                </p>
+              </div>
             </div>
             <button
               onClick={() => loadData(useRealAPI)}
