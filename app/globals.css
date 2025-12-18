@@ -328,9 +328,17 @@ select:focus-visible {
   animation: news-scroll 90s linear infinite;
   display: flex;
   width: fit-content;
+  will-change: transform;
 }
 
 .news-scroll:hover {
   animation-play-state: paused;
+}
+
+/* Ensure news links are clickable */
+.news-scroll a {
+  position: relative;
+  z-index: 30;
+  pointer-events: auto !important;
 }
 

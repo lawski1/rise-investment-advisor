@@ -149,29 +149,35 @@ export default function NewsFeed() {
       <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-purple-900 to-transparent z-10 pointer-events-none" />
       
       {/* News icon label */}
-      <div className="absolute left-4 top-0 bottom-0 flex items-center z-20 bg-gradient-to-r from-blue-900 to-transparent pr-6">
+      <div className="absolute left-4 top-0 bottom-0 flex items-center z-20 bg-gradient-to-r from-blue-900 to-transparent pr-6 pointer-events-none">
         <div className="flex items-center gap-2 bg-blue-800/50 px-3 py-1 rounded-lg border border-blue-600/50">
           <Newspaper className="w-4 h-4 text-blue-300" />
           <span className="text-xs font-bold text-blue-200 uppercase tracking-wider">News</span>
         </div>
       </div>
       
-      <div className="flex items-center gap-6 news-scroll ml-32">
+      <div className="flex items-center gap-6 news-scroll ml-32 relative z-30">
         {duplicatedNews.map((item, index) => (
           <a
             key={`${item.title}-${index}`}
             href={item.url || '#'}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 whitespace-nowrap px-4 py-1 hover:bg-blue-800/30 rounded-lg transition-colors cursor-pointer group"
+            className="flex items-center gap-4 whitespace-nowrap px-4 py-1 hover:bg-blue-800/30 rounded-lg transition-colors cursor-pointer group relative z-30"
             title={`${item.title} - ${item.source} (Click to read full story)`}
             onClick={(e) => {
-              if (!item.url) {
+              // Ensure click works even with animation
+              if (item.url && item.url !== '#') {
+                // Allow default behavior - link will open
+                window.open(item.url, '_blank', 'noopener,noreferrer');
+                e.preventDefault(); // Prevent default to use window.open for better control
+              } else {
                 e.preventDefault();
               }
             }}
+            style={{ pointerEvents: 'auto' }}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pointer-events-none">
               <div className="flex flex-col">
                 <span className="text-sm font-semibold text-white group-hover:text-blue-200 transition-colors underline-offset-2 group-hover:underline">
                   {item.title}
@@ -194,7 +200,7 @@ export default function NewsFeed() {
                 <ExternalLink className="w-3.5 h-3.5 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
               )}
             </div>
-            <div className="w-1 h-1 bg-blue-500 rounded-full flex-shrink-0" />
+            <div className="w-1 h-1 bg-blue-500 rounded-full flex-shrink-0 pointer-events-none" />
           </a>
         ))}
       </div>
