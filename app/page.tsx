@@ -13,6 +13,7 @@ import RiseLogo from '@/components/RiseLogo';
 import LoadingSkeleton from '@/components/LoadingSkeleton';
 import QuickStats from '@/components/QuickStats';
 import OptionsStrategy from '@/components/OptionsStrategy';
+import TickerTape from '@/components/TickerTape';
 import { RefreshCw, TrendingUp, BarChart3, Target, Info } from 'lucide-react';
 import { useScrollFade } from '@/hooks/useScrollFade';
 
@@ -215,6 +216,9 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      {/* Ticker Tape - Moving stock prices */}
+      {analysis && <TickerTape investments={analysis.investments} />}
 
       {/* Top Navigation Bar - positioned below header */}
       <div className="sticky top-[73px] z-[45]">
