@@ -213,9 +213,9 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                 </div>
                 <button className="ml-4 p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
                   {showDetails[strategy.name] ? (
-                    <ChevronUp className="w-5 h-5 text-gray-600" />
+                    <ChevronUp className="w-5 h-5 text-gray-300" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-600" />
+                    <ChevronDown className="w-5 h-5 text-gray-300" />
                   )}
                 </button>
               </div>
@@ -228,21 +228,21 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                   Example Trade Details
                 </h5>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <p className="text-xs text-gray-600 font-medium mb-1">Current Price</p>
+                  <div className="bg-blue-500/20 border border-blue-500/30 p-3 rounded-lg">
+                    <p className="text-xs text-gray-300 font-medium mb-1">Current Price</p>
                     <p className="text-lg font-bold text-yellow-50">${strategy.example.stockPrice.toFixed(2)}</p>
                   </div>
-                  <div className="bg-green-50 p-3 rounded-lg">
-                    <p className="text-xs text-gray-600 font-medium mb-1">Strike Price</p>
-                    <p className="text-lg font-bold text-gray-900">${strategy.example.strikePrice.toFixed(2)}</p>
+                  <div className="bg-green-500/20 border border-green-500/30 p-3 rounded-lg">
+                    <p className="text-xs text-gray-300 font-medium mb-1">Strike Price</p>
+                    <p className="text-lg font-bold text-yellow-50">${strategy.example.strikePrice.toFixed(2)}</p>
                   </div>
-                  <div className="bg-yellow-50 p-3 rounded-lg">
-                    <p className="text-xs text-gray-600 font-medium mb-1">Premium</p>
-                    <p className="text-lg font-bold text-gray-900">${strategy.example.premium.toFixed(2)}</p>
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 p-3 rounded-lg">
+                    <p className="text-xs text-gray-300 font-medium mb-1">Premium</p>
+                    <p className="text-lg font-bold text-yellow-50">${strategy.example.premium.toFixed(2)}</p>
                   </div>
-                  <div className="bg-purple-50 p-3 rounded-lg">
-                    <p className="text-xs text-gray-600 font-medium mb-1">Expiration</p>
-                    <p className="text-lg font-bold text-gray-900">{strategy.example.expiration}</p>
+                  <div className="bg-purple-500/20 border border-purple-500/30 p-3 rounded-lg">
+                    <p className="text-xs text-gray-300 font-medium mb-1">Expiration</p>
+                    <p className="text-lg font-bold text-yellow-50">{strategy.example.expiration}</p>
                   </div>
                 </div>
 
@@ -265,7 +265,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                   <div className="bg-gradient-to-br from-red-500/20 to-red-500/30 p-4 rounded-lg border border-red-500/30">
                     <div className="flex items-center gap-2 mb-2">
                       <TrendingDown className="w-5 h-5 text-red-600" />
-                      <p className="font-bold text-gray-900">Max Loss</p>
+                      <p className="font-bold text-yellow-50">Max Loss</p>
                     </div>
                     <p className="text-2xl font-bold text-red-700">${strategy.example.maxLoss.toFixed(2)}</p>
                     <p className="text-xs text-gray-300 mt-1">
@@ -278,7 +278,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                   <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/30 p-4 rounded-lg border border-blue-500/30">
                     <div className="flex items-center gap-2 mb-2">
                       <Target className="w-5 h-5 text-blue-600" />
-                      <p className="font-bold text-gray-900">Breakeven</p>
+                      <p className="font-bold text-yellow-50">Breakeven</p>
                     </div>
                     <p className="text-2xl font-bold text-blue-700">${strategy.example.breakeven.toFixed(2)}</p>
                     <p className="text-xs text-gray-300 mt-1">
