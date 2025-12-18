@@ -21,7 +21,7 @@ export default function RiseLogo({ size = 'md', showText = true, className = '' 
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* Logo Icon - New Design: Rising Sun with Mountains */}
+      {/* Logo Icon - Simplified Rising Sun Design */}
       <div className={`${sizeClasses[size]} relative flex items-center justify-center`}>
         <svg
           viewBox="0 0 100 100"
@@ -43,35 +43,31 @@ export default function RiseLogo({ size = 'md', showText = true, className = '' 
           {/* Background Circle */}
           <circle cx="50" cy="50" r="45" fill="url(#riseGradient)" />
           
-          {/* Mountain Range - Bottom */}
+          {/* Simplified Mountain Silhouette */}
           <path
-            d="M 10 70 L 30 50 L 50 60 L 70 45 L 90 70 L 90 100 L 10 100 Z"
+            d="M 5 75 Q 25 60, 35 70 T 50 65 T 65 70 T 85 60 Q 95 75, 95 100 L 5 100 Z"
             fill="white"
-            fillOpacity="0.9"
+            fillOpacity="0.95"
           />
           
-          {/* Second Mountain Layer - More Depth */}
-          <path
-            d="M 15 75 L 35 55 L 55 65 L 75 50 L 85 75 L 85 100 L 15 100 Z"
-            fill="white"
-            fillOpacity="0.7"
-          />
-          
-          {/* Rising Sun - Half Circle at Horizon */}
-          <circle
+          {/* Rising Sun - Prominent Half Circle */}
+          <ellipse
             cx="50"
-            cy="65"
-            r="18"
+            cy="70"
+            rx="20"
+            ry="20"
             fill="url(#sunGradient)"
           />
           
-          {/* Sun Rays - Subtle */}
-          <g opacity="0.6">
-            <line x1="50" y1="40" x2="50" y2="30" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
-            <line x1="65" y1="50" x2="75" y2="50" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
-            <line x1="35" y1="50" x2="25" y2="50" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
-            <line x1="58" y1="42" x2="65" y2="35" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
-            <line x1="42" y1="42" x2="35" y2="35" stroke="url(#sunGradient)" strokeWidth="2" strokeLinecap="round" />
+          {/* Sun Rays - More Visible */}
+          <g stroke="url(#sunGradient)" strokeWidth="3" strokeLinecap="round" opacity="0.8">
+            <line x1="50" y1="45" x2="50" y2="35" />
+            <line x1="68" y1="55" x2="78" y2="50" />
+            <line x1="32" y1="55" x2="22" y2="50" />
+            <line x1="60" y1="48" x2="68" y2="40" />
+            <line x1="40" y1="48" x2="32" y2="40" />
+            <line x1="65" y1="62" x2="75" y2="65" />
+            <line x1="35" y1="62" x2="25" y2="65" />
           </g>
         </svg>
       </div>
