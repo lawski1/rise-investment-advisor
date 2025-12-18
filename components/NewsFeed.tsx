@@ -156,7 +156,7 @@ export default function NewsFeed() {
         </div>
       </div>
       
-      <div className="flex items-center gap-6 news-scroll ml-32 relative z-30">
+      <div className="flex items-center gap-6 news-scroll ml-32 relative z-30" style={{ pointerEvents: 'auto' }}>
         {duplicatedNews.map((item, index) => (
           <a
             key={`${item.title}-${index}`}
@@ -166,16 +166,23 @@ export default function NewsFeed() {
             className="flex items-center gap-4 whitespace-nowrap px-4 py-1 hover:bg-blue-800/30 rounded-lg transition-colors cursor-pointer group relative z-30"
             title={`${item.title} - ${item.source} (Click to read full story)`}
             onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
               // Ensure click works even with animation
               if (item.url && item.url !== '#') {
-                // Allow default behavior - link will open
-                window.open(item.url, '_blank', 'noopener,noreferrer');
-                e.preventDefault(); // Prevent default to use window.open for better control
-              } else {
-                e.preventDefault();
+                // Use window.open for better control with animations
+                const newWindow = window.open(item.url, '_blank', 'noopener,noreferrer');
+                if (!newWindow) {
+                  // If popup blocked, try direct navigation
+                  window.location.href = item.url;
+                }
               }
             }}
-            style={{ pointerEvents: 'auto' }}
+            onMouseDown={(e) => {
+              // Also handle mousedown to ensure clicks register
+              e.stopPropagation();
+            }}
+            style={{ pointerEvents: 'auto', position: 'relative', zIndex: 30 }}
           >
             <div className="flex items-center gap-3 pointer-events-none">
               <div className="flex flex-col">
