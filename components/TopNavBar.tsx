@@ -44,17 +44,30 @@ export default function TopNavBar({
 
   // Close dropdowns when clicking outside
   useEffect(() => {
+    if (!activeDropdown) return;
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (activeDropdown) {
-        const dropdown = dropdownRefs.current[activeDropdown];
-        if (dropdown && !dropdown.contains(event.target as Node)) {
-          setActiveDropdown(null);
-        }
+      const target = event.target as Element;
+      const dropdown = dropdownRefs.current[activeDropdown];
+      
+      // Check if click is inside the dropdown container (includes button)
+      if (dropdown && dropdown.contains(target)) {
+        return; // Click is inside, don't close
       }
+      
+      // Click is outside, close dropdown
+      setActiveDropdown(null);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    // Use setTimeout to ensure this runs after the button click handler
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('click', handleClickOutside, true);
+    }, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('click', handleClickOutside, true);
+    };
   }, [activeDropdown]);
 
   const toggleDropdown = (dropdown: string) => {
@@ -144,7 +157,9 @@ export default function TopNavBar({
             {/* Sort Dropdown */}
             <div className="relative" ref={(el) => { dropdownRefs.current['sort'] = el; }}>
               <button
+                type="button"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   toggleDropdown('sort');
                 }}
@@ -155,7 +170,10 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'sort' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'sort' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn overflow-hidden">
+                <div 
+                  className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn overflow-hidden"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sort By</label>
                   </div>
@@ -190,7 +208,9 @@ export default function TopNavBar({
             {/* Exchange Filter */}
             <div className="relative" ref={(el) => { dropdownRefs.current['exchange'] = el; }}>
               <button
+                type="button"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   toggleDropdown('exchange');
                 }}
@@ -201,7 +221,10 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'exchange' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'exchange' && (
-                <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn">
+                <div 
+                  className="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select Exchange</label>
                   </div>
@@ -225,7 +248,9 @@ export default function TopNavBar({
             {/* Risk Level Filter */}
             <div className="relative" ref={(el) => { dropdownRefs.current['risk'] = el; }}>
               <button
+                type="button"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   toggleDropdown('risk');
                 }}
@@ -236,7 +261,10 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'risk' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'risk' && (
-                <div className="absolute top-full left-0 mt-1 w-40 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn">
+                <div 
+                  className="absolute top-full left-0 mt-1 w-40 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Risk Level</label>
                   </div>
@@ -264,7 +292,9 @@ export default function TopNavBar({
             {/* Type Filter */}
             <div className="relative" ref={(el) => { dropdownRefs.current['type'] = el; }}>
               <button
+                type="button"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   toggleDropdown('type');
                 }}
@@ -275,7 +305,10 @@ export default function TopNavBar({
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'type' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'type' && (
-                <div className="absolute top-full left-0 mt-1 w-44 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn">
+                <div 
+                  className="absolute top-full left-0 mt-1 w-44 bg-white rounded-xl shadow-strong border border-gray-200 py-2 z-[60] animate-fadeIn"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Investment Type</label>
                   </div>
