@@ -256,8 +256,21 @@ export default function Home() {
           {/* Options Strategy Research Section - Ford & Lower-Priced Stocks */}
           {analysis && (() => {
             const fordStock = analysis.investments.find(inv => inv.symbol === 'F');
-            const lowPriceStocks = analysis.investments.filter(inv => inv.currentPrice < 20 && inv.type === 'Stock').slice(0, 3);
-            const featuredStocks = fordStock ? [fordStock, ...lowPriceStocks.filter(s => s.symbol !== 'F')] : lowPriceStocks;
+            // Get lower-priced stocks (under $25) sorted by covered call potential (volatility + dividend)
+            const lowPriceStocks = analysis.investments
+              .filter(inv => inv.currentPrice < 25 && inv.type === 'Stock' && inv.symbol !== 'F')
+              .sort((a, b) => {
+                // Sort by: high volatility first, then dividend yield, then price
+                const aScore = (a.riskLevel === 'High' ? 3 : a.riskLevel === 'Medium' ? 2 : 1) + 
+                               (a.dividendYield || 0) * 10 + 
+                               (25 - a.currentPrice); // Lower price = higher score
+                const bScore = (b.riskLevel === 'High' ? 3 : b.riskLevel === 'Medium' ? 2 : 1) + 
+                               (b.dividendYield || 0) * 10 + 
+                               (25 - b.currentPrice);
+                return bScore - aScore;
+              })
+              .slice(0, 5); // Show top 5 lower-priced stocks
+            const featuredStocks = fordStock ? [fordStock, ...lowPriceStocks] : lowPriceStocks;
             
             if (featuredStocks.length === 0) return null;
             

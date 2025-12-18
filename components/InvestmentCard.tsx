@@ -161,8 +161,8 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
         </div>
       </div>
 
-      {/* Options Strategy Button - Show for Ford and lower-priced stocks */}
-      {(investment.symbol === 'F' || investment.currentPrice < 20) && (
+      {/* Options Strategy Button - Show for Ford and lower-priced stocks (up to $25) */}
+      {(investment.symbol === 'F' || investment.currentPrice < 25) && (
         <div className="border-t border-gray-100 pt-4 mt-4">
           <button
             onClick={() => setShowOptionsStrategy(!showOptionsStrategy)}
@@ -181,7 +181,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
         </div>
       )}
 
-      {showOptionsStrategy && (investment.symbol === 'F' || investment.currentPrice < 20) && (
+      {showOptionsStrategy && (investment.symbol === 'F' || investment.currentPrice < 25) && (
         <div className="mt-4">
           <OptionsStrategy investment={investment} />
         </div>

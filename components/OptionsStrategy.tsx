@@ -33,14 +33,18 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
   // Generate strategies based on stock price and characteristics
   const generateStrategies = (): Strategy[] => {
     const strategies: Strategy[] = [];
-    const isLowPrice = investment.currentPrice < 20;
+    const isLowPrice = investment.currentPrice < 25; // Expanded to $25 for better coverage
     const isFord = investment.symbol === 'F';
     const volatility = investment.riskLevel === 'High' ? 0.3 : investment.riskLevel === 'Medium' ? 0.2 : 0.15;
+    
+    // Enhanced premium calculation for lower-priced stocks
+    const basePremiumRate = isLowPrice ? 0.025 : 0.02; // Higher premium for lower-priced stocks
+    const premiumMultiplier = investment.riskLevel === 'High' ? 1.3 : investment.riskLevel === 'Medium' ? 1.1 : 1.0;
 
     // Covered Call Strategy
-    if (isLowPrice || isFord) {
+    if (isLowPrice || isFord || investment.currentPrice < 45) {
       const strikePrice = investment.currentPrice * 1.05; // 5% OTM
-      const premium = investment.currentPrice * 0.02; // 2% premium
+      const premium = investment.currentPrice * basePremiumRate * premiumMultiplier; // Dynamic premium based on price and volatility
       const maxProfit = (strikePrice - investment.currentPrice) + premium;
       const maxLoss = investment.currentPrice - premium;
       const breakeven = investment.currentPrice - premium;
@@ -67,9 +71,9 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
     }
 
     // Cash-Secured Put Strategy
-    if (isLowPrice || isFord) {
+    if (isLowPrice || isFord || investment.currentPrice < 45) {
       const strikePrice = investment.currentPrice * 0.95; // 5% ITM
-      const premium = investment.currentPrice * 0.025; // 2.5% premium
+      const premium = investment.currentPrice * basePremiumRate * 1.2 * premiumMultiplier; // Slightly higher for puts
       const maxProfit = premium;
       const maxLoss = strikePrice - premium;
       const breakeven = strikePrice - premium;
