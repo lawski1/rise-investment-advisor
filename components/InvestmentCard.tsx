@@ -1,9 +1,10 @@
 'use client';
 
 import { Investment } from '@/lib/types';
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Shield, Plus } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Shield, Plus, Target } from 'lucide-react';
 import { useState } from 'react';
 import HistoricalChart from './HistoricalChart';
+import OptionsStrategy from './OptionsStrategy';
 
 interface InvestmentCardProps {
   investment: Investment;
@@ -13,6 +14,7 @@ interface InvestmentCardProps {
 
 export default function InvestmentCard({ investment, onAddToComparison, showChart = false }: InvestmentCardProps) {
   const [showChartState, setShowChartState] = useState(showChart);
+  const [showOptionsStrategy, setShowOptionsStrategy] = useState(false);
   const isPositive = investment.changePercent >= 0;
   const recommendationColors = {
     'Strong Buy': 'bg-green-100 text-green-800 border-green-300',
@@ -159,9 +161,29 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
         </div>
       </div>
 
+      {/* Options Strategy Button - Show for Ford and lower-priced stocks */}
+      {(investment.symbol === 'F' || investment.currentPrice < 20) && (
+        <div className="border-t border-gray-100 pt-4 mt-4">
+          <button
+            onClick={() => setShowOptionsStrategy(!showOptionsStrategy)}
+            className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 text-sm font-semibold flex items-center justify-center gap-2 shadow-colored hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+            title="View options strategies for this stock"
+          >
+            <Target className="w-4 h-4" />
+            {showOptionsStrategy ? 'Hide' : 'Show'} Options Strategies
+          </button>
+        </div>
+      )}
+
       {showChartState && (
         <div className="mt-4">
           <HistoricalChart investment={investment} />
+        </div>
+      )}
+
+      {showOptionsStrategy && (investment.symbol === 'F' || investment.currentPrice < 20) && (
+        <div className="mt-4">
+          <OptionsStrategy investment={investment} />
         </div>
       )}
     </div>

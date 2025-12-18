@@ -12,7 +12,8 @@ import TopNavBar from '@/components/TopNavBar';
 import RiseLogo from '@/components/RiseLogo';
 import LoadingSkeleton from '@/components/LoadingSkeleton';
 import QuickStats from '@/components/QuickStats';
-import { RefreshCw, TrendingUp, BarChart3 } from 'lucide-react';
+import OptionsStrategy from '@/components/OptionsStrategy';
+import { RefreshCw, TrendingUp, BarChart3, Target, Info } from 'lucide-react';
 import { useScrollFade } from '@/hooks/useScrollFade';
 
 export default function Home() {
@@ -251,6 +252,68 @@ export default function Home() {
           <FadeWrapper delay={0.1}>
             <QuickStats analysis={analysis} />
           </FadeWrapper>
+
+          {/* Options Strategy Research Section - Ford & Lower-Priced Stocks */}
+          {analysis && (() => {
+            const fordStock = analysis.investments.find(inv => inv.symbol === 'F');
+            const lowPriceStocks = analysis.investments.filter(inv => inv.currentPrice < 20 && inv.type === 'Stock').slice(0, 3);
+            const featuredStocks = fordStock ? [fordStock, ...lowPriceStocks.filter(s => s.symbol !== 'F')] : lowPriceStocks;
+            
+            if (featuredStocks.length === 0) return null;
+            
+            return (
+              <FadeWrapper delay={0.15}>
+                <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 rounded-2xl shadow-strong p-8 mb-8 border border-indigo-100/50">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
+                        <div className="p-2 bg-indigo-100 rounded-xl">
+                          <Target className="w-7 h-7 text-indigo-600" />
+                        </div>
+                        Options Strategy Research
+                      </h2>
+                      <p className="text-sm text-gray-600 mt-2 font-medium">
+                        Covered calls, cash-secured puts, and protective strategies for {fordStock ? 'Ford' : 'lower-priced'} stocks
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    {featuredStocks.map((stock, index) => (
+                      <div key={stock.symbol} className="animate-fadeIn" style={{ animationDelay: `${index * 0.1}s` }}>
+                        <OptionsStrategy investment={stock} />
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-6 p-5 bg-white/80 backdrop-blur-sm rounded-xl border border-indigo-200/50">
+                    <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <Info className="w-5 h-5 text-indigo-600" />
+                      Why Options Strategies Work for Lower-Priced Stocks
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+                      <div className="flex items-start gap-2">
+                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
+                        <span><strong className="text-gray-900">Lower Capital Requirements:</strong> Options on stocks under $20 require less capital, making strategies more accessible.</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
+                        <span><strong className="text-gray-900">Higher Percentage Returns:</strong> Premium collection as a percentage of stock price is more significant on lower-priced stocks.</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
+                        <span><strong className="text-gray-900">Better Risk/Reward:</strong> Covered calls on lower-priced stocks provide better income-to-capital ratios.</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-indigo-600 font-bold mt-0.5">•</span>
+                        <span><strong className="text-gray-900">Ford-Specific Benefits:</strong> Ford's dividend yield and price range make it ideal for income-generating options strategies.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeWrapper>
+            );
+          })()}
 
           {/* Comparison Tool */}
           <div 
