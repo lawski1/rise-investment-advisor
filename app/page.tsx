@@ -29,11 +29,18 @@ export default function Home() {
   const resultsHeaderRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   
-  // Scroll fade visibility
-  const marketSummaryVisible = useScrollFade(marketSummaryRef, 0.2);
+  // Scroll fade visibility - Market Summary should be visible immediately since it's at the top
+  const [marketSummaryVisible, setMarketSummaryVisible] = useState(true);
   const comparisonVisible = useScrollFade(comparisonRef, 0.2);
   const resultsHeaderVisible = useScrollFade(resultsHeaderRef, 0.2);
   const footerVisible = useScrollFade(footerRef, 0.2);
+
+  // Ensure market summary is visible when analysis loads
+  useEffect(() => {
+    if (analysis) {
+      setMarketSummaryVisible(true);
+    }
+  }, [analysis]);
 
   const loadData = async (useAPI: boolean = false) => {
     setLoading(true);
@@ -210,8 +217,9 @@ export default function Home() {
             className={`fade-on-scroll transition-all duration-1000 ease-out ${
               marketSummaryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
+            style={{ minHeight: '200px' }}
           >
-            <MarketSummary analysis={analysis} />
+            {analysis && <MarketSummary analysis={analysis} />}
           </div>
 
           {/* Comparison Tool */}

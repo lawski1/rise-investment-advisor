@@ -9,6 +9,15 @@ export function useScrollFade<T extends HTMLElement>(
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Check if element is already in view on mount
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (isInView) {
+        setIsVisible(true);
+      }
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -18,7 +27,10 @@ export function useScrollFade<T extends HTMLElement>(
           // setIsVisible(false);
         }
       },
-      { threshold }
+      { 
+        threshold,
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before element enters viewport
+      }
     );
 
     if (ref.current) {
@@ -34,4 +46,5 @@ export function useScrollFade<T extends HTMLElement>(
 
   return isVisible;
 }
+
 

@@ -33,3 +33,4 @@ else
     echo "   3. You're authenticated with GitHub (git credential helper)"
 fi
 
+
