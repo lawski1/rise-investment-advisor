@@ -119,7 +119,7 @@ export default function TopNavBar({
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       type="text"
-                      placeholder="Search investments..."
+                      placeholder="Search by symbol or name (e.g., AAPL, Apple)..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onBlur={() => {
@@ -128,7 +128,7 @@ export default function TopNavBar({
                         }
                       }}
                       autoFocus
-                      className="pl-10 pr-4 py-2 w-48 sm:w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 bg-white placeholder:text-gray-400 transition-all"
+                      className="pl-10 pr-4 py-2 w-48 sm:w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 bg-white placeholder:text-gray-400 transition-all shadow-soft"
                     />
                   </div>
                   {searchTerm && (
@@ -145,11 +145,14 @@ export default function TopNavBar({
                 </div>
               ) : (
               <button
+                data-search-trigger
                 onClick={() => setShowSearch(true)}
                 className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                title="Search (⌘K or Ctrl+K)"
               >
                 <Search className="w-4 h-4" />
                 <span className="hidden sm:inline">Search</span>
+                <span className="hidden lg:inline text-xs text-gray-400 ml-1">⌘K</span>
               </button>
               )}
             </div>

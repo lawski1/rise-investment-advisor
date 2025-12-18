@@ -6,10 +6,13 @@ import { analyzeInvestments } from '@/lib/financialData';
 import { enhanceInvestmentWithRealData, batchFetchQuotes } from '@/lib/api';
 import MarketSummary from '@/components/MarketSummary';
 import ScrollFadeCard from '@/components/ScrollFadeCard';
+import FadeWrapper from '@/components/FadeWrapper';
 import ComparisonTool, { ComparisonToolHandle } from '@/components/ComparisonTool';
 import TopNavBar from '@/components/TopNavBar';
 import RiseLogo from '@/components/RiseLogo';
-import { RefreshCw, TrendingUp } from 'lucide-react';
+import LoadingSkeleton from '@/components/LoadingSkeleton';
+import QuickStats from '@/components/QuickStats';
+import { RefreshCw, TrendingUp, BarChart3 } from 'lucide-react';
 import { useScrollFade } from '@/hooks/useScrollFade';
 
 export default function Home() {
@@ -72,6 +75,27 @@ export default function Home() {
   useEffect(() => {
     loadData(useRealAPI);
   }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Cmd/Ctrl + K to focus search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchButton = document.querySelector('[data-search-trigger]') as HTMLElement;
+        if (searchButton) {
+          searchButton.click();
+        }
+      }
+      // Escape to clear filters
+      if (e.key === 'Escape' && (searchTerm || Object.keys(filters).length > 0)) {
+        clearFilters();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [searchTerm, filters]);
 
   // Apply filters and sorting
   const filteredAndSorted = useMemo(() => {
@@ -158,14 +182,7 @@ export default function Home() {
   };
 
   if (loading || !analysis) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center animate-fadeIn">
-          <RefreshCw className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading investment data...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSkeleton />;
   }
 
   return (
@@ -185,6 +202,8 @@ export default function Home() {
             <button
               onClick={() => loadData(useRealAPI)}
               className="bg-white text-blue-600 px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-50 transition-all hover:scale-105 flex items-center gap-2 shadow-medium hover:shadow-strong"
+              title="Refresh investment data"
+              aria-label="Refresh data"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -225,6 +244,11 @@ export default function Home() {
             {analysis && <MarketSummary analysis={analysis} />}
           </div>
 
+          {/* Quick Stats */}
+          <FadeWrapper delay={0.1}>
+            <QuickStats analysis={analysis} />
+          </FadeWrapper>
+
           {/* Comparison Tool */}
           <div 
             ref={comparisonRef}
@@ -253,9 +277,16 @@ export default function Home() {
           >
             <div>
               <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Investment Opportunities</h2>
-              <p className="text-sm text-gray-600 mt-2 font-medium">
-                Showing {filteredInvestments.length} of {analysis.investments.length} investments
-              </p>
+              <div className="flex items-center gap-4 mt-2">
+                <p className="text-sm text-gray-600 font-medium">
+                  Showing <span className="font-bold text-gray-900">{filteredInvestments.length}</span> of <span className="font-bold text-gray-900">{analysis.investments.length}</span> investments
+                </p>
+                {filteredInvestments.length < analysis.investments.length && (
+                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-md text-xs font-semibold">
+                    Filtered
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -275,9 +306,23 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="card-polished p-12 text-center fade-on-scroll transition-all duration-700 ease-out opacity-100">
-              <p className="text-gray-600 text-lg font-medium">No investments match your current filters. Try adjusting your search criteria.</p>
-            </div>
+            <FadeWrapper>
+              <div className="card-polished p-12 text-center">
+                <div className="max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BarChart3 className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">No investments found</h3>
+                  <p className="text-gray-600 mb-4">No investments match your current filters. Try adjusting your search criteria.</p>
+                  <button
+                    onClick={clearFilters}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
+              </div>
+            </FadeWrapper>
           )}
 
           {/* Footer Info */}

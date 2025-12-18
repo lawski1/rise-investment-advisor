@@ -28,7 +28,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
   };
 
   return (
-    <div className="card-polished p-6 group">
+    <div className="card-polished p-6 group hover:scale-[1.02] transition-transform duration-300">
       <div className="flex justify-between items-start mb-5">
         <div>
           <h3 className="text-2xl font-bold text-gray-900 tracking-tight">{investment.symbol}</h3>
@@ -142,6 +142,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
             <button
               onClick={() => onAddToComparison(investment)}
               className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 text-sm font-semibold flex items-center justify-center gap-2 shadow-colored hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+              title="Add to comparison tool"
             >
               <Plus className="w-4 h-4" />
               Compare
@@ -150,6 +151,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
           <button
             onClick={() => setShowChartState(!showChartState)}
             className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 text-sm font-semibold flex items-center justify-center gap-2 border border-gray-200 hover:border-gray-300 transition-all"
+            title={showChartState ? 'Hide historical chart' : 'Show historical chart'}
           >
             <BarChart3 className="w-4 h-4" />
             {showChartState ? 'Hide' : 'Show'} Chart
