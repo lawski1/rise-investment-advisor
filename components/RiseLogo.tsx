@@ -42,30 +42,40 @@ export default function RiseLogo({ size = 'md', showText = true, className = '' 
           {/* Main Circle */}
           <circle cx="50" cy="50" r="45" fill="url(#riseGradient)" />
           
-          {/* Rising Arrow/Chart Line */}
+          {/* Rising Arrow/Chart Line - Made thicker and more visible */}
           <path
-            d="M 25 65 L 40 50 L 55 35 L 70 25"
+            d="M 25 70 L 40 52 L 55 35 L 70 22"
             stroke="white"
-            strokeWidth="4"
+            strokeWidth="6"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
           />
           
-          {/* Arrow Head */}
+          {/* Arrow Head - Larger and more prominent */}
           <path
-            d="M 65 20 L 70 25 L 65 30"
+            d="M 65 15 L 72 22 L 65 29"
             stroke="white"
-            strokeWidth="4"
+            strokeWidth="6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="white"
+          />
+          
+          {/* Larger dots representing data points for better visibility */}
+          <circle cx="40" cy="52" r="4.5" fill="white" />
+          <circle cx="55" cy="35" r="4.5" fill="white" />
+          <circle cx="70" cy="22" r="4.5" fill="white" />
+          
+          {/* Additional glow/shadow effect for the line */}
+          <path
+            d="M 25 70 L 40 52 L 55 35 L 70 22"
+            stroke="rgba(255, 255, 255, 0.3)"
+            strokeWidth="10"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
           />
-          
-          {/* Small dots representing data points */}
-          <circle cx="40" cy="50" r="3" fill="white" />
-          <circle cx="55" cy="35" r="3" fill="white" />
-          <circle cx="70" cy="25" r="3" fill="white" />
         </svg>
       </div>
 
