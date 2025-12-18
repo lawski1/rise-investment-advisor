@@ -314,3 +314,23 @@ select:focus-visible {
   animation-play-state: paused;
 }
 
+/* News Feed Animation */
+@keyframes news-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.news-scroll {
+  animation: news-scroll 90s linear infinite;
+  display: flex;
+  width: fit-content;
+}
+
+.news-scroll:hover {
+  animation-play-state: paused;
+}
+

@@ -124,3 +124,4 @@ export default function HistoricalChart({ investment, period = '1Y' }: Historica
 }
 
 
+
