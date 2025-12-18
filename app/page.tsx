@@ -193,8 +193,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Top Navigation Bar */}
-      <TopNavBar
+      {/* Top Navigation Bar - positioned below header */}
+      <div className="sticky top-[73px] z-40">
+        <TopNavBar
         investments={analysis.investments}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -205,7 +206,8 @@ export default function Home() {
         filters={filters}
         setFilters={setFilters}
         onClearFilters={clearFilters}
-      />
+        />
+      </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto">

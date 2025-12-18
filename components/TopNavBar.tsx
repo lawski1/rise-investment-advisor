@@ -93,7 +93,7 @@ export default function TopNavBar({
   const sectors = Array.from(new Set(investments.map(inv => inv.sector).filter(Boolean)));
 
   return (
-    <nav className="sticky top-[73px] z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200/60 shadow-sm">
+    <nav className="bg-white backdrop-blur-xl border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-14">
           {/* Left side - Logo area (will be handled by header) */}
