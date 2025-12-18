@@ -208,7 +208,7 @@ export default function Home() {
           <div 
             ref={marketSummaryRef}
             className={`fade-on-scroll transition-all duration-1000 ease-out ${
-              marketSummaryVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+              marketSummaryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
           >
             <MarketSummary analysis={analysis} />
@@ -217,9 +217,10 @@ export default function Home() {
           {/* Comparison Tool */}
           <div 
             ref={comparisonRef}
-            className={`fade-on-scroll transition-all duration-1000 ease-out delay-100 ${
-              comparisonVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            className={`fade-on-scroll transition-all duration-1000 ease-out ${
+              comparisonVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
+            style={{ transitionDelay: '0.1s' }}
           >
             <ComparisonTool
               investments={analysis.investments}
@@ -234,9 +235,10 @@ export default function Home() {
           {/* Results Header */}
           <div 
             ref={resultsHeaderRef}
-            className={`flex items-center justify-between fade-on-scroll transition-all duration-1000 ease-out delay-200 ${
-              resultsHeaderVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            className={`flex items-center justify-between fade-on-scroll transition-all duration-1000 ease-out ${
+              resultsHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
+            style={{ transitionDelay: '0.2s' }}
           >
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Investment Opportunities</h2>
@@ -270,9 +272,10 @@ export default function Home() {
           {/* Footer Info */}
           <div 
             ref={footerRef}
-            className={`bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 fade-on-scroll transition-all duration-1000 ease-out delay-300 ${
-              footerVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            className={`bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 fade-on-scroll transition-all duration-1000 ease-out ${
+              footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
+            style={{ transitionDelay: '0.3s' }}
           >
             <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
               <TrendingUp className="w-6 h-6 text-blue-600 mr-2" />

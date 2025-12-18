@@ -129,20 +129,9 @@ body {
 
 /* Scroll-based fade effects - Apple style */
 .fade-on-scroll {
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-              scale 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 1s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity, transform;
-}
-
-.fade-on-scroll.fade-out {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.fade-on-scroll.fade-in {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Smooth scroll behavior */
