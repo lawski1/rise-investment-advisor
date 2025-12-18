@@ -81,7 +81,7 @@ export default function Home() {
               <RiseLogo size="lg" showText={true} />
               <div>
                 <p className="text-blue-100 text-lg">
-                  Discover profitable index funds, ETFs, and S&P 500 investment opportunities
+                  Discover profitable stocks, index funds, ETFs, and S&P 500 investment opportunities
                 </p>
               </div>
             </div>
