@@ -196,7 +196,7 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl shadow-strong p-8 mb-8 border border-blue-100/50">
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-strong p-8 mb-8 border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5)' }}>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
         <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Market Overview</h2>
         

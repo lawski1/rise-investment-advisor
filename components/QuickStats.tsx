@@ -70,7 +70,7 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-strong p-6 mb-6 border border-gray-200">
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-strong p-6 mb-6 border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5)' }}>
       <h3 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">Quick Stats</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {stats.map((stat, index) => {

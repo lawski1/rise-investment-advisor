@@ -190,7 +190,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen">
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-strong sticky top-0 z-50 animate-slideIn backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 py-5">
@@ -276,7 +276,7 @@ export default function Home() {
             
             return (
               <FadeWrapper delay={0.15}>
-                <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 rounded-2xl shadow-strong p-8 mb-8 border border-indigo-100/50">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-strong p-8 mb-8 border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5)' }}>
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <h2 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">

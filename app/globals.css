@@ -4,25 +4,43 @@
 
 :root {
   --foreground-rgb: 15, 23, 42;
-  --background-start-rgb: 248, 250, 252;
-  --background-end-rgb: 255, 255, 255;
+  /* Sunshine color scheme - warm yellows and oranges */
+  --background-start-rgb: 255, 247, 237; /* Warm cream */
+  --background-mid-rgb: 254, 243, 199; /* Light yellow */
+  --background-end-rgb: 255, 251, 235; /* Soft cream */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 15, 23, 42;
-    --background-end-rgb: 30, 41, 59;
+    /* Keep sunshine theme even in dark mode preference, but slightly darker */
+    --background-start-rgb: 254, 240, 138; /* Warm yellow */
+    --background-mid-rgb: 253, 224, 71; /* Golden yellow */
+    --background-end-rgb: 254, 243, 199; /* Light yellow */
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
+  /* Sunshine gradient - warm yellows to cream */
   background: linear-gradient(
       to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
+      rgb(var(--background-start-rgb)) 0%,
+      rgb(var(--background-mid-rgb)) 50%,
+      rgb(var(--background-end-rgb)) 100%
     );
+  /* Add subtle radial gradient for sunshine effect */
+  background-image: 
+    radial-gradient(circle at 20% 10%, rgba(255, 237, 213, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.3) 0%, transparent 50%),
+    linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)) 0%,
+      rgb(var(--background-mid-rgb)) 50%,
+      rgb(var(--background-end-rgb)) 100%
+    );
+  background-attachment: fixed;
+  min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -178,19 +196,35 @@ header {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
-/* Enhanced Card Styles */
+/* Enhanced Card Styles - Enhanced contrast for sunshine background */
 .card-polished {
   background: white;
   border-radius: 16px;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  /* Stronger shadows for better contrast against sunshine background */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Add subtle inner shadow for depth */
+  position: relative;
+}
+
+.card-polished::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
 }
 
 .card-polished:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
-  border-color: rgba(59, 130, 246, 0.3);
+  /* Even stronger shadows on hover for maximum contrast */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
 /* Enhanced Button Styles */
@@ -239,22 +273,24 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* Smooth scrollbar */
+/* Smooth scrollbar - Sunshine theme colors */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(254, 243, 199, 0.5); /* Light yellow track */
   border-radius: 4px;
 }
 
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%); /* Golden yellow thumb */
+  border-radius: 4px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); /* Darker golden on hover */
 }
 

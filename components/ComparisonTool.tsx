@@ -48,7 +48,7 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
   return (
     <div className="mb-6">
       {/* Comparison Bar */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+      <div className="bg-white/95 backdrop-blur-sm border-2 border-blue-200/80 rounded-lg p-4 mb-4 shadow-medium" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06)' }}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-blue-600" />
@@ -101,7 +101,7 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
 
       {/* Comparison Table */}
       {showComparison && selected.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-strong overflow-hidden border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)' }}>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
