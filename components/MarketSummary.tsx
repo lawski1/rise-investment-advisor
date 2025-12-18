@@ -2,7 +2,7 @@
 
 import { InvestmentAnalysis } from '@/lib/types';
 import { TrendingUp, Building2, BarChart } from 'lucide-react';
-import { LineChart, Line, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis } from 'recharts';
 
 interface MarketSummaryProps {
   analysis: InvestmentAnalysis;
@@ -12,14 +12,14 @@ interface MarketSummaryProps {
 const generateTrendData = (avgReturn: number, days: number = 30) => {
   const data = [];
   const baseValue = 100; // Starting at 100
-  const dailyReturn = avgReturn / 365; // Approximate daily return
+  const totalReturn = avgReturn / 100; // Convert percentage to decimal
+  const dailyReturn = totalReturn / 365; // Approximate daily return
   
-  for (let i = days; i >= 0; i--) {
-    const daysAgo = days - i;
-    const value = baseValue * (1 + (dailyReturn * daysAgo) / 100);
+  for (let i = 0; i <= days; i++) {
+    const value = baseValue * (1 + dailyReturn * i);
     data.push({
-      day: daysAgo,
-      value: Math.max(value, baseValue * 0.9), // Don't go below 90% of base
+      day: i,
+      value: Math.max(value, baseValue * 0.95), // Don't go below 95% of base
     });
   }
   
@@ -49,13 +49,15 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
           {/* Mini Trend Chart */}
           <div className="h-24 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={nasdaqTrend}>
+              <AreaChart data={nasdaqTrend} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                 <defs>
                   <linearGradient id="nasdaqGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
+                <XAxis dataKey="day" hide={true} />
+                <YAxis hide={true} domain={['auto', 'auto']} />
                 <Area
                   type="monotone"
                   dataKey="value"
@@ -82,13 +84,15 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
           {/* Mini Trend Chart */}
           <div className="h-24 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={nyseTrend}>
+              <AreaChart data={nyseTrend} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                 <defs>
                   <linearGradient id="nyseGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
                     <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
+                <XAxis dataKey="day" hide={true} />
+                <YAxis hide={true} domain={['auto', 'auto']} />
                 <Area
                   type="monotone"
                   dataKey="value"
@@ -115,13 +119,15 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
           {/* Mini Trend Chart */}
           <div className="h-24 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={sp500Trend}>
+              <AreaChart data={sp500Trend} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                 <defs>
                   <linearGradient id="sp500Gradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#a855f7" stopOpacity={0.3}/>
                     <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
+                <XAxis dataKey="day" hide={true} />
+                <YAxis hide={true} domain={['auto', 'auto']} />
                 <Area
                   type="monotone"
                   dataKey="value"
