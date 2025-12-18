@@ -7,7 +7,7 @@ import { enhanceInvestmentWithRealData, batchFetchQuotes } from '@/lib/api';
 import MarketSummary from '@/components/MarketSummary';
 import ScrollFadeCard from '@/components/ScrollFadeCard';
 import ComparisonTool, { ComparisonToolHandle } from '@/components/ComparisonTool';
-import Sidebar from '@/components/Sidebar';
+import TopNavBar from '@/components/TopNavBar';
 import RiseLogo from '@/components/RiseLogo';
 import { RefreshCw, TrendingUp } from 'lucide-react';
 import { useScrollFade } from '@/hooks/useScrollFade';
@@ -169,9 +169,32 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <Sidebar
+    <main className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg sticky top-0 z-50 animate-slideIn">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <RiseLogo size="md" showText={true} />
+              <div>
+                <p className="text-blue-100 text-sm">
+                  Discover profitable stocks, index funds, ETFs, and S&P 500 opportunities
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => loadData(useRealAPI)}
+              className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-all hover:scale-105 flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Refresh
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Top Navigation Bar */}
+      <TopNavBar
         investments={analysis.investments}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -185,32 +208,10 @@ export default function Home() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
-        {/* Header */}
-        <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg sticky top-0 z-10 animate-slideIn">
-          <div className="px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <RiseLogo size="md" showText={true} />
-                <div>
-                  <p className="text-blue-100 text-sm">
-                    Discover profitable stocks, index funds, ETFs, and S&P 500 opportunities
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => loadData(useRealAPI)}
-                className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-all hover:scale-105 flex items-center gap-2"
-              >
-                <RefreshCw className="w-4 h-4" />
-                Refresh
-              </button>
-            </div>
-          </div>
-        </header>
+      <div className="max-w-7xl mx-auto">
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="px-6 py-6 space-y-6">
           {/* Market Summary */}
           <div 
             ref={marketSummaryRef}
