@@ -80,3 +80,79 @@ body {
   transform: scale(1.02);
 }
 
+/* Apple-style fade-away effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes parallaxFade {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.6s ease-out forwards;
+}
+
+.parallax-fade {
+  animation: parallaxFade 1s ease-out forwards;
+}
+
+/* Scroll-based fade effects - Apple style */
+.fade-on-scroll {
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              scale 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.fade-on-scroll.fade-out {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fade-on-scroll.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Parallax effect for header */
+header {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+

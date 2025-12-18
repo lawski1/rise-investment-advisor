@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { InvestmentAnalysis, Investment, SortOption, FilterOption } from '@/lib/types';
 import { analyzeInvestments } from '@/lib/financialData';
 import { enhanceInvestmentWithRealData, batchFetchQuotes } from '@/lib/api';
 import MarketSummary from '@/components/MarketSummary';
-import InvestmentCard from '@/components/InvestmentCard';
+import ScrollFadeCard from '@/components/ScrollFadeCard';
 import ComparisonTool, { ComparisonToolHandle } from '@/components/ComparisonTool';
 import Sidebar from '@/components/Sidebar';
 import RiseLogo from '@/components/RiseLogo';
 import { RefreshCw, TrendingUp } from 'lucide-react';
+import { useScrollFade } from '@/hooks/useScrollFade';
 
 export default function Home() {
   const [analysis, setAnalysis] = useState<InvestmentAnalysis | null>(null);
@@ -21,6 +22,18 @@ export default function Home() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filters, setFilters] = useState<FilterOption>({});
   const comparisonToolRef = useState<ComparisonToolHandle | null>(null)[0];
+  
+  // Refs for scroll-based fade effects
+  const marketSummaryRef = useRef<HTMLDivElement>(null);
+  const comparisonRef = useRef<HTMLDivElement>(null);
+  const resultsHeaderRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll fade visibility
+  const marketSummaryVisible = useScrollFade(marketSummaryRef, 0.2);
+  const comparisonVisible = useScrollFade(comparisonRef, 0.2);
+  const resultsHeaderVisible = useScrollFade(resultsHeaderRef, 0.2);
+  const footerVisible = useScrollFade(footerRef, 0.2);
 
   const loadData = async (useAPI: boolean = false) => {
     setLoading(true);
@@ -192,12 +205,22 @@ export default function Home() {
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Market Summary */}
-          <div className="animate-fadeIn">
+          <div 
+            ref={marketSummaryRef}
+            className={`fade-on-scroll transition-all duration-1000 ease-out ${
+              marketSummaryVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            }`}
+          >
             <MarketSummary analysis={analysis} />
           </div>
 
           {/* Comparison Tool */}
-          <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+          <div 
+            ref={comparisonRef}
+            className={`fade-on-scroll transition-all duration-1000 ease-out delay-100 ${
+              comparisonVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            }`}
+          >
             <ComparisonTool
               investments={analysis.investments}
               ref={(ref) => {
@@ -209,7 +232,12 @@ export default function Home() {
           </div>
 
           {/* Results Header */}
-          <div className="flex items-center justify-between animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+          <div 
+            ref={resultsHeaderRef}
+            className={`flex items-center justify-between fade-on-scroll transition-all duration-1000 ease-out delay-200 ${
+              resultsHeaderVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            }`}
+          >
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Investment Opportunities</h2>
               <p className="text-sm text-gray-600 mt-1">
@@ -222,29 +250,30 @@ export default function Home() {
           {filteredInvestments.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               {filteredInvestments.map((investment, index) => (
-                <div
+                <ScrollFadeCard
                   key={investment.symbol}
-                  className="animate-scaleIn"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  <InvestmentCard
-                    investment={investment}
-                    onAddToComparison={(inv) => {
-                      const tool = (window as any).comparisonTool;
-                      if (tool) tool.addToComparison(inv);
-                    }}
-                  />
-                </div>
+                  investment={investment}
+                  index={index}
+                  onAddToComparison={(inv) => {
+                    const tool = (window as any).comparisonTool;
+                    if (tool) tool.addToComparison(inv);
+                  }}
+                />
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-md p-8 text-center animate-fadeIn">
+            <div className="bg-white rounded-lg shadow-md p-8 text-center fade-on-scroll transition-all duration-700 ease-out opacity-100">
               <p className="text-gray-600">No investments match your current filters. Try adjusting your search criteria.</p>
             </div>
           )}
 
           {/* Footer Info */}
-          <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 animate-fadeIn" style={{ animationDelay: '0.3s' }}>
+          <div 
+            ref={footerRef}
+            className={`bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 fade-on-scroll transition-all duration-1000 ease-out delay-300 ${
+              footerVisible ? 'fade-in opacity-100 translate-y-0' : 'fade-out opacity-0 translate-y-8'
+            }`}
+          >
             <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
               <TrendingUp className="w-6 h-6 text-blue-600 mr-2" />
               Investment Tips for Beginners
