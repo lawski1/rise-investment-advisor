@@ -171,20 +171,20 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg sticky top-0 z-50 animate-slideIn">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <header className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-strong sticky top-0 z-50 animate-slideIn backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               <RiseLogo size="md" showText={true} />
               <div>
-                <p className="text-blue-100 text-sm">
+                <p className="text-blue-50 text-sm font-medium leading-relaxed">
                   Discover profitable stocks, index funds, ETFs, and S&P 500 opportunities
                 </p>
               </div>
             </div>
             <button
               onClick={() => loadData(useRealAPI)}
-              className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-all hover:scale-105 flex items-center gap-2"
+              className="bg-white text-blue-600 px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-50 transition-all hover:scale-105 flex items-center gap-2 shadow-medium hover:shadow-strong"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -252,8 +252,8 @@ export default function Home() {
             style={{ transitionDelay: '0.2s' }}
           >
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Investment Opportunities</h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Investment Opportunities</h2>
+              <p className="text-sm text-gray-600 mt-2 font-medium">
                 Showing {filteredInvestments.length} of {analysis.investments.length} investments
               </p>
             </div>
@@ -261,7 +261,7 @@ export default function Home() {
 
           {/* Investment Grid */}
           {filteredInvestments.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredInvestments.map((investment, index) => (
                 <ScrollFadeCard
                   key={investment.symbol}
@@ -275,48 +275,50 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-md p-8 text-center fade-on-scroll transition-all duration-700 ease-out opacity-100">
-              <p className="text-gray-600">No investments match your current filters. Try adjusting your search criteria.</p>
+            <div className="card-polished p-12 text-center fade-on-scroll transition-all duration-700 ease-out opacity-100">
+              <p className="text-gray-600 text-lg font-medium">No investments match your current filters. Try adjusting your search criteria.</p>
             </div>
           )}
 
           {/* Footer Info */}
           <div 
             ref={footerRef}
-            className={`bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 fade-on-scroll transition-all duration-1000 ease-out ${
+            className={`card-polished p-8 border-l-4 border-blue-500 fade-on-scroll transition-all duration-1000 ease-out ${
               footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
             style={{ transitionDelay: '0.3s' }}
           >
-            <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
-              <TrendingUp className="w-6 h-6 text-blue-600 mr-2" />
+            <h3 className="text-2xl font-bold text-gray-900 mb-5 flex items-center tracking-tight">
+              <div className="p-2 bg-blue-100 rounded-lg mr-3">
+                <TrendingUp className="w-6 h-6 text-blue-600" />
+              </div>
               Investment Tips for Beginners
             </h3>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-start">
-                <span className="text-blue-600 mr-2">•</span>
-                <span><strong>Diversify:</strong> Don't put all your money in one investment. Spread it across different sectors and asset types.</span>
+            <ul className="space-y-3 text-gray-700">
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-gray-900">Diversify:</strong> Don't put all your money in one investment. Spread it across different sectors and asset types.</span>
               </li>
-              <li className="flex items-start">
-                <span className="text-blue-600 mr-2">•</span>
-                <span><strong>Start with Low Risk:</strong> S&P 500 index funds are excellent starting points for new investors.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-gray-900">Start with Low Risk:</strong> S&P 500 index funds are excellent starting points for new investors.</span>
               </li>
-              <li className="flex items-start">
-                <span className="text-blue-600 mr-2">•</span>
-                <span><strong>Long-term Focus:</strong> Index funds work best when held for 5+ years. Avoid frequent trading.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-gray-900">Long-term Focus:</strong> Index funds work best when held for 5+ years. Avoid frequent trading.</span>
               </li>
-              <li className="flex items-start">
-                <span className="text-blue-600 mr-2">•</span>
-                <span><strong>Low Fees Matter:</strong> Look for expense ratios under 0.10% for index funds.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-gray-900">Low Fees Matter:</strong> Look for expense ratios under 0.10% for index funds.</span>
               </li>
-              <li className="flex items-start">
-                <span className="text-blue-600 mr-2">•</span>
-                <span><strong>Dollar-Cost Averaging:</strong> Invest regularly (monthly) rather than trying to time the market.</span>
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <span className="text-blue-600 mr-3 font-bold text-lg">•</span>
+                <span className="leading-relaxed"><strong className="text-gray-900">Dollar-Cost Averaging:</strong> Invest regularly (monthly) rather than trying to time the market.</span>
               </li>
             </ul>
-            <div className="mt-4 p-4 bg-yellow-50 rounded border border-yellow-200">
-              <p className="text-sm text-gray-700">
-                <strong>Disclaimer:</strong> This platform provides educational information only. Always consult with a licensed financial advisor before making investment decisions. Past performance does not guarantee future results. All investments carry risk of loss.
+            <div className="mt-6 p-5 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border border-yellow-200/80 shadow-soft">
+              <p className="text-sm text-gray-700 leading-relaxed">
+                <strong className="text-gray-900">Disclaimer:</strong> This platform provides educational information only. Always consult with a licensed financial advisor before making investment decisions. Past performance does not guarantee future results. All investments carry risk of loss.
               </p>
             </div>
           </div>

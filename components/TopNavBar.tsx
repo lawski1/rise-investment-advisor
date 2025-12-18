@@ -93,11 +93,11 @@ export default function TopNavBar({
   const sectors = Array.from(new Set(investments.map(inv => inv.sector).filter(Boolean)));
 
   return (
-    <nav className="bg-white backdrop-blur-xl border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-14">
+    <nav className="bg-white/95 backdrop-blur-xl border-b border-gray-200/80 shadow-soft">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16">
           {/* Left side - Logo area (will be handled by header) */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 overflow-x-auto">
             {/* Search */}
             <div className="relative">
               {showSearch ? (
@@ -115,7 +115,7 @@ export default function TopNavBar({
                         }
                       }}
                       autoFocus
-                      className="pl-10 pr-4 py-2 w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 bg-white placeholder:text-gray-400 transition-all"
+                      className="pl-10 pr-4 py-2 w-48 sm:w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 bg-white placeholder:text-gray-400 transition-all"
                     />
                   </div>
                   {searchTerm && (
@@ -131,13 +131,13 @@ export default function TopNavBar({
                   )}
                 </div>
               ) : (
-                <button
-                  onClick={() => setShowSearch(true)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
-                >
-                  <Search className="w-4 h-4" />
-                  <span>Search</span>
-                </button>
+              <button
+                onClick={() => setShowSearch(true)}
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+              >
+                <Search className="w-4 h-4" />
+                <span className="hidden sm:inline">Search</span>
+              </button>
               )}
             </div>
 
@@ -145,10 +145,10 @@ export default function TopNavBar({
             <div className="relative" ref={(el) => { dropdownRefs.current['sort'] = el; }}>
               <button
                 onClick={() => toggleDropdown('sort')}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <TrendingUp className="w-4 h-4" />
-                <span>Sort</span>
+                <span className="hidden sm:inline">Sort</span>
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'sort' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'sort' && (
@@ -188,10 +188,10 @@ export default function TopNavBar({
             <div className="relative" ref={(el) => { dropdownRefs.current['exchange'] = el; }}>
               <button
                 onClick={() => toggleDropdown('exchange')}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <Building2 className="w-4 h-4" />
-                <span>Exchange</span>
+                <span className="hidden sm:inline">Exchange</span>
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'exchange' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'exchange' && (
@@ -220,10 +220,10 @@ export default function TopNavBar({
             <div className="relative" ref={(el) => { dropdownRefs.current['risk'] = el; }}>
               <button
                 onClick={() => toggleDropdown('risk')}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <BarChart className="w-4 h-4" />
-                <span>Risk</span>
+                <span className="hidden sm:inline">Risk</span>
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'risk' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'risk' && (
@@ -256,10 +256,10 @@ export default function TopNavBar({
             <div className="relative" ref={(el) => { dropdownRefs.current['type'] = el; }}>
               <button
                 onClick={() => toggleDropdown('type')}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
               >
                 <Layers className="w-4 h-4" />
-                <span>Type</span>
+                <span className="hidden sm:inline">Type</span>
                 <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === 'type' ? 'rotate-180' : ''}`} />
               </button>
               {activeDropdown === 'type' && (
@@ -286,21 +286,21 @@ export default function TopNavBar({
           </div>
 
           {/* Right side - Active filters indicator and clear */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {hasActiveFilters && (
               <>
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full">
+                <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 bg-blue-50 rounded-full">
                   <Filter className="w-3 h-3 text-blue-600" />
-                  <span className="text-xs font-medium text-blue-700">
+                  <span className="text-xs font-medium text-blue-700 hidden sm:inline">
                     {Object.keys(filters).length + (searchTerm ? 1 : 0)} active
                   </span>
                 </div>
                 <button
                   onClick={onClearFilters}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                 >
                   <X className="w-4 h-4" />
-                  <span>Clear</span>
+                  <span className="hidden sm:inline">Clear</span>
                 </button>
               </>
             )}

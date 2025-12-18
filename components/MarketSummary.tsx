@@ -42,17 +42,19 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
   const sp500Trend = generateTrendData(marketSummary.sp500AvgReturn);
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg shadow-lg p-6 mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Market Overview</h2>
+    <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl shadow-strong p-8 mb-8 border border-blue-100/50">
+      <h2 className="text-3xl font-bold text-gray-900 mb-8 tracking-tight">Market Overview</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* NASDAQ Card */}
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <Building2 className="w-8 h-8 text-blue-600" />
-            <span className="text-sm font-semibold text-gray-500">NASDAQ</span>
+        <div className="card-polished p-6">
+          <div className="flex items-center justify-between mb-5">
+            <div className="p-3 bg-blue-100 rounded-xl">
+              <Building2 className="w-6 h-6 text-blue-600" />
+            </div>
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">NASDAQ</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 mb-2">{marketSummary.nasdaqAvgReturn.toFixed(2)}%</p>
-          <p className="text-sm text-gray-600 mb-4">Average YTD Return</p>
+          <p className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">{marketSummary.nasdaqAvgReturn.toFixed(2)}%</p>
+          <p className="text-sm text-gray-600 mb-5 font-medium">Average YTD Return</p>
           
           {/* Mini Trend Chart */}
           <div className="h-24 w-full">
@@ -75,13 +77,15 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
         </div>
 
         {/* NYSE Card */}
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <BarChart className="w-8 h-8 text-green-600" />
-            <span className="text-sm font-semibold text-gray-500">NYSE</span>
+        <div className="card-polished p-6">
+          <div className="flex items-center justify-between mb-5">
+            <div className="p-3 bg-green-100 rounded-xl">
+              <BarChart className="w-6 h-6 text-green-600" />
+            </div>
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">NYSE</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 mb-2">{marketSummary.nyseAvgReturn.toFixed(2)}%</p>
-          <p className="text-sm text-gray-600 mb-4">Average YTD Return</p>
+          <p className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">{marketSummary.nyseAvgReturn.toFixed(2)}%</p>
+          <p className="text-sm text-gray-600 mb-5 font-medium">Average YTD Return</p>
           
           {/* Mini Trend Chart */}
           <div className="h-24 w-full">
@@ -104,13 +108,15 @@ export default function MarketSummary({ analysis }: MarketSummaryProps) {
         </div>
 
         {/* S&P 500 Card */}
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <TrendingUp className="w-8 h-8 text-purple-600" />
-            <span className="text-sm font-semibold text-gray-500">S&P 500</span>
+        <div className="card-polished p-6">
+          <div className="flex items-center justify-between mb-5">
+            <div className="p-3 bg-purple-100 rounded-xl">
+              <TrendingUp className="w-6 h-6 text-purple-600" />
+            </div>
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">S&P 500</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 mb-2">{marketSummary.sp500AvgReturn.toFixed(2)}%</p>
-          <p className="text-sm text-gray-600 mb-4">Average YTD Return</p>
+          <p className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">{marketSummary.sp500AvgReturn.toFixed(2)}%</p>
+          <p className="text-sm text-gray-600 mb-5 font-medium">Average YTD Return</p>
           
           {/* Mini Trend Chart */}
           <div className="h-24 w-full">
