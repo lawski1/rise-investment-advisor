@@ -33,8 +33,8 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
     <div className="card-polished p-6 group hover:scale-[1.02] transition-transform duration-300">
       <div className="flex justify-between items-start mb-5">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 tracking-tight">{investment.symbol}</h3>
-          <p className="text-sm text-gray-600 mt-1.5 leading-relaxed">{investment.name}</p>
+          <h3 className="text-2xl font-bold text-yellow-50 tracking-tight">{investment.symbol}</h3>
+          <p className="text-sm text-gray-300 mt-1.5 leading-relaxed">{investment.name}</p>
         </div>
         <span className={`px-3 py-1.5 rounded-full text-xs font-semibold border shadow-soft ${recommendationColors[investment.recommendation]}`}>
           {investment.recommendation}
@@ -42,11 +42,11 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
       </div>
 
       <div className="grid grid-cols-2 gap-5 mb-5">
-        <div className="bg-gradient-to-br from-gray-50 to-white p-3 rounded-xl">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Current Price</p>
-          <p className="text-xl font-bold text-gray-900">${investment.currentPrice.toFixed(2)}</p>
+        <div className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-3 rounded-xl border border-slate-600/50">
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">Current Price</p>
+          <p className="text-xl font-bold text-yellow-50">${investment.currentPrice.toFixed(2)}</p>
         </div>
-        <div className="bg-gradient-to-br from-gray-50 to-white p-3 rounded-xl">
+        <div className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-3 rounded-xl border border-slate-600/50">
           <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Change</p>
           <div className="flex items-center">
             {isPositive ? (
@@ -62,7 +62,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
       </div>
 
       <div className="border-t border-gray-100 pt-5 mb-5">
-        <p className="text-sm text-gray-600 mb-4 leading-relaxed">{investment.description}</p>
+        <p className="text-sm text-gray-300 mb-4 leading-relaxed">{investment.description}</p>
         <div className="flex flex-wrap gap-2">
           <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium border border-blue-100">
             {investment.type}
@@ -80,18 +80,18 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
 
       <div className="grid grid-cols-2 gap-4 mb-5 text-sm">
         {investment.ytdReturn !== undefined && (
-          <div className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors">
+          <div className="flex items-center p-2 rounded-lg hover:bg-slate-700/50 transition-colors">
             <div className="p-2 bg-blue-100 rounded-lg mr-3">
               <BarChart3 className="w-4 h-4 text-blue-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500 font-medium">YTD Return</p>
-              <p className="font-bold text-gray-900 text-base">{investment.ytdReturn.toFixed(2)}%</p>
+              <p className="text-xs text-gray-400 font-medium">YTD Return</p>
+              <p className="font-bold text-yellow-50 text-base">{investment.ytdReturn.toFixed(2)}%</p>
             </div>
           </div>
         )}
         {investment.oneYearReturn !== undefined && (
-          <div className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors">
+          <div className="flex items-center p-2 rounded-lg hover:bg-slate-700/50 transition-colors">
             <div className="p-2 bg-green-100 rounded-lg mr-3">
               <TrendingUp className="w-4 h-4 text-green-600" />
             </div>
@@ -102,7 +102,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
           </div>
         )}
         {investment.dividendYield !== undefined && (
-          <div className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors">
+          <div className="flex items-center p-2 rounded-lg hover:bg-slate-700/50 transition-colors">
             <div className="p-2 bg-yellow-100 rounded-lg mr-3">
               <DollarSign className="w-4 h-4 text-yellow-600" />
             </div>
@@ -128,7 +128,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
 
       <div className="border-t border-gray-100 pt-5">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-gray-600">Recommendation Score</span>
+          <span className="text-sm font-medium text-gray-300">Recommendation Score</span>
           <div className="flex items-center">
             <div className="w-32 bg-gray-200 rounded-full h-2.5 mr-3 overflow-hidden">
               <div
@@ -136,7 +136,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
                 style={{ width: `${investment.recommendationScore}%` }}
               ></div>
             </div>
-            <span className="text-sm font-bold text-gray-900">{investment.recommendationScore}/100</span>
+            <span className="text-sm font-bold text-yellow-50">{investment.recommendationScore}/100</span>
           </div>
         </div>
         <div className="flex gap-3">

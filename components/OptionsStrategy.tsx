@@ -165,7 +165,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
     <div className="card-polished p-6 mt-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
+          <h3 className="text-2xl font-bold text-yellow-50 tracking-tight flex items-center gap-2">
             <Target className="w-6 h-6 text-blue-600" />
             Options Strategy Research
           </h3>
@@ -198,8 +198,8 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                       {strategy.riskLevel} Risk
                     </span>
                   </div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-1">{strategy.name}</h4>
-                  <p className="text-sm text-gray-600 mb-3">{strategy.description}</p>
+                  <h4 className="text-lg font-bold text-yellow-50 mb-1">{strategy.name}</h4>
+                  <p className="text-sm text-gray-300 mb-3">{strategy.description}</p>
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1 text-green-600">
                       <TrendingUp className="w-4 h-4" />
@@ -223,14 +223,14 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
 
             {showDetails[strategy.name] && (
               <div className="border-t border-gray-200 bg-white p-5 animate-fadeIn">
-                <h5 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h5 className="font-bold text-yellow-50 mb-4 flex items-center gap-2">
                   <DollarSign className="w-5 h-5 text-blue-600" />
                   Example Trade Details
                 </h5>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                   <div className="bg-blue-50 p-3 rounded-lg">
                     <p className="text-xs text-gray-600 font-medium mb-1">Current Price</p>
-                    <p className="text-lg font-bold text-gray-900">${strategy.example.stockPrice.toFixed(2)}</p>
+                    <p className="text-lg font-bold text-yellow-50">${strategy.example.stockPrice.toFixed(2)}</p>
                   </div>
                   <div className="bg-green-50 p-3 rounded-lg">
                     <p className="text-xs text-gray-600 font-medium mb-1">Strike Price</p>
@@ -250,7 +250,7 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                   <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
                     <div className="flex items-center gap-2 mb-2">
                       <TrendingUp className="w-5 h-5 text-green-600" />
-                      <p className="font-bold text-gray-900">Max Profit</p>
+                      <p className="font-bold text-yellow-50">Max Profit</p>
                     </div>
                     <p className="text-2xl font-bold text-green-700">
                       {strategy.example.maxProfit === Infinity ? 'Unlimited' : `$${strategy.example.maxProfit.toFixed(2)}`}

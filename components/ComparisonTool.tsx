@@ -48,11 +48,11 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
   return (
     <div className="mb-6">
       {/* Comparison Bar */}
-      <div className="bg-white/95 backdrop-blur-sm border-2 border-blue-200/80 rounded-lg p-4 mb-4 shadow-medium" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06)' }}>
+      <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-lg p-4 mb-4 shadow-medium" style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3)' }}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-blue-600" />
-            <h3 className="font-semibold text-gray-900">Comparison ({selected.length}/4)</h3>
+            <h3 className="font-semibold text-yellow-50">Comparison ({selected.length}/4)</h3>
           </div>
           <div className="flex gap-2">
             {selected.length > 0 && (
@@ -79,9 +79,9 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
           {selected.map(inv => (
             <div
               key={inv.symbol}
-              className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200"
+              className="flex items-center gap-2 bg-slate-700/50 px-3 py-2 rounded-lg border border-slate-600/50"
             >
-              <span className="font-semibold text-gray-900">{inv.symbol}</span>
+              <span className="font-semibold text-yellow-50">{inv.symbol}</span>
               <button
                 onClick={() => removeFromComparison(inv.symbol)}
                 className="text-gray-400 hover:text-red-600"
@@ -101,12 +101,12 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
 
       {/* Comparison Table */}
       {showComparison && selected.length > 0 && (
-        <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-strong overflow-hidden border-2 border-white/80" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)' }}>
+        <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg shadow-strong overflow-hidden border border-slate-700/50" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3)' }}>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-slate-700/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Metric
                   </th>
                   {selected.map(inv => (
@@ -116,11 +116,11 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-slate-800/50 divide-y divide-slate-700/50">
                 <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Name</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-yellow-50">Name</td>
                   {selected.map(inv => (
-                    <td key={inv.symbol} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td key={inv.symbol} className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {inv.name}
                     </td>
                   ))}
@@ -128,7 +128,7 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Current Price</td>
                   {selected.map(inv => (
-                    <td key={inv.symbol} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td key={inv.symbol} className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       ${inv.currentPrice.toFixed(2)}
                     </td>
                   ))}
@@ -175,7 +175,7 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Dividend Yield</td>
                   {selected.map(inv => (
-                    <td key={inv.symbol} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td key={inv.symbol} className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {inv.dividendYield !== undefined ? `${inv.dividendYield.toFixed(2)}%` : 'N/A'}
                     </td>
                   ))}
@@ -228,7 +228,7 @@ const ComparisonTool = forwardRef<ComparisonToolHandle, ComparisonToolProps>(({ 
                             style={{ width: `${inv.recommendationScore}%` }}
                           ></div>
                         </div>
-                        <span className="text-sm font-semibold text-gray-900">{inv.recommendationScore}/100</span>
+                        <span className="text-sm font-semibold text-yellow-50">{inv.recommendationScore}/100</span>
                       </div>
                     </td>
                   ))}
