@@ -249,6 +249,7 @@ export default function Home() {
           {/* Market Summary */}
           <div 
             ref={marketSummaryRef}
+            data-section="market-summary"
             className={`fade-on-scroll transition-all duration-1000 ease-out ${
               marketSummaryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
@@ -259,7 +260,22 @@ export default function Home() {
 
           {/* Quick Stats */}
           <FadeWrapper delay={0.1}>
-            <QuickStats analysis={analysis} />
+            <QuickStats 
+              analysis={analysis} 
+              onFilterChange={(filters) => {
+                // Handle filter changes from Quick Stats
+                if (filters.recommendation) {
+                  setFilters({ ...filters, type: filters.type });
+                  // Scroll to investments
+                  setTimeout(() => {
+                    const element = document.querySelector('[data-section="investments"]');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }, 100);
+                }
+              }}
+            />
           </FadeWrapper>
 
           {/* Bloomberg TV Live Stream */}
@@ -363,6 +379,7 @@ export default function Home() {
           {/* Results Header */}
           <div 
             ref={resultsHeaderRef}
+            data-section="investments"
             className={`flex items-center justify-between fade-on-scroll transition-all duration-1000 ease-out ${
               resultsHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}

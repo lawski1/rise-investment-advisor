@@ -18,6 +18,7 @@ export default function ScrollFadeCard({ investment, index, onAddToComparison }:
   return (
     <div
       ref={cardRef}
+      data-symbol={investment.symbol}
       className={`fade-on-scroll transition-all duration-700 ease-out ${
         isVisible 
           ? 'fade-in opacity-100 translate-y-0 scale-100' 

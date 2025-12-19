@@ -7,13 +7,94 @@ import { getBiggestInstitutionalMoves, InstitutionalMove } from '@/lib/instituti
 
 interface QuickStatsProps {
   analysis: InvestmentAnalysis;
+  onFilterChange?: (filters: any) => void;
+  onScrollToSection?: (section: string) => void;
 }
 
-export default function QuickStats({ analysis }: QuickStatsProps) {
+export default function QuickStats({ analysis, onFilterChange, onScrollToSection }: QuickStatsProps) {
   const { investments } = analysis;
   const [biggestPurchase, setBiggestPurchase] = useState<InstitutionalMove | null>(null);
   const [biggestSale, setBiggestSale] = useState<InstitutionalMove | null>(null);
   const [loadingInstitutional, setLoadingInstitutional] = useState(true);
+
+  const handleStatClick = (statLabel: string, statValue?: any) => {
+    // Scroll to investment grid section
+    const scrollToInvestments = () => {
+      const element = document.querySelector('[data-section="investments"]');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: document.body.scrollHeight * 0.4, behavior: 'smooth' });
+      }
+    };
+
+    // Scroll to market summary
+    const scrollToMarketSummary = () => {
+      const element = document.querySelector('[data-section="market-summary"]');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    // Scroll to specific stock
+    const scrollToStock = (symbol: string) => {
+      const element = document.querySelector(`[data-symbol="${symbol}"]`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Highlight the card briefly
+        element.classList.add('ring-4', 'ring-orange-500', 'ring-opacity-50');
+        setTimeout(() => {
+          element.classList.remove('ring-4', 'ring-orange-500', 'ring-opacity-50');
+        }, 2000);
+      } else {
+        scrollToInvestments();
+      }
+    };
+
+    switch (statLabel) {
+      case 'Total Investments':
+        scrollToInvestments();
+        break;
+      case 'Strong Buy':
+        if (onFilterChange) {
+          onFilterChange({ recommendation: 'Strong Buy' });
+        }
+        scrollToInvestments();
+        break;
+      case 'Avg YTD Return':
+        scrollToMarketSummary();
+        break;
+      case 'Positive Today':
+        if (onFilterChange) {
+          // Filter would need to be handled by parent component
+          scrollToInvestments();
+        }
+        break;
+      case 'Avg Price':
+        scrollToInvestments();
+        break;
+      case 'High Dividend':
+        if (onFilterChange) {
+          // Filter for high dividend (would need parent to handle)
+          scrollToInvestments();
+        }
+        break;
+      case 'Biggest Purchase':
+        if (biggestPurchase) {
+          scrollToStock(biggestPurchase.symbol);
+        }
+        break;
+      case 'Biggest Sale':
+        if (biggestSale) {
+          scrollToStock(biggestSale.symbol);
+        }
+        break;
+      default:
+        scrollToInvestments();
+    }
+  };
 
   // Fetch biggest institutional moves
   useEffect(() => {
@@ -73,6 +154,7 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
     iconColor: string;
     subtitle?: string;
     valueDetail?: string;
+    onClick?: () => void;
   }
 
   const stats: StatItem[] = [
@@ -164,7 +246,17 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
           return (
             <div
               key={index}
-              className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-4 rounded-xl border border-slate-600/50 hover:shadow-md transition-all hover:scale-105 hover:border-orange-500/30"
+              onClick={() => handleStatClick(stat.label, stat.value)}
+              className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-4 rounded-xl border border-slate-600/50 hover:shadow-md hover:shadow-orange-500/20 transition-all hover:scale-105 hover:border-orange-500/50 cursor-pointer group active:scale-95"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleStatClick(stat.label, stat.value);
+                }
+              }}
+              title={`Click to view ${stat.label.toLowerCase()} details`}
             >
               <div className={`${stat.bgColor} p-2 rounded-lg w-fit mb-2`}>
                 <Icon className={`w-5 h-5 ${stat.iconColor}`} />
