@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Investment } from '@/lib/types';
 import { TrendingUp, TrendingDown, DollarSign, Target, AlertCircle, Info, ChevronDown, ChevronUp } from 'lucide-react';
+import CoveredCallChart from './CoveredCallChart';
 
 interface OptionsStrategyProps {
   investment: Investment;
@@ -288,6 +289,17 @@ export default function OptionsStrategy({ investment }: OptionsStrategyProps) {
                     </p>
                   </div>
                 </div>
+
+                {/* Profit/Loss Chart */}
+                <CoveredCallChart
+                  stockPrice={strategy.example.stockPrice}
+                  strikePrice={strategy.example.strikePrice}
+                  premium={strategy.example.premium}
+                  maxProfit={strategy.example.maxProfit}
+                  maxLoss={strategy.example.maxLoss}
+                  breakeven={strategy.example.breakeven}
+                  strategyType={strategy.type}
+                />
 
                 <div className="mt-4 p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-lg">
                   <div className="flex items-start gap-2">
