@@ -3,6 +3,23 @@
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, Legend, Area, AreaChart } from 'recharts';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
+// Custom label component to prevent overlap
+const CustomLabel = ({ viewBox, value, fill, offset = 0 }: any) => {
+  if (!viewBox) return null;
+  return (
+    <text
+      x={viewBox.x}
+      y={viewBox.y - 10 - offset}
+      fill={fill}
+      fontSize={10}
+      fontWeight="bold"
+      textAnchor="middle"
+    >
+      {value}
+    </text>
+  );
+};
+
 interface CoveredCallChartProps {
   stockPrice: number;
   strikePrice: number;
@@ -79,6 +96,54 @@ export default function CoveredCallChart({
   const zeroProfitIndex = chartData.findIndex(d => d.profitLoss >= 0);
   const zeroProfitPrice = zeroProfitIndex >= 0 ? chartData[zeroProfitIndex].stockPrice : breakeven;
 
+  // Calculate price range to determine if labels might overlap
+  const priceRange = Math.max(...chartData.map(d => d.stockPrice)) - Math.min(...chartData.map(d => d.stockPrice));
+  const priceThreshold = priceRange * 0.08; // 8% of range - if lines are closer than this, adjust labels
+  
+  // Sort prices to determine order
+  const prices = [stockPrice, strikePrice, breakeven].sort((a, b) => a - b);
+  
+  // Determine label vertical offsets to avoid overlap
+  const getLabelOffset = (price: number) => {
+    const priceIndex = prices.indexOf(price);
+    const prevPrice = prices[priceIndex - 1];
+    const nextPrice = prices[priceIndex + 1];
+    
+    const tooCloseToPrev = prevPrice !== undefined && Math.abs(price - prevPrice) < priceThreshold;
+    const tooCloseToNext = nextPrice !== undefined && Math.abs(nextPrice - price) < priceThreshold;
+    
+    // Use different vertical offsets to prevent overlap
+    if (tooCloseToPrev && tooCloseToNext) {
+      // All three are close - stagger them vertically
+      if (price === prices[0]) {
+        return 5; // First - highest
+      } else if (price === prices[1]) {
+        return 20; // Middle - lower
+      } else {
+        return 35; // Last - lowest
+      }
+    } else if (tooCloseToPrev) {
+      // Close to previous - offset down more
+      return 30;
+    } else if (tooCloseToNext) {
+      // Close to next - offset up
+      return 5;
+    }
+    
+    // Default position - spread them out
+    if (price === prices[0]) {
+      return 5;
+    } else if (price === prices[1]) {
+      return 20;
+    } else {
+      return 35;
+    }
+  };
+
+  const currentLabelOffset = getLabelOffset(stockPrice);
+  const strikeLabelOffset = getLabelOffset(strikePrice);
+  const breakevenLabelOffset = getLabelOffset(breakeven);
+
   return (
     <div className="mt-6 p-4 bg-slate-800/50 rounded-xl border border-slate-600/50">
       <div className="flex items-center justify-between mb-4">
@@ -93,7 +158,7 @@ export default function CoveredCallChart({
       
       <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
+          <AreaChart data={chartData} margin={{ top: 40, right: 20, left: 10, bottom: 10 }}>
             <defs>
               <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#10b981" stopOpacity={0.4} />
@@ -155,7 +220,7 @@ export default function CoveredCallChart({
               strokeDasharray="3 3"
               strokeOpacity={0.8}
               strokeWidth={2}
-              label={{ value: 'Current', position: 'top', fill: '#fbbf24', fontSize: 10, fontWeight: 'bold' }}
+              label={<CustomLabel value="Current" fill="#fbbf24" offset={currentLabelOffset} />}
             />
             
             {/* Strike price line */}
@@ -165,7 +230,7 @@ export default function CoveredCallChart({
               strokeDasharray="3 3"
               strokeOpacity={0.8}
               strokeWidth={2}
-              label={{ value: 'Strike', position: 'top', fill: '#3b82f6', fontSize: 10, fontWeight: 'bold' }}
+              label={<CustomLabel value="Strike" fill="#3b82f6" offset={strikeLabelOffset} />}
             />
             
             {/* Breakeven line */}
@@ -175,7 +240,7 @@ export default function CoveredCallChart({
               strokeDasharray="2 2"
               strokeOpacity={0.8}
               strokeWidth={2}
-              label={{ value: 'Breakeven', position: 'top', fill: '#a855f7', fontSize: 10, fontWeight: 'bold' }}
+              label={<CustomLabel value="Breakeven" fill="#a855f7" offset={breakevenLabelOffset} />}
             />
             
             {/* Area fill - profit zone (above zero) */}
