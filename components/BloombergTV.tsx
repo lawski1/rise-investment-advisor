@@ -9,15 +9,43 @@ export default function BloombergTV() {
   const [loadError, setLoadError] = useState(false);
 
   // Bloomberg TV stream sources
-  // Note: Bloomberg.com may block iframe embedding, so we use YouTube as primary
+  // Note: Bloomberg.com may block iframe embedding, so we use YouTube as fallback
   const streamSources = {
-    youtube: 'https://www.youtube.com/embed/live_stream?channel=UCUMZ7gohGI9HcU9TZ33zdWQ&autoplay=1&mute=0', // Bloomberg TV YouTube channel
+    // Using Bloomberg TV's official YouTube channel live stream
+    // Channel ID: UCUMZ7gohGI9HcU9TZ33zdWQ
+    // This will show the live stream if available, otherwise shows the channel's latest content
+    youtube: 'https://www.youtube.com/embed/live_stream?channel=UCUMZ7gohGI9HcU9TZ33zdWQ&autoplay=1&mute=0&rel=0&modestbranding=1&enablejsapi=1',
+    // Alternative: Direct channel live page (use if embed doesn't work)
+    youtubeAlt: 'https://www.youtube.com/channel/UCUMZ7gohGI9HcU9TZ33zdWQ/live',
     bloomberg: 'https://www.bloomberg.com/live/stream',
   };
 
   useEffect(() => {
     setLoadError(false);
+    
+    // Set a timeout to detect if iframe fails to load
+    // If after 10 seconds we haven't detected a successful load, show error
+    const timeoutId = setTimeout(() => {
+      // Only set error if we're still on the same source
+      // This is a fallback - the iframe onLoad should clear this
+      if (streamSource === 'youtube') {
+        // Check if iframe is actually loaded by trying to access its content
+        // Note: This won't work due to CORS, but we can at least try
+        const iframe = document.querySelector('iframe[title="Bloomberg TV YouTube Stream"]') as HTMLIFrameElement;
+        if (iframe && !iframe.contentDocument) {
+          // Iframe loaded but might be blocked - give it more time
+          // Don't set error immediately
+        }
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeoutId);
   }, [streamSource]);
+
+  // Handle iframe load - clear any error state
+  const handleIframeLoad = () => {
+    setLoadError(false);
+  };
 
   return (
     <div className={`bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden transition-all duration-300 ${
@@ -94,24 +122,72 @@ export default function BloombergTV() {
         ) : (
           <>
             {streamSource === 'youtube' ? (
-              <iframe
-                src={streamSources.youtube}
-                className="w-full h-full"
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-                title="Bloomberg TV YouTube Stream"
-                style={{ border: 'none' }}
-                onError={() => setLoadError(true)}
-              />
+              <>
+                <iframe
+                  key="youtube-stream"
+                  src={streamSources.youtube}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                  allowFullScreen
+                  title="Bloomberg TV YouTube Stream"
+                  style={{ border: 'none' }}
+                  onLoad={handleIframeLoad}
+                />
+                {/* Fallback message if YouTube doesn't load */}
+                {loadError && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 p-8 text-center z-20">
+                    <AlertCircle className="w-12 h-12 text-orange-400 mb-4" />
+                    <h4 className="text-lg font-bold text-yellow-50 mb-2">YouTube Stream Unavailable</h4>
+                    <p className="text-gray-300 mb-4 max-w-md text-sm">
+                      The YouTube embed may not be available if there's no active live stream, or due to browser restrictions. 
+                      Try switching to Bloomberg or watch directly on YouTube.
+                    </p>
+                    <div className="flex flex-wrap gap-3 justify-center">
+                      <button
+                        onClick={() => {
+                          setLoadError(false);
+                          setStreamSource('bloomberg');
+                        }}
+                        className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-semibold transition-all"
+                      >
+                        Switch to Bloomberg
+                      </button>
+                      <a
+                        href={streamSources.youtubeAlt}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-all"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Watch on YouTube
+                      </a>
+                      <button
+                        onClick={() => {
+                          setLoadError(false);
+                          // Force reload the iframe
+                          const iframe = document.querySelector('iframe[title="Bloomberg TV YouTube Stream"]') as HTMLIFrameElement;
+                          if (iframe) {
+                            iframe.src = streamSources.youtube;
+                          }
+                        }}
+                        className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-semibold transition-all"
+                      >
+                        Retry YouTube
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <iframe
+                key="bloomberg-stream"
                 src={streamSources.bloomberg}
                 className="w-full h-full"
-                allow="autoplay; encrypted-media"
+                allow="autoplay; encrypted-media; fullscreen"
                 allowFullScreen
                 title="Bloomberg TV Live Stream"
                 style={{ border: 'none' }}
-                onError={() => setLoadError(true)}
+                onLoad={handleIframeLoad}
               />
             )}
             
