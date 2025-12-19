@@ -263,9 +263,9 @@ export default function Home() {
           </FadeWrapper>
 
           {/* Bloomberg TV Live Stream */}
-          <FadeWrapper delay={0.12}>
+          <div className="mb-6">
             <BloombergTV />
-          </FadeWrapper>
+          </div>
 
           {/* Options Strategy Research Section - Ford & Lower-Priced Stocks */}
           {analysis && (() => {

@@ -20,7 +20,13 @@ export default function FadeWrapper({ children, delay = 0 }: FadeWrapperProps) {
           ? 'opacity-100 translate-y-0 scale-100' 
           : 'opacity-0 translate-y-12 scale-95'
       }`}
-      style={{ transitionDelay: `${delay}s` }}
+      style={{ 
+        transitionDelay: `${delay}s`,
+        // Ensure content is still in document flow even when invisible
+        visibility: isVisible ? 'visible' : 'hidden',
+        // Prevent layout shift
+        minHeight: isVisible ? 'auto' : '1px'
+      }}
     >
       {children}
     </div>

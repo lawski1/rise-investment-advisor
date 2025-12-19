@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Tv, ExternalLink, Maximize2, Minimize2, AlertCircle } from 'lucide-react';
 
 export default function BloombergTV() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [streamSource, setStreamSource] = useState<'youtube' | 'bloomberg'>('bloomberg');
   const [loadError, setLoadError] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Bloomberg TV stream sources
   // Note: Bloomberg.com may block iframe embedding, so we use YouTube as fallback
@@ -20,37 +23,67 @@ export default function BloombergTV() {
     bloomberg: 'https://www.bloomberg.com/live/stream',
   };
 
+  // Intersection Observer to lazy load iframe only when in viewport
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInViewport(true);
+            // Unobserve after first intersection to improve performance
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: '200px', // Start loading 200px before it comes into view
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     setLoadError(false);
+    setIframeLoaded(false);
     
     // Set a timeout to detect if iframe fails to load
-    // If after 10 seconds we haven't detected a successful load, show error
     const timeoutId = setTimeout(() => {
-      // Only set error if we're still on the same source
-      // This is a fallback - the iframe onLoad should clear this
-      if (streamSource === 'youtube') {
-        // Check if iframe is actually loaded by trying to access its content
-        // Note: This won't work due to CORS, but we can at least try
-        const iframe = document.querySelector('iframe[title="Bloomberg TV YouTube Stream"]') as HTMLIFrameElement;
-        if (iframe && !iframe.contentDocument) {
-          // Iframe loaded but might be blocked - give it more time
-          // Don't set error immediately
+      if (streamSource === 'youtube' && !iframeLoaded) {
+        // Give it more time on mobile
+        const isMobile = window.innerWidth < 768;
+        if (!isMobile) {
+          // On desktop, check after 10 seconds
         }
       }
-    }, 10000);
+    }, 15000); // Increased timeout for mobile
 
     return () => clearTimeout(timeoutId);
-  }, [streamSource]);
+  }, [streamSource, iframeLoaded]);
 
   // Handle iframe load - clear any error state
   const handleIframeLoad = () => {
     setLoadError(false);
+    setIframeLoaded(true);
   };
 
   return (
-    <div className={`bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden transition-all duration-300 ${
-      isExpanded ? 'fixed inset-4 z-[100]' : 'relative'
-    }`} style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.1)' }}>
+    <div 
+      ref={containerRef}
+      className={`bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden transition-all duration-300 ${
+        isExpanded ? 'fixed inset-4 z-[100]' : 'relative'
+      }`} 
+      style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.1)' }}
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-slate-900/50 border-b border-slate-700/50">
         <div className="flex items-center gap-3">
@@ -102,7 +135,15 @@ export default function BloombergTV() {
 
       {/* Video Player */}
       <div className={`relative bg-black ${isExpanded ? 'h-[calc(100vh-120px)]' : 'h-[400px]'} transition-all duration-300`}>
-        {loadError ? (
+        {!isInViewport ? (
+          // Loading placeholder - don't load iframe until in viewport
+          <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-gradient-to-br from-slate-900 to-slate-800">
+            <div className="animate-pulse">
+              <Tv className="w-16 h-16 text-orange-400/50 mb-4" />
+            </div>
+            <p className="text-gray-400 text-sm mt-4">Bloomberg TV will load when visible</p>
+          </div>
+        ) : loadError ? (
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
             <AlertCircle className="w-16 h-16 text-orange-400 mb-4" />
             <h4 className="text-xl font-bold text-yellow-50 mb-2">Stream Unavailable</h4>
@@ -131,6 +172,7 @@ export default function BloombergTV() {
                   allowFullScreen
                   title="Bloomberg TV YouTube Stream"
                   style={{ border: 'none' }}
+                  loading="lazy"
                   onLoad={handleIframeLoad}
                 />
                 {/* Fallback message if YouTube doesn't load */}
@@ -187,6 +229,7 @@ export default function BloombergTV() {
                 allowFullScreen
                 title="Bloomberg TV Live Stream"
                 style={{ border: 'none' }}
+                loading="lazy"
                 onLoad={handleIframeLoad}
               />
             )}
