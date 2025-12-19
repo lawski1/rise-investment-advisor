@@ -17,40 +17,68 @@ export default function QuickStats({ analysis, onFilterChange, onScrollToSection
   const [biggestSale, setBiggestSale] = useState<InstitutionalMove | null>(null);
   const [loadingInstitutional, setLoadingInstitutional] = useState(true);
 
-  const handleStatClick = (statLabel: string, statValue?: any) => {
+  const handleStatClick = (e: React.MouseEvent, statLabel: string, statValue?: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('Quick Stats clicked:', statLabel, statValue);
+    
     // Scroll to investment grid section
     const scrollToInvestments = () => {
-      const element = document.querySelector('[data-section="investments"]');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.scrollTo({ top: document.body.scrollHeight * 0.4, behavior: 'smooth' });
-      }
+      setTimeout(() => {
+        const element = document.querySelector('[data-section="investments"]');
+        console.log('Looking for investments section:', element);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const targetY = rect.top + scrollTop - 100; // Offset for header
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        } else {
+          // Fallback: scroll to approximate position
+          const headerHeight = 150;
+          const targetY = document.body.scrollHeight * 0.4;
+          window.scrollTo({ top: targetY - headerHeight, behavior: 'smooth' });
+        }
+      }, 100);
     };
 
     // Scroll to market summary
     const scrollToMarketSummary = () => {
-      const element = document.querySelector('[data-section="market-summary"]');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      setTimeout(() => {
+        const element = document.querySelector('[data-section="market-summary"]');
+        console.log('Looking for market summary:', element);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const targetY = rect.top + scrollTop - 100; // Offset for header
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 100);
     };
 
     // Scroll to specific stock
     const scrollToStock = (symbol: string) => {
-      const element = document.querySelector(`[data-symbol="${symbol}"]`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Highlight the card briefly
-        element.classList.add('ring-4', 'ring-orange-500', 'ring-opacity-50');
-        setTimeout(() => {
-          element.classList.remove('ring-4', 'ring-orange-500', 'ring-opacity-50');
-        }, 2000);
-      } else {
-        scrollToInvestments();
-      }
+      setTimeout(() => {
+        const element = document.querySelector(`[data-symbol="${symbol}"]`);
+        console.log(`Looking for stock ${symbol}:`, element);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const targetY = rect.top + scrollTop - 150; // Offset for header
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+          // Highlight the card briefly
+          (element as HTMLElement).style.transition = 'box-shadow 0.3s ease';
+          (element as HTMLElement).style.boxShadow = '0 0 0 4px rgba(251, 146, 60, 0.5)';
+          setTimeout(() => {
+            (element as HTMLElement).style.boxShadow = '';
+          }, 2000);
+        } else {
+          console.log('Stock not found, scrolling to investments');
+          scrollToInvestments();
+        }
+      }, 100);
     };
 
     switch (statLabel) {
@@ -244,18 +272,15 @@ export default function QuickStats({ analysis, onFilterChange, onScrollToSection
           const hasSubtitle = 'subtitle' in stat;
           const hasValueDetail = 'valueDetail' in stat;
           return (
-            <div
+            <button
               key={index}
-              onClick={() => handleStatClick(stat.label, stat.value)}
-              className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-4 rounded-xl border border-slate-600/50 hover:shadow-md hover:shadow-orange-500/20 transition-all hover:scale-105 hover:border-orange-500/50 cursor-pointer group active:scale-95"
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleStatClick(stat.label, stat.value);
-                }
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleStatClick(e, stat.label, stat.value);
               }}
+              className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-4 rounded-xl border border-slate-600/50 hover:shadow-md hover:shadow-orange-500/20 transition-all hover:scale-105 hover:border-orange-500/50 cursor-pointer group active:scale-95 text-left w-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-slate-800"
               title={`Click to view ${stat.label.toLowerCase()} details`}
             >
               <div className={`${stat.bgColor} p-2 rounded-lg w-fit mb-2`}>
@@ -271,7 +296,7 @@ export default function QuickStats({ analysis, onFilterChange, onScrollToSection
                   {stat.subtitle}
                 </p>
               )}
-            </div>
+            </button>
           );
         })}
       </div>
