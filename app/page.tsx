@@ -15,6 +15,7 @@ import QuickStats from '@/components/QuickStats';
 import OptionsStrategy from '@/components/OptionsStrategy';
 import TickerTape from '@/components/TickerTape';
 import NewsFeed from '@/components/NewsFeed';
+import BloombergTV from '@/components/BloombergTV';
 import { RefreshCw, TrendingUp, BarChart3, Target, Info } from 'lucide-react';
 import { useScrollFade } from '@/hooks/useScrollFade';
 
@@ -259,6 +260,11 @@ export default function Home() {
           {/* Quick Stats */}
           <FadeWrapper delay={0.1}>
             <QuickStats analysis={analysis} />
+          </FadeWrapper>
+
+          {/* Bloomberg TV Live Stream */}
+          <FadeWrapper delay={0.12}>
+            <BloombergTV />
           </FadeWrapper>
 
           {/* Options Strategy Research Section - Ford & Lower-Priced Stocks */}
