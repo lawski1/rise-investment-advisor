@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, BookOpen, ExternalLink } from 'lucide-react';
+import { Play, BookOpen, ExternalLink, Search } from 'lucide-react';
 import Link from 'next/link';
 import VideoEmbed from '@/components/VideoEmbed';
 
