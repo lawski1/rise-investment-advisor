@@ -16,8 +16,11 @@ import OptionsStrategy from '@/components/OptionsStrategy';
 import TickerTape from '@/components/TickerTape';
 import NewsFeed from '@/components/NewsFeed';
 import BloombergTV from '@/components/BloombergTV';
-import { RefreshCw, TrendingUp, BarChart3, Target, Info } from 'lucide-react';
+import UserAccount from '@/components/UserAccount';
+import OptionsCalculator from '@/components/OptionsCalculator';
+import { RefreshCw, TrendingUp, BarChart3, Target, Info, BookOpen, Play, Calculator, Star } from 'lucide-react';
 import { useScrollFade } from '@/hooks/useScrollFade';
+import Link from 'next/link';
 
 export default function Home() {
   const [analysis, setAnalysis] = useState<InvestmentAnalysis | null>(null);
@@ -206,15 +209,34 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => loadData(useRealAPI)}
-              className="bg-orange-500 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-orange-600 transition-all hover:scale-105 flex items-center gap-2 shadow-medium hover:shadow-strong"
-              title="Refresh investment data"
-              aria-label="Refresh data"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Refresh
-            </button>
+            <div className="flex items-center gap-3">
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center gap-2">
+                <Link
+                  href="/strategies"
+                  className="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all flex items-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  Strategies
+                </Link>
+                <Link
+                  href="/tutorials"
+                  className="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-yellow-50 hover:bg-slate-700/50 rounded-lg transition-all flex items-center gap-2"
+                >
+                  <Play className="w-4 h-4" />
+                  Tutorials
+                </Link>
+              </div>
+              <button
+                onClick={() => loadData(useRealAPI)}
+                className="bg-orange-500 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-orange-600 transition-all hover:scale-105 flex items-center gap-2 shadow-medium hover:shadow-strong"
+                title="Refresh investment data"
+                aria-label="Refresh data"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -276,6 +298,50 @@ export default function Home() {
                 }
               }}
             />
+          </FadeWrapper>
+
+          {/* Tools Section */}
+          <FadeWrapper delay={0.12}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* Options Calculator */}
+              <OptionsCalculator />
+              
+              {/* User Account & Watchlist */}
+              <UserAccount investments={analysis.investments} />
+            </div>
+          </FadeWrapper>
+
+          {/* Quick Links */}
+          <FadeWrapper delay={0.13}>
+            <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong p-6 border border-slate-700/50 mb-6">
+              <h3 className="text-xl font-bold text-yellow-50 mb-4 flex items-center gap-2">
+                <Target className="w-5 h-5 text-orange-400" />
+                Learning Resources
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link
+                  href="/strategies"
+                  className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50 hover:bg-slate-700/70 transition-all group"
+                >
+                  <BookOpen className="w-8 h-8 text-orange-400 mb-3 group-hover:scale-110 transition-transform" />
+                  <h4 className="font-semibold text-yellow-50 mb-2">Strategy Explanations</h4>
+                  <p className="text-sm text-gray-400">Detailed guides on options strategies</p>
+                </Link>
+                <Link
+                  href="/tutorials"
+                  className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50 hover:bg-slate-700/70 transition-all group"
+                >
+                  <Play className="w-8 h-8 text-orange-400 mb-3 group-hover:scale-110 transition-transform" />
+                  <h4 className="font-semibold text-yellow-50 mb-2">Video Tutorials</h4>
+                  <p className="text-sm text-gray-400">Learn through comprehensive videos</p>
+                </Link>
+                <div className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50">
+                  <Calculator className="w-8 h-8 text-orange-400 mb-3" />
+                  <h4 className="font-semibold text-yellow-50 mb-2">Options Calculator</h4>
+                  <p className="text-sm text-gray-400">Calculate Greeks and P/L (above)</p>
+                </div>
+              </div>
+            </div>
           </FadeWrapper>
 
           {/* Bloomberg TV Live Stream */}
