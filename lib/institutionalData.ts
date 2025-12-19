@@ -181,3 +181,57 @@ export async function getTopInstitutionalHolders(symbols: string[], limit: numbe
     .slice(0, limit);
 }
 
+/**
+ * Get biggest institutional purchases and sales
+ * Returns the largest increases and decreases in institutional holdings
+ */
+export interface InstitutionalMove {
+  symbol: string;
+  institution: string;
+  change: number; // Change in shares
+  changePercent: number;
+  value: number; // Value of the change
+  type: 'purchase' | 'sale';
+}
+
+export async function getBiggestInstitutionalMoves(
+  symbols: string[],
+  limit: number = 5
+): Promise<{ purchases: InstitutionalMove[]; sales: InstitutionalMove[] }> {
+  const allData = await batchFetchInstitutionalData(symbols);
+  const moves: InstitutionalMove[] = [];
+
+  // Collect all moves from all stocks
+  allData.forEach((data) => {
+    data.topHolders.forEach((holder) => {
+      if (holder.change !== undefined && holder.changePercent !== undefined) {
+        // Estimate value of change (using average price approximation)
+        const estimatedPrice = holder.totalValue / holder.shares;
+        const changeValue = Math.abs(holder.change) * estimatedPrice;
+
+        moves.push({
+          symbol: data.symbol,
+          institution: holder.name,
+          change: holder.change,
+          changePercent: holder.changePercent,
+          value: changeValue,
+          type: holder.change > 0 ? 'purchase' : 'sale',
+        });
+      }
+    });
+  });
+
+  // Separate purchases and sales, sort by absolute value
+  const purchases = moves
+    .filter(m => m.type === 'purchase')
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit);
+
+  const sales = moves
+    .filter(m => m.type === 'sale')
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit);
+
+  return { purchases, sales };
+}
+

@@ -1,7 +1,9 @@
 'use client';
 
 import { InvestmentAnalysis } from '@/lib/types';
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Target, Award } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Target, Award, Building2, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { getBiggestInstitutionalMoves, InstitutionalMove } from '@/lib/institutionalData';
 
 interface QuickStatsProps {
   analysis: InvestmentAnalysis;
@@ -9,6 +11,50 @@ interface QuickStatsProps {
 
 export default function QuickStats({ analysis }: QuickStatsProps) {
   const { investments } = analysis;
+  const [biggestPurchase, setBiggestPurchase] = useState<InstitutionalMove | null>(null);
+  const [biggestSale, setBiggestSale] = useState<InstitutionalMove | null>(null);
+  const [loadingInstitutional, setLoadingInstitutional] = useState(true);
+
+  // Fetch biggest institutional moves
+  useEffect(() => {
+    const loadInstitutionalMoves = async () => {
+      try {
+        // Get only stock symbols for institutional data
+        const stockSymbols = investments
+          .filter(inv => inv.type === 'Stock')
+          .map(inv => inv.symbol)
+          .slice(0, 20); // Limit to first 20 stocks for performance
+
+        if (stockSymbols.length > 0) {
+          const moves = await getBiggestInstitutionalMoves(stockSymbols, 1);
+          if (moves.purchases.length > 0) {
+            setBiggestPurchase(moves.purchases[0]);
+          }
+          if (moves.sales.length > 0) {
+            setBiggestSale(moves.sales[0]);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading institutional moves:', error);
+      } finally {
+        setLoadingInstitutional(false);
+      }
+    };
+
+    loadInstitutionalMoves();
+  }, [investments]);
+  
+  // Format currency helper
+  const formatCurrency = (value: number) => {
+    if (value >= 1000000000) {
+      return `$${(value / 1000000000).toFixed(2)}B`;
+    } else if (value >= 1000000) {
+      return `$${(value / 1000000).toFixed(2)}M`;
+    } else if (value >= 1000) {
+      return `$${(value / 1000).toFixed(2)}K`;
+    }
+    return `$${value.toFixed(2)}`;
+  };
   
   // Calculate statistics
   const totalInvestments = investments.length;
@@ -18,7 +64,18 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
   const avgPrice = investments.reduce((sum, inv) => sum + inv.currentPrice, 0) / totalInvestments;
   const highDividend = investments.filter(inv => (inv.dividendYield || 0) > 3).length;
 
-  const stats = [
+  interface StatItem {
+    label: string;
+    value: string | number;
+    icon: any;
+    color: string;
+    bgColor: string;
+    iconColor: string;
+    subtitle?: string;
+    valueDetail?: string;
+  }
+
+  const stats: StatItem[] = [
     {
       label: 'Total Investments',
       value: totalInvestments,
@@ -69,12 +126,41 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
     },
   ];
 
+  // Add institutional moves to stats if available
+  if (!loadingInstitutional && biggestPurchase) {
+    stats.push({
+      label: 'Biggest Purchase',
+      value: `${biggestPurchase.symbol}`,
+      icon: ArrowUpRight,
+      color: 'green',
+      bgColor: 'bg-green-100',
+      iconColor: 'text-green-600',
+      subtitle: biggestPurchase.institution,
+      valueDetail: formatCurrency(biggestPurchase.value),
+    });
+  }
+
+  if (!loadingInstitutional && biggestSale) {
+    stats.push({
+      label: 'Biggest Sale',
+      value: `${biggestSale.symbol}`,
+      icon: ArrowDownRight,
+      color: 'red',
+      bgColor: 'bg-red-100',
+      iconColor: 'text-red-600',
+      subtitle: biggestSale.institution,
+      valueDetail: formatCurrency(biggestSale.value),
+    });
+  }
+
   return (
     <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong p-6 mb-6 border border-slate-700/50" style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(251, 146, 60, 0.1)' }}>
       <h3 className="text-xl font-bold text-white mb-4 tracking-tight">Quick Stats</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
+          const hasSubtitle = 'subtitle' in stat;
+          const hasValueDetail = 'valueDetail' in stat;
           return (
             <div
               key={index}
@@ -83,8 +169,16 @@ export default function QuickStats({ analysis }: QuickStatsProps) {
               <div className={`${stat.bgColor} p-2 rounded-lg w-fit mb-2`}>
                 <Icon className={`w-5 h-5 ${stat.iconColor}`} />
               </div>
-              <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
+              <p className="text-2xl font-bold text-yellow-50 mb-1">{stat.value}</p>
+              {hasValueDetail && (
+                <p className="text-sm font-semibold text-green-400 mb-1">{stat.valueDetail}</p>
+              )}
               <p className="text-xs text-gray-400 font-medium">{stat.label}</p>
+              {hasSubtitle && (
+                <p className="text-xs text-gray-500 mt-1 truncate" title={stat.subtitle}>
+                  {stat.subtitle}
+                </p>
+              )}
             </div>
           );
         })}
