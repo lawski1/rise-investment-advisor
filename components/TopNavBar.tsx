@@ -78,7 +78,7 @@ export default function TopNavBar({
     setFilters({ ...filters, [key]: value });
   };
 
-  const toggleExchange = (exchange: 'NASDAQ' | 'NYSE' | 'SP500') => {
+  const toggleExchange = (exchange: 'NASDAQ' | 'NYSE' | 'SP500' | 'LSE' | 'CRYPTO' | 'FX' | 'COMMODITY') => {
     const current = filters.exchange || [];
     const newValue = current.includes(exchange)
       ? current.filter(e => e !== exchange)
@@ -94,7 +94,7 @@ export default function TopNavBar({
     handleFilterChange('riskLevel', newValue.length > 0 ? newValue : undefined);
   };
 
-  const toggleType = (type: 'ETF' | 'Index Fund' | 'Stock') => {
+  const toggleType = (type: 'ETF' | 'Index Fund' | 'Stock' | 'Commodity' | 'Cryptocurrency' | 'Index' | 'FX') => {
     const current = filters.type || [];
     const newValue = current.includes(type)
       ? current.filter(t => t !== type)
@@ -231,13 +231,13 @@ export default function TopNavBar({
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select Exchange</label>
                   </div>
-                  {(['NASDAQ', 'NYSE', 'SP500'] as const).map(exchange => (
+                  {(['NASDAQ', 'NYSE', 'SP500', 'LSE', 'CRYPTO', 'FX', 'COMMODITY'] as const).map(exchange => (
                     <button
                       key={exchange}
                       onClick={() => toggleExchange(exchange)}
                       className={`w-full px-3 py-2 text-sm text-left transition-colors ${
                         filters.exchange?.includes(exchange)
-                          ? 'bg-blue-50 text-blue-700 font-medium'
+                          ? 'bg-orange-500/20 text-orange-400 font-medium'
                           : 'text-gray-300 hover:bg-slate-700/50'
                       }`}
                     >
@@ -315,13 +315,13 @@ export default function TopNavBar({
                   <div className="px-3 py-2 border-b border-gray-100/50">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Investment Type</label>
                   </div>
-                  {(['ETF', 'Index Fund', 'Stock'] as const).map(type => (
+                  {(['ETF', 'Index Fund', 'Stock', 'Commodity', 'Cryptocurrency', 'Index', 'FX'] as const).map(type => (
                     <button
                       key={type}
                       onClick={() => toggleType(type)}
                       className={`w-full px-3 py-2 text-sm text-left transition-colors ${
                         filters.type?.includes(type)
-                          ? 'bg-blue-50 text-blue-700 font-medium'
+                          ? 'bg-orange-500/20 text-orange-400 font-medium'
                           : 'text-gray-300 hover:bg-slate-700/50'
                       }`}
                     >

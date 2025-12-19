@@ -8,11 +8,18 @@ interface TickerTapeProps {
 }
 
 export default function TickerTape({ investments }: TickerTapeProps) {
-  // Filter to show only stocks (not ETFs/Index Funds) and limit to most active/liquid
+  // Filter to show stocks, cryptocurrencies, commodities, FX pairs, and indices
+  // Prioritize most active/liquid investments
   const tickerStocks = investments
-    .filter(inv => inv.type === 'Stock')
+    .filter(inv => 
+      inv.type === 'Stock' || 
+      inv.type === 'Cryptocurrency' || 
+      inv.type === 'Commodity' || 
+      inv.type === 'FX' || 
+      inv.type === 'Index'
+    )
     .sort((a, b) => (b.volume || 0) - (a.volume || 0)) // Sort by volume
-    .slice(0, 30); // Show top 30 most liquid stocks
+    .slice(0, 40); // Show top 40 most liquid investments
 
   // Duplicate the array for seamless infinite scroll
   const duplicatedStocks = [...tickerStocks, ...tickerStocks];
@@ -39,7 +46,7 @@ export default function TickerTape({ investments }: TickerTapeProps) {
                   {stock.symbol}
                 </span>
                 <span className="text-sm font-bold text-white group-hover:text-yellow-400 transition-colors">
-                  ${stock.currentPrice.toFixed(2)}
+                  {stock.type === 'FX' ? stock.currentPrice.toFixed(4) : `$${stock.currentPrice.toFixed(2)}`}
                 </span>
               </div>
               <div className="flex items-center gap-1">
