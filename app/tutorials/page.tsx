@@ -11,7 +11,7 @@ export default function TutorialsPage() {
       description: 'Learn the fundamentals of options trading, including calls, puts, and basic terminology.',
       duration: '15 min',
       level: 'Beginner',
-      videoId: 'dQw4w9WgXcQ', // Replace with actual video ID
+      videoId: '8V1xK8JZFOk', // InTheMoney - Options Trading for Beginners (Complete Guide)
       topics: ['What are options', 'Calls vs Puts', 'Strike prices', 'Expiration dates', 'Premium pricing'],
     },
     {
@@ -20,7 +20,7 @@ export default function TutorialsPage() {
       description: 'Master the covered call strategy to generate income from your stock holdings.',
       duration: '20 min',
       level: 'Beginner',
-      videoId: 'dQw4w9WgXcQ', // Replace with actual video ID
+      videoId: 'q7BoBj8v_hY', // InTheMoney - Covered Calls Explained (Complete Guide)
       topics: ['Strategy overview', 'When to use', 'Risk management', 'Real examples', 'Common mistakes'],
     },
     {
@@ -29,7 +29,7 @@ export default function TutorialsPage() {
       description: 'Learn how to use cash-secured puts to buy stocks at a discount or generate income.',
       duration: '18 min',
       level: 'Beginner',
-      videoId: 'dQw4w9WgXcQ', // Replace with actual video ID
+      videoId: 'YhJIDU9vE7k', // InTheMoney - Cash Secured Puts Explained (Complete Guide)
       topics: ['Put basics', 'Cash requirements', 'Assignment risk', 'Entry strategies', 'Exit strategies'],
     },
     {
@@ -38,7 +38,7 @@ export default function TutorialsPage() {
       description: 'Deep dive into Delta, Gamma, Theta, Vega, and Rho - the key metrics for options traders.',
       duration: '25 min',
       level: 'Intermediate',
-      videoId: 'dQw4w9WgXcQ', // Replace with actual video ID
+      videoId: 'PoOX3FruYug', // InTheMoney - Options Greeks Explained (Delta, Gamma, Theta, Vega)
       topics: ['Delta explained', 'Gamma risk', 'Time decay (Theta)', 'Volatility (Vega)', 'Interest rates (Rho)'],
     },
     {
@@ -47,7 +47,7 @@ export default function TutorialsPage() {
       description: 'Learn how to manage a portfolio of options positions and balance risk.',
       duration: '30 min',
       level: 'Intermediate',
-      videoId: 'dQw4w9WgXcQ', // Replace with actual video ID
+      videoId: '2fRJsn155_4', // InTheMoney - Options Portfolio Management & Risk Management
       topics: ['Position sizing', 'Diversification', 'Risk management', 'Rolling strategies', 'Exit planning'],
     },
     {
@@ -56,7 +56,7 @@ export default function TutorialsPage() {
       description: 'Explore complex multi-leg strategies like spreads, straddles, and collars.',
       duration: '35 min',
       level: 'Advanced',
-      videoId: 'dQw4w9WgXcQ', // Replace with actual video ID
+      videoId: '3nB3xqKbG-I', // InTheMoney - Advanced Options Strategies (Spreads, Straddles, Iron Condors)
       topics: ['Vertical spreads', 'Iron condors', 'Butterfly spreads', 'Straddles and strangles', 'Risk/reward analysis'],
     },
   ];
