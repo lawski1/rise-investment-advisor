@@ -45,3 +45,40 @@ export interface InvestmentAnalysis {
   };
 }
 
+// Institutional Investing Data Types
+export interface InstitutionalHolder {
+  name: string;
+  cik?: string; // Central Index Key (SEC identifier)
+  type: 'Hedge Fund' | 'Mutual Fund' | 'Pension Fund' | 'Insurance Company' | 'Bank' | 'Other';
+  totalValue: number; // Total value of holdings in USD
+  shares: number;
+  percentageOfPortfolio?: number;
+  change?: number; // Change in shares from previous quarter
+  changePercent?: number;
+}
+
+export interface InstitutionalHolding {
+  symbol: string;
+  name: string;
+  shares: number;
+  value: number; // Value in USD
+  percentageOfInstitution?: number; // % of institution's portfolio
+  change?: number; // Change in shares
+  changePercent?: number;
+}
+
+export interface InstitutionalData {
+  symbol: string;
+  totalInstitutionalHoldings: number; // Total shares held by institutions
+  institutionalOwnershipPercent: number; // % of float owned by institutions
+  numberOfInstitutions: number;
+  topHolders: InstitutionalHolder[];
+  recentActivity?: {
+    newPositions: number;
+    increasedPositions: number;
+    decreasedPositions: number;
+    closedPositions: number;
+  };
+  lastUpdated: string; // Date of last 13F filing
+}
+
