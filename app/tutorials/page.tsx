@@ -2,6 +2,7 @@
 
 import { Play, BookOpen, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import VideoEmbed from '@/components/VideoEmbed';
 
 export default function TutorialsPage() {
   const tutorials = [
@@ -11,7 +12,8 @@ export default function TutorialsPage() {
       description: 'Learn the fundamentals of options trading, including calls, puts, and basic terminology.',
       duration: '15 min',
       level: 'Beginner',
-      videoId: '8V1xK8JZFOk', // InTheMoney - Options Trading for Beginners (Complete Guide)
+      videoId: '8V1xK8JZFOk', // InTheMoney - Options Trading for Beginners
+      youtubeSearch: 'options trading basics tutorial',
       topics: ['What are options', 'Calls vs Puts', 'Strike prices', 'Expiration dates', 'Premium pricing'],
     },
     {
@@ -20,7 +22,8 @@ export default function TutorialsPage() {
       description: 'Master the covered call strategy to generate income from your stock holdings.',
       duration: '20 min',
       level: 'Beginner',
-      videoId: 'q7BoBj8v_hY', // InTheMoney - Covered Calls Explained (Complete Guide)
+      videoId: 'q7BoBj8v_hY', // InTheMoney - Covered Calls Explained
+      youtubeSearch: 'covered call strategy tutorial',
       topics: ['Strategy overview', 'When to use', 'Risk management', 'Real examples', 'Common mistakes'],
     },
     {
@@ -29,7 +32,8 @@ export default function TutorialsPage() {
       description: 'Learn how to use cash-secured puts to buy stocks at a discount or generate income.',
       duration: '18 min',
       level: 'Beginner',
-      videoId: 'YhJIDU9vE7k', // InTheMoney - Cash Secured Puts Explained (Complete Guide)
+      videoId: 'YhJIDU9vE7k', // InTheMoney - Cash Secured Puts Explained
+      youtubeSearch: 'cash secured puts tutorial',
       topics: ['Put basics', 'Cash requirements', 'Assignment risk', 'Entry strategies', 'Exit strategies'],
     },
     {
@@ -38,7 +42,8 @@ export default function TutorialsPage() {
       description: 'Deep dive into Delta, Gamma, Theta, Vega, and Rho - the key metrics for options traders.',
       duration: '25 min',
       level: 'Intermediate',
-      videoId: 'PoOX3FruYug', // InTheMoney - Options Greeks Explained (Delta, Gamma, Theta, Vega)
+      videoId: 'PoOX3FruYug', // InTheMoney - Options Greeks Explained
+      youtubeSearch: 'options Greeks Delta Gamma Theta Vega tutorial',
       topics: ['Delta explained', 'Gamma risk', 'Time decay (Theta)', 'Volatility (Vega)', 'Interest rates (Rho)'],
     },
     {
@@ -47,7 +52,8 @@ export default function TutorialsPage() {
       description: 'Learn how to manage a portfolio of options positions and balance risk.',
       duration: '30 min',
       level: 'Intermediate',
-      videoId: '2fRJsn155_4', // InTheMoney - Options Portfolio Management & Risk Management
+      videoId: '2fRJsn155_4', // InTheMoney - Options Portfolio Management
+      youtubeSearch: 'options portfolio management risk management tutorial',
       topics: ['Position sizing', 'Diversification', 'Risk management', 'Rolling strategies', 'Exit planning'],
     },
     {
@@ -56,7 +62,8 @@ export default function TutorialsPage() {
       description: 'Explore complex multi-leg strategies like spreads, straddles, and collars.',
       duration: '35 min',
       level: 'Advanced',
-      videoId: '3nB3xqKbG-I', // InTheMoney - Advanced Options Strategies (Spreads, Straddles, Iron Condors)
+      videoId: '3nB3xqKbG-I', // InTheMoney - Advanced Options Strategies
+      youtubeSearch: 'advanced options strategies spreads straddles iron condors tutorial',
       topics: ['Vertical spreads', 'Iron condors', 'Butterfly spreads', 'Straddles and strangles', 'Risk/reward analysis'],
     },
   ];
@@ -84,16 +91,12 @@ export default function TutorialsPage() {
               key={tutorial.id}
               className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden hover:scale-105 transition-transform duration-300"
             >
-              {/* Video Thumbnail */}
-              <div className="relative aspect-video bg-slate-700/50">
-                <iframe
-                  src={`https://www.youtube.com/embed/${tutorial.videoId}`}
-                  title={tutorial.title}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
+              {/* Video Embed */}
+              <VideoEmbed
+                videoId={tutorial.videoId}
+                title={tutorial.title}
+                searchQuery={tutorial.youtubeSearch || tutorial.title + ' tutorial'}
+              />
 
               {/* Content */}
               <div className="p-6">
@@ -128,16 +131,26 @@ export default function TutorialsPage() {
                 </div>
 
                 {/* Watch Button */}
-                <a
-                  href={`https://www.youtube.com/watch?v=${tutorial.videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
-                >
-                  <Play className="w-4 h-4" />
-                  Watch Tutorial
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+                <div className="flex gap-2">
+                  <a
+                    href={`https://www.youtube.com/watch?v=${tutorial.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                  >
+                    <Play className="w-4 h-4" />
+                    Watch on YouTube
+                  </a>
+                  <a
+                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(tutorial.youtubeSearch || tutorial.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-slate-700/50 text-gray-300 rounded-lg font-semibold hover:bg-slate-600/50 transition-colors flex items-center gap-2"
+                    title="Search for alternative videos"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </div>
           ))}

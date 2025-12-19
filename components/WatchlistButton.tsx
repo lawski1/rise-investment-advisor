@@ -75,3 +75,4 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   );
 }
 
+
