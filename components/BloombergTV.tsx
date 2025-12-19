@@ -5,7 +5,7 @@ import { Tv, ExternalLink, Maximize2, Minimize2, AlertCircle } from 'lucide-reac
 
 export default function BloombergTV() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [streamSource, setStreamSource] = useState<'youtube' | 'bloomberg'>('youtube');
+  const [streamSource, setStreamSource] = useState<'youtube' | 'bloomberg'>('bloomberg');
   const [loadError, setLoadError] = useState(false);
 
   // Bloomberg TV stream sources
