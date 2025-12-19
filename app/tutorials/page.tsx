@@ -12,8 +12,8 @@ export default function TutorialsPage() {
       description: 'Learn the fundamentals of options trading, including calls, puts, and basic terminology.',
       duration: '15 min',
       level: 'Beginner',
-      videoId: '8V1xK8JZFOk', // InTheMoney - Options Trading for Beginners
-      youtubeSearch: 'options trading basics tutorial',
+      videoId: '8V1xK8JZFOk', // Options Trading for Beginners - InTheMoney
+      youtubeSearch: 'options trading basics tutorial beginner',
       topics: ['What are options', 'Calls vs Puts', 'Strike prices', 'Expiration dates', 'Premium pricing'],
     },
     {
@@ -22,8 +22,8 @@ export default function TutorialsPage() {
       description: 'Master the covered call strategy to generate income from your stock holdings.',
       duration: '20 min',
       level: 'Beginner',
-      videoId: 'q7BoBj8v_hY', // InTheMoney - Covered Calls Explained
-      youtubeSearch: 'covered call strategy tutorial',
+      videoId: 'q7BoBj8v_hY', // Covered Calls Explained - InTheMoney
+      youtubeSearch: 'covered call strategy tutorial how to',
       topics: ['Strategy overview', 'When to use', 'Risk management', 'Real examples', 'Common mistakes'],
     },
     {
@@ -32,8 +32,8 @@ export default function TutorialsPage() {
       description: 'Learn how to use cash-secured puts to buy stocks at a discount or generate income.',
       duration: '18 min',
       level: 'Beginner',
-      videoId: 'YhJIDU9vE7k', // InTheMoney - Cash Secured Puts Explained
-      youtubeSearch: 'cash secured puts tutorial',
+      videoId: 'YhJIDU9vE7k', // Cash Secured Puts Explained - InTheMoney
+      youtubeSearch: 'cash secured puts tutorial strategy',
       topics: ['Put basics', 'Cash requirements', 'Assignment risk', 'Entry strategies', 'Exit strategies'],
     },
     {
@@ -42,8 +42,8 @@ export default function TutorialsPage() {
       description: 'Deep dive into Delta, Gamma, Theta, Vega, and Rho - the key metrics for options traders.',
       duration: '25 min',
       level: 'Intermediate',
-      videoId: 'PoOX3FruYug', // InTheMoney - Options Greeks Explained
-      youtubeSearch: 'options Greeks Delta Gamma Theta Vega tutorial',
+      videoId: 'PoOX3FruYug', // Options Greeks Explained - InTheMoney
+      youtubeSearch: 'options Greeks explained Delta Gamma Theta Vega',
       topics: ['Delta explained', 'Gamma risk', 'Time decay (Theta)', 'Volatility (Vega)', 'Interest rates (Rho)'],
     },
     {
@@ -52,8 +52,8 @@ export default function TutorialsPage() {
       description: 'Learn how to manage a portfolio of options positions and balance risk.',
       duration: '30 min',
       level: 'Intermediate',
-      videoId: '2fRJsn155_4', // InTheMoney - Options Portfolio Management
-      youtubeSearch: 'options portfolio management risk management tutorial',
+      videoId: '2fRJsn155_4', // Options Portfolio Management - InTheMoney
+      youtubeSearch: 'options portfolio management risk management',
       topics: ['Position sizing', 'Diversification', 'Risk management', 'Rolling strategies', 'Exit planning'],
     },
     {
@@ -62,8 +62,8 @@ export default function TutorialsPage() {
       description: 'Explore complex multi-leg strategies like spreads, straddles, and collars.',
       duration: '35 min',
       level: 'Advanced',
-      videoId: '3nB3xqKbG-I', // InTheMoney - Advanced Options Strategies
-      youtubeSearch: 'advanced options strategies spreads straddles iron condors tutorial',
+      videoId: '3nB3xqKbG-I', // Advanced Options Strategies - InTheMoney
+      youtubeSearch: 'advanced options strategies spreads iron condors butterfly',
       topics: ['Vertical spreads', 'Iron condors', 'Butterfly spreads', 'Straddles and strangles', 'Risk/reward analysis'],
     },
   ];
@@ -91,12 +91,26 @@ export default function TutorialsPage() {
               key={tutorial.id}
               className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden hover:scale-105 transition-transform duration-300"
             >
-              {/* Video Embed */}
-              <VideoEmbed
-                videoId={tutorial.videoId}
-                title={tutorial.title}
-                searchQuery={tutorial.youtubeSearch || tutorial.title + ' tutorial'}
-              />
+              {/* Video Embed with Fallback */}
+              <div className="relative">
+                <VideoEmbed
+                  videoId={tutorial.videoId}
+                  title={tutorial.title}
+                  searchQuery={tutorial.youtubeSearch || tutorial.title + ' tutorial'}
+                />
+                {/* Always show search option as overlay */}
+                <div className="absolute bottom-2 left-2 right-2 flex gap-2 opacity-0 hover:opacity-100 transition-opacity">
+                  <a
+                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(tutorial.youtubeSearch || tutorial.title + ' tutorial')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 px-3 py-2 bg-black/80 text-white rounded text-sm font-medium hover:bg-black transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Search className="w-4 h-4" />
+                    Find Tutorials
+                  </a>
+                </div>
+              </div>
 
               {/* Content */}
               <div className="p-6">
