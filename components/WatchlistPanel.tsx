@@ -141,3 +141,5 @@ export default function WatchlistPanel({ investments, onClose }: WatchlistPanelP
 }
 
 
+
+
