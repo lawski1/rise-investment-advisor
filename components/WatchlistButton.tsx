@@ -105,12 +105,19 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   return (
     <button
       type="button"
-      onClick={handleClick}
+      onClick={(e) => {
+        console.log('BUTTON CLICKED - RAW EVENT');
+        handleClick(e);
+      }}
+      onMouseDown={(e) => {
+        console.log('BUTTON MOUSEDOWN - RAW EVENT');
+        e.stopPropagation();
+      }}
       className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer ${
         inWatchlist
-          ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border-2 border-yellow-500/50'
-          : 'bg-slate-700/50 text-gray-400 hover:bg-slate-600/50 border-2 border-slate-600/50 hover:border-yellow-500/30'
-      } ${isAnimating ? 'scale-125' : ''} group active:scale-95`}
+          ? 'bg-yellow-500 text-yellow-900 hover:bg-yellow-400 border-2 border-yellow-600'
+          : 'bg-blue-500 text-white hover:bg-blue-400 border-2 border-blue-600'
+      } ${isAnimating ? 'scale-125' : ''} group active:scale-95 shadow-lg`}
       title={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
       style={{ 
         pointerEvents: 'auto',
