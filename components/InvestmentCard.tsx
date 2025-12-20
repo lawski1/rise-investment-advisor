@@ -38,7 +38,9 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1 relative">
             <h3 className="text-2xl font-bold text-yellow-50 tracking-tight">{investment.symbol}</h3>
-            <WatchlistButton symbol={investment.symbol} size="sm" />
+            <div className="relative" style={{ zIndex: 9999 }}>
+              <WatchlistButton symbol={investment.symbol} size="sm" />
+            </div>
           </div>
           <p className="text-sm text-gray-300 mt-1.5 leading-relaxed">{investment.name}</p>
         </div>

@@ -103,27 +103,33 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     <button
       type="button"
       onClick={(e) => {
+        console.log('Button onClick triggered for:', symbol);
         e.preventDefault();
         e.stopPropagation();
         handleToggle(e);
       }}
       onMouseDown={(e) => {
+        console.log('Button onMouseDown triggered for:', symbol);
         e.preventDefault();
         e.stopPropagation();
       }}
       onTouchStart={(e) => {
+        console.log('Button onTouchStart triggered for:', symbol);
         e.stopPropagation();
       }}
-      className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer relative z-50 ${
+      className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer ${
         inWatchlist
-          ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/50'
-          : 'bg-slate-700/50 text-gray-400 hover:bg-slate-600/50 border border-slate-600/50 hover:border-yellow-500/30'
+          ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border-2 border-yellow-500/50'
+          : 'bg-slate-700/50 text-gray-400 hover:bg-slate-600/50 border-2 border-slate-600/50 hover:border-yellow-500/30'
       } ${isAnimating ? 'scale-125' : ''} group active:scale-95`}
       title={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
       style={{ 
         pointerEvents: 'auto',
         touchAction: 'manipulation',
-        WebkitTapHighlightColor: 'transparent'
+        WebkitTapHighlightColor: 'transparent',
+        position: 'relative',
+        zIndex: 9999,
+        isolation: 'isolate'
       }}
       aria-label={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
     >
