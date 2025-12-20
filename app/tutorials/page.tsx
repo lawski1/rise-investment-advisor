@@ -1,8 +1,7 @@
 'use client';
 
-import { Play, BookOpen, ExternalLink, Search } from 'lucide-react';
+import { Play, BookOpen, ExternalLink, Search, Youtube, Video } from 'lucide-react';
 import Link from 'next/link';
-import VideoEmbed from '@/components/VideoEmbed';
 
 export default function TutorialsPage() {
   const tutorials = [
@@ -12,7 +11,6 @@ export default function TutorialsPage() {
       description: 'Learn the fundamentals of options trading, including calls, puts, and basic terminology.',
       duration: '15 min',
       level: 'Beginner',
-      videoId: '8V1xK8JZFOk', // Options Trading for Beginners - InTheMoney
       youtubeSearch: 'options trading basics tutorial beginner',
       topics: ['What are options', 'Calls vs Puts', 'Strike prices', 'Expiration dates', 'Premium pricing'],
     },
@@ -22,7 +20,6 @@ export default function TutorialsPage() {
       description: 'Master the covered call strategy to generate income from your stock holdings.',
       duration: '20 min',
       level: 'Beginner',
-      videoId: 'q7BoBj8v_hY', // Covered Calls Explained - InTheMoney
       youtubeSearch: 'covered call strategy tutorial how to',
       topics: ['Strategy overview', 'When to use', 'Risk management', 'Real examples', 'Common mistakes'],
     },
@@ -32,7 +29,6 @@ export default function TutorialsPage() {
       description: 'Learn how to use cash-secured puts to buy stocks at a discount or generate income.',
       duration: '18 min',
       level: 'Beginner',
-      videoId: 'YhJIDU9vE7k', // Cash Secured Puts Explained - InTheMoney
       youtubeSearch: 'cash secured puts tutorial strategy',
       topics: ['Put basics', 'Cash requirements', 'Assignment risk', 'Entry strategies', 'Exit strategies'],
     },
@@ -42,7 +38,6 @@ export default function TutorialsPage() {
       description: 'Deep dive into Delta, Gamma, Theta, Vega, and Rho - the key metrics for options traders.',
       duration: '25 min',
       level: 'Intermediate',
-      videoId: 'PoOX3FruYug', // Options Greeks Explained - InTheMoney
       youtubeSearch: 'options Greeks explained Delta Gamma Theta Vega',
       topics: ['Delta explained', 'Gamma risk', 'Time decay (Theta)', 'Volatility (Vega)', 'Interest rates (Rho)'],
     },
@@ -52,7 +47,6 @@ export default function TutorialsPage() {
       description: 'Learn how to manage a portfolio of options positions and balance risk.',
       duration: '30 min',
       level: 'Intermediate',
-      videoId: '2fRJsn155_4', // Options Portfolio Management - InTheMoney
       youtubeSearch: 'options portfolio management risk management',
       topics: ['Position sizing', 'Diversification', 'Risk management', 'Rolling strategies', 'Exit planning'],
     },
@@ -62,7 +56,6 @@ export default function TutorialsPage() {
       description: 'Explore complex multi-leg strategies like spreads, straddles, and collars.',
       duration: '35 min',
       level: 'Advanced',
-      videoId: '3nB3xqKbG-I', // Advanced Options Strategies - InTheMoney
       youtubeSearch: 'advanced options strategies spreads iron condors butterfly',
       topics: ['Vertical spreads', 'Iron condors', 'Butterfly spreads', 'Straddles and strangles', 'Risk/reward analysis'],
     },
@@ -86,88 +79,91 @@ export default function TutorialsPage() {
 
         {/* Tutorial Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tutorials.map((tutorial) => (
-            <div
-              key={tutorial.id}
-              className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden hover:scale-105 transition-transform duration-300"
-            >
-              {/* Video Embed with Fallback */}
-              <div className="relative">
-                <VideoEmbed
-                  videoId={tutorial.videoId}
-                  title={tutorial.title}
-                  searchQuery={tutorial.youtubeSearch || tutorial.title + ' tutorial'}
-                />
-                {/* Always show search option as overlay */}
-                <div className="absolute bottom-2 left-2 right-2 flex gap-2 opacity-0 hover:opacity-100 transition-opacity">
-                  <a
-                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(tutorial.youtubeSearch || tutorial.title + ' tutorial')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 px-3 py-2 bg-black/80 text-white rounded text-sm font-medium hover:bg-black transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Search className="w-4 h-4" />
-                    Find Tutorials
-                  </a>
+          {tutorials.map((tutorial) => {
+            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(tutorial.youtubeSearch || tutorial.title + ' tutorial')}`;
+            
+            return (
+              <div
+                key={tutorial.id}
+                className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong border border-slate-700/50 overflow-hidden hover:scale-105 transition-transform duration-300 flex flex-col"
+              >
+                {/* Video Thumbnail Placeholder */}
+                <div className="relative aspect-video bg-gradient-to-br from-orange-500/20 via-slate-800 to-slate-700 flex items-center justify-center border-b border-slate-700/50">
+                  <div className="text-center p-6">
+                    <div className="w-24 h-24 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-orange-500/30">
+                      <Video className="w-12 h-12 text-orange-400" />
+                    </div>
+                    <h3 className="text-lg font-bold text-yellow-50 mb-2">{tutorial.title}</h3>
+                    <p className="text-xs text-gray-400 mb-4">{tutorial.duration} • {tutorial.level}</p>
+                    <a
+                      href={youtubeSearchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                    >
+                      <Youtube className="w-5 h-5" />
+                      Find Tutorials
+                    </a>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                      tutorial.level === 'Beginner' ? 'bg-green-500/20 text-green-400' :
+                      tutorial.level === 'Intermediate' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {tutorial.level}
+                    </span>
+                    <span className="text-xs text-gray-400">{tutorial.duration}</span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-yellow-50 mb-2">{tutorial.title}</h3>
+                  <p className="text-sm text-gray-300 mb-4 leading-relaxed flex-1">{tutorial.description}</p>
+
+                  {/* Topics */}
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-gray-400 mb-2">Topics Covered:</p>
+                    <ul className="space-y-1">
+                      {tutorial.topics.slice(0, 3).map((topic, index) => (
+                        <li key={index} className="text-xs text-gray-400 flex items-center gap-2">
+                          <span className="text-orange-400">•</span>
+                          {topic}
+                        </li>
+                      ))}
+                      {tutorial.topics.length > 3 && (
+                        <li className="text-xs text-gray-500">+ {tutorial.topics.length - 3} more topics</li>
+                      )}
+                    </ul>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 mt-auto">
+                    <a
+                      href={youtubeSearchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                    >
+                      <Youtube className="w-5 h-5" />
+                      Watch Tutorials
+                    </a>
+                    <a
+                      href={youtubeSearchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-3 bg-slate-700/50 text-gray-300 rounded-lg font-semibold hover:bg-slate-600/50 transition-colors flex items-center gap-2"
+                      title="Search for videos"
+                    >
+                      <Search className="w-4 h-4" />
+                    </a>
+                  </div>
                 </div>
               </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                    tutorial.level === 'Beginner' ? 'bg-green-500/20 text-green-400' :
-                    tutorial.level === 'Intermediate' ? 'bg-yellow-500/20 text-yellow-400' :
-                    'bg-red-500/20 text-red-400'
-                  }`}>
-                    {tutorial.level}
-                  </span>
-                  <span className="text-xs text-gray-400">{tutorial.duration}</span>
-                </div>
-
-                <h3 className="text-xl font-bold text-yellow-50 mb-2">{tutorial.title}</h3>
-                <p className="text-sm text-gray-300 mb-4 leading-relaxed">{tutorial.description}</p>
-
-                {/* Topics */}
-                <div className="mb-4">
-                  <p className="text-xs font-semibold text-gray-400 mb-2">Topics Covered:</p>
-                  <ul className="space-y-1">
-                    {tutorial.topics.slice(0, 3).map((topic, index) => (
-                      <li key={index} className="text-xs text-gray-400 flex items-center gap-2">
-                        <span className="text-orange-400">•</span>
-                        {topic}
-                      </li>
-                    ))}
-                    {tutorial.topics.length > 3 && (
-                      <li className="text-xs text-gray-500">+ {tutorial.topics.length - 3} more topics</li>
-                    )}
-                  </ul>
-                </div>
-
-                {/* Watch Button */}
-                <div className="flex gap-2">
-                  <a
-                    href={`https://www.youtube.com/watch?v=${tutorial.videoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
-                  >
-                    <Play className="w-4 h-4" />
-                    Watch on YouTube
-                  </a>
-                  <a
-                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(tutorial.youtubeSearch || tutorial.title)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-slate-700/50 text-gray-300 rounded-lg font-semibold hover:bg-slate-600/50 transition-colors flex items-center gap-2"
-                    title="Search for alternative videos"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Additional Resources */}
