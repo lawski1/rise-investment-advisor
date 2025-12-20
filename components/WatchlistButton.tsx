@@ -110,18 +110,6 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     <button
       type="button"
       onClick={handleClick}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        // Trigger click programmatically
-        const clickEvent = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        e.currentTarget.dispatchEvent(clickEvent);
-      }}
       className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer ${
         inWatchlist
           ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border-2 border-yellow-500/50'
