@@ -38,10 +38,8 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-2xl font-bold text-yellow-50 tracking-tight">{investment.symbol}</h3>
-            {/* Watchlist button inline with symbol - no wrapper div */}
-            <div onClick={(e) => e.stopPropagation()} style={{ display: 'inline-block', position: 'relative', zIndex: 999999 }}>
-              <WatchlistButton symbol={investment.symbol} size="sm" />
-            </div>
+            {/* Watchlist button inline with symbol - direct, no wrapper */}
+            <WatchlistButton symbol={investment.symbol} size="sm" />
           </div>
           <p className="text-sm text-gray-300 mt-1.5 leading-relaxed">{investment.name}</p>
         </div>
