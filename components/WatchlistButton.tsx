@@ -35,6 +35,8 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     e.preventDefault();
     e.stopPropagation();
     
+    console.log('Watchlist button clicked for:', symbol);
+    
     setIsAnimating(true);
     
     const wasInWatchlist = inWatchlist;
@@ -43,16 +45,24 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     
     try {
       if (wasInWatchlist) {
+        console.log('Removing from watchlist:', symbol);
         success = removeFromWatchlist(symbol);
         if (success) {
           newState = false;
           setInWatchlist(false);
+          console.log('Successfully removed from watchlist');
+        } else {
+          console.log('Failed to remove from watchlist');
         }
       } else {
+        console.log('Adding to watchlist:', symbol);
         success = addToWatchlist(symbol);
         if (success) {
           newState = true;
           setInWatchlist(true);
+          console.log('Successfully added to watchlist');
+        } else {
+          console.log('Failed to add to watchlist');
         }
       }
 
@@ -62,6 +72,7 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
         const verifyState = isInWatchlist(symbol);
         if (verifyState !== newState) {
           // State mismatch - correct it
+          console.log('State mismatch detected, correcting...');
           setInWatchlist(verifyState);
         }
       }
@@ -80,9 +91,9 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   };
 
   const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-8 h-8',
-    lg: 'w-10 h-10',
+    sm: 'w-7 h-7 min-w-[28px] min-h-[28px]',
+    md: 'w-8 h-8 min-w-[32px] min-h-[32px]',
+    lg: 'w-10 h-10 min-w-[40px] min-h-[40px]',
   };
 
   const iconSizes = {
@@ -95,18 +106,23 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     <button
       type="button"
       onClick={handleToggle}
-      className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all ${
+      onMouseDown={(e) => {
+        // Prevent any parent handlers from interfering
+        e.stopPropagation();
+      }}
+      className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer relative z-10 ${
         inWatchlist
           ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/50'
           : 'bg-slate-700/50 text-gray-400 hover:bg-slate-600/50 border border-slate-600/50 hover:border-yellow-500/30'
-      } ${isAnimating ? 'scale-125' : ''} group`}
+      } ${isAnimating ? 'scale-125' : ''} group active:scale-95`}
       title={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
+      style={{ pointerEvents: 'auto' }}
     >
       <Star
-        className={`${iconSizes[size]} ${inWatchlist ? 'fill-yellow-400 text-yellow-400' : 'group-hover:text-yellow-400'} transition-all`}
+        className={`${iconSizes[size]} ${inWatchlist ? 'fill-yellow-400 text-yellow-400' : 'group-hover:text-yellow-400'} transition-all pointer-events-none`}
       />
       {showLabel && (
-        <span className="ml-2 text-sm font-medium">
+        <span className="ml-2 text-sm font-medium pointer-events-none">
           {inWatchlist ? 'In Watchlist' : 'Add to Watchlist'}
         </span>
       )}

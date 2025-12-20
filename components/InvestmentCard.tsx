@@ -36,9 +36,11 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
     <div className="card-polished p-6 group hover:scale-[1.02] transition-transform duration-300">
       <div className="flex justify-between items-start mb-5">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 relative">
             <h3 className="text-2xl font-bold text-yellow-50 tracking-tight">{investment.symbol}</h3>
-            <WatchlistButton symbol={investment.symbol} size="sm" />
+            <div className="relative z-10" onClick={(e) => e.stopPropagation()}>
+              <WatchlistButton symbol={investment.symbol} size="sm" />
+            </div>
           </div>
           <p className="text-sm text-gray-300 mt-1.5 leading-relaxed">{investment.name}</p>
         </div>
