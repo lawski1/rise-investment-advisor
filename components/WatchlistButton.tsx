@@ -114,7 +114,13 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        handleClick(e as any);
+        // Trigger click programmatically
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        e.currentTarget.dispatchEvent(clickEvent);
       }}
       className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer ${
         inWatchlist
