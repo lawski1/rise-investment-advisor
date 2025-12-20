@@ -78,7 +78,7 @@ export function saveUser(user: Partial<User>): User {
  */
 export function addToWatchlist(symbol: string): boolean {
   try {
-    const user = getCurrentUser();
+    let user = getCurrentUser();
     if (!user) {
       // Create guest user with the symbol in watchlist
       const newUser = saveUser({ 
@@ -99,7 +99,8 @@ export function addToWatchlist(symbol: string): boolean {
       const updatedUser = saveUser({ ...user, watchlist: updatedWatchlist });
       return updatedUser.watchlist.includes(symbol);
     }
-    return false;
+    // Already in watchlist - return true to indicate "already there"
+    return true;
   } catch (error) {
     console.error('Error adding to watchlist:', error);
     return false;
@@ -111,16 +112,20 @@ export function addToWatchlist(symbol: string): boolean {
  */
 export function removeFromWatchlist(symbol: string): boolean {
   try {
-    const user = getCurrentUser();
-    if (!user) return false;
+    let user = getCurrentUser();
+    if (!user) {
+      // If no user exists, nothing to remove
+      return false;
+    }
 
-    const index = user.watchlist.indexOf(symbol);
-    if (index > -1) {
+    if (user.watchlist.includes(symbol)) {
       const updatedWatchlist = user.watchlist.filter(s => s !== symbol);
       const updatedUser = saveUser({ ...user, watchlist: updatedWatchlist });
-      return !updatedUser.watchlist.includes(symbol);
+      const success = !updatedUser.watchlist.includes(symbol);
+      return success;
     }
-    return false;
+    // Symbol not in watchlist, but that's fine - return true to indicate "operation successful"
+    return true;
   } catch (error) {
     console.error('Error removing from watchlist:', error);
     return false;
