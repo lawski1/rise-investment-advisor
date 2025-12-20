@@ -31,10 +31,7 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     return () => window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
   }, [symbol]);
 
-  const handleToggle = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
+  const handleToggle = async (e: React.MouseEvent | React.TouchEvent) => {
     console.log('Watchlist button clicked for:', symbol);
     
     setIsAnimating(true);
@@ -91,9 +88,9 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   };
 
   const sizeClasses = {
-    sm: 'w-7 h-7 min-w-[28px] min-h-[28px]',
-    md: 'w-8 h-8 min-w-[32px] min-h-[32px]',
-    lg: 'w-10 h-10 min-w-[40px] min-h-[40px]',
+    sm: 'w-8 h-8 min-w-[32px] min-h-[32px] p-1',
+    md: 'w-10 h-10 min-w-[40px] min-h-[40px] p-1.5',
+    lg: 'w-12 h-12 min-w-[48px] min-h-[48px] p-2',
   };
 
   const iconSizes = {
@@ -105,18 +102,30 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   return (
     <button
       type="button"
-      onClick={handleToggle}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleToggle(e);
+      }}
       onMouseDown={(e) => {
-        // Prevent any parent handlers from interfering
+        e.preventDefault();
         e.stopPropagation();
       }}
-      className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer relative z-10 ${
+      onTouchStart={(e) => {
+        e.stopPropagation();
+      }}
+      className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer relative z-50 ${
         inWatchlist
           ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/50'
           : 'bg-slate-700/50 text-gray-400 hover:bg-slate-600/50 border border-slate-600/50 hover:border-yellow-500/30'
       } ${isAnimating ? 'scale-125' : ''} group active:scale-95`}
       title={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
-      style={{ pointerEvents: 'auto' }}
+      style={{ 
+        pointerEvents: 'auto',
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent'
+      }}
+      aria-label={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
     >
       <Star
         className={`${iconSizes[size]} ${inWatchlist ? 'fill-yellow-400 text-yellow-400' : 'group-hover:text-yellow-400'} transition-all pointer-events-none`}
