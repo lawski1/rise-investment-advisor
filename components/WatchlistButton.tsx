@@ -31,41 +31,42 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     return () => window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
   }, [symbol]);
 
-  const handleToggle = (e: React.MouseEvent) => {
+  const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
     setIsAnimating(true);
     
-    // Ensure user exists before adding to watchlist
-    let user = getCurrentUser();
-    if (!user) {
-      // Create a guest user if none exists
-      user = saveUser({
-        email: 'guest@example.com',
-        name: 'Guest User',
-        watchlist: [],
-        preferences: {
-          theme: 'dark',
-          notifications: true,
-          defaultView: 'grid',
-        },
-      });
-    }
-    
     const wasInWatchlist = inWatchlist;
     let success = false;
+    let newState = wasInWatchlist;
     
-    if (wasInWatchlist) {
-      success = removeFromWatchlist(symbol);
-      if (success) {
-        setInWatchlist(false);
+    try {
+      if (wasInWatchlist) {
+        success = removeFromWatchlist(symbol);
+        if (success) {
+          newState = false;
+          setInWatchlist(false);
+        }
+      } else {
+        success = addToWatchlist(symbol);
+        if (success) {
+          newState = true;
+          setInWatchlist(true);
+        }
       }
-    } else {
-      success = addToWatchlist(symbol);
+
+      // Verify the change was successful
       if (success) {
-        setInWatchlist(true);
+        // Double-check the state
+        const verifyState = isInWatchlist(symbol);
+        if (verifyState !== newState) {
+          // State mismatch - correct it
+          setInWatchlist(verifyState);
+        }
       }
+    } catch (error) {
+      console.error('Error toggling watchlist:', error);
     }
 
     setTimeout(() => setIsAnimating(false), 300);

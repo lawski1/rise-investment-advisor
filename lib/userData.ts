@@ -51,7 +51,8 @@ export function saveUser(user: Partial<User>): User {
     email: user.email || existingUser?.email || 'guest@example.com',
     name: user.name !== undefined ? user.name : existingUser?.name,
     photo: user.photo !== undefined ? user.photo : existingUser?.photo,
-    watchlist: user.watchlist || existingUser?.watchlist || [],
+    // Use provided watchlist if it exists, otherwise use existing, otherwise empty array
+    watchlist: user.watchlist !== undefined ? user.watchlist : (existingUser?.watchlist || []),
     preferences: user.preferences || existingUser?.preferences || {
       theme: 'dark',
       notifications: true,
@@ -62,7 +63,11 @@ export function saveUser(user: Partial<User>): User {
   };
 
   if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
+    try {
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
+    } catch (error) {
+      console.error('Error saving user to localStorage:', error);
+    }
   }
 
   return newUser;
@@ -72,35 +77,54 @@ export function saveUser(user: Partial<User>): User {
  * Add investment to watchlist
  */
 export function addToWatchlist(symbol: string): boolean {
-  const user = getCurrentUser();
-  if (!user) {
-    // Create guest user
-    saveUser({ watchlist: [symbol] });
-    return true;
-  }
+  try {
+    const user = getCurrentUser();
+    if (!user) {
+      // Create guest user with the symbol in watchlist
+      const newUser = saveUser({ 
+        email: 'guest@example.com',
+        name: 'Guest User',
+        watchlist: [symbol],
+        preferences: {
+          theme: 'dark',
+          notifications: true,
+          defaultView: 'grid',
+        },
+      });
+      return newUser.watchlist.includes(symbol);
+    }
 
-  if (!user.watchlist.includes(symbol)) {
-    user.watchlist.push(symbol);
-    saveUser(user);
-    return true;
+    if (!user.watchlist.includes(symbol)) {
+      const updatedWatchlist = [...user.watchlist, symbol];
+      const updatedUser = saveUser({ ...user, watchlist: updatedWatchlist });
+      return updatedUser.watchlist.includes(symbol);
+    }
+    return false;
+  } catch (error) {
+    console.error('Error adding to watchlist:', error);
+    return false;
   }
-  return false;
 }
 
 /**
  * Remove investment from watchlist
  */
 export function removeFromWatchlist(symbol: string): boolean {
-  const user = getCurrentUser();
-  if (!user) return false;
+  try {
+    const user = getCurrentUser();
+    if (!user) return false;
 
-  const index = user.watchlist.indexOf(symbol);
-  if (index > -1) {
-    user.watchlist.splice(index, 1);
-    saveUser(user);
-    return true;
+    const index = user.watchlist.indexOf(symbol);
+    if (index > -1) {
+      const updatedWatchlist = user.watchlist.filter(s => s !== symbol);
+      const updatedUser = saveUser({ ...user, watchlist: updatedWatchlist });
+      return !updatedUser.watchlist.includes(symbol);
+    }
+    return false;
+  } catch (error) {
+    console.error('Error removing from watchlist:', error);
+    return false;
   }
-  return false;
 }
 
 /**

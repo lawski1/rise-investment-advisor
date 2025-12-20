@@ -16,34 +16,38 @@ export default function WatchlistPanel({ investments, onClose }: WatchlistPanelP
 
   useEffect(() => {
     const loadWatchlist = () => {
-      const symbols = getWatchlist();
-      setWatchlistSymbols(symbols);
-      
-      // Get investment data for watchlist symbols
-      const items = investments.filter(inv => symbols.includes(inv.symbol));
-      setWatchlistItems(items);
+      try {
+        const symbols = getWatchlist();
+        setWatchlistSymbols(symbols);
+        
+        // Get investment data for watchlist symbols
+        const items = investments.filter(inv => symbols.includes(inv.symbol));
+        setWatchlistItems(items);
+      } catch (error) {
+        console.error('Error loading watchlist:', error);
+      }
     };
 
     // Load immediately
     loadWatchlist();
 
     // Listen for watchlist updates
-    const handleWatchlistUpdate = () => {
+    const handleWatchlistUpdate = (event?: CustomEvent) => {
       // Small delay to ensure localStorage is updated
       setTimeout(() => {
         loadWatchlist();
-      }, 100);
+      }, 50);
     };
 
     // Also check periodically in case of direct localStorage changes
     const interval = setInterval(() => {
       loadWatchlist();
-    }, 1000);
+    }, 2000);
 
-    window.addEventListener('watchlistUpdated', handleWatchlistUpdate);
+    window.addEventListener('watchlistUpdated', handleWatchlistUpdate as EventListener);
     
     return () => {
-      window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
+      window.removeEventListener('watchlistUpdated', handleWatchlistUpdate as EventListener);
       clearInterval(interval);
     };
   }, [investments]);
