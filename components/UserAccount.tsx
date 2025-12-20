@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { User, Star, Settings, LogOut, Mail, Calendar } from 'lucide-react';
-import { getCurrentUser, updatePreferences, clearUserData } from '@/lib/userData';
+import { useState, useEffect, useRef } from 'react';
+import { User, Star, Settings, LogOut, Mail, Calendar, Camera, Edit2, Save, X, UserPlus } from 'lucide-react';
+import { getCurrentUser, updatePreferences, clearUserData, saveUser } from '@/lib/userData';
 import { User as UserType } from '@/lib/userData';
 import WatchlistPanel from './WatchlistPanel';
 import { Investment } from '@/lib/types';
@@ -15,10 +15,17 @@ export default function UserAccount({ investments }: UserAccountProps) {
   const [user, setUser] = useState<UserType | null>(null);
   const [showWatchlist, setShowWatchlist] = useState(false);
   const [activeTab, setActiveTab] = useState<'profile' | 'watchlist' | 'settings'>('profile');
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState('');
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const currentUser = getCurrentUser();
     setUser(currentUser);
+    if (currentUser) {
+      setEditedName(currentUser.name || '');
+    }
   }, []);
 
   const handlePreferenceChange = (key: keyof UserType['preferences'], value: any) => {
@@ -31,26 +38,99 @@ export default function UserAccount({ investments }: UserAccountProps) {
   const handleLogout = () => {
     clearUserData();
     setUser(null);
-    window.location.reload();
+    setIsCreatingUser(true);
   };
 
-  if (!user) {
-    // Guest mode - create guest user
-    const guestUser = {
-      id: `guest_${Date.now()}`,
-      email: 'guest@example.com',
-      name: 'Guest User',
+  const handleCreateUser = () => {
+    const newUser = saveUser({
+      email: 'user@example.com',
+      name: 'New User',
       watchlist: [],
       preferences: {
-        theme: 'dark' as const,
+        theme: 'dark',
         notifications: true,
-        defaultView: 'grid' as const,
+        defaultView: 'grid',
       },
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
+    });
+    setUser(newUser);
+    setEditedName(newUser.name || '');
+    setIsCreatingUser(false);
+  };
+
+  const handleNameEdit = () => {
+    setIsEditingName(true);
+  };
+
+  const handleNameSave = () => {
+    if (user) {
+      const updatedUser = saveUser({ ...user, name: editedName.trim() || 'User' });
+      setUser(updatedUser);
+      setIsEditingName(false);
+    }
+  };
+
+  const handleNameCancel = () => {
+    setEditedName(user?.name || '');
+    setIsEditingName(false);
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image size must be less than 2MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const photoDataUrl = reader.result as string;
+      const updatedUser = saveUser({ ...user, photo: photoDataUrl });
+      setUser(updatedUser);
     };
-    setUser(guestUser);
-    return null;
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemovePhoto = () => {
+    if (user) {
+      const updatedUser = saveUser({ ...user, photo: undefined });
+      setUser(updatedUser);
+    }
+  };
+
+  // Show create user interface if no user exists
+  if (!user || isCreatingUser) {
+    return (
+      <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-strong p-8 border-2 border-orange-500/50">
+        <div className="text-center">
+          <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-orange-500/30">
+            <UserPlus className="w-10 h-10 text-orange-400" />
+          </div>
+          <h3 className="text-2xl font-bold text-yellow-50 mb-2">Create Your Account</h3>
+          <p className="text-gray-300 mb-6">
+            Get started by creating your account to save watchlists, track investments, and personalize your experience.
+          </p>
+          <button
+            onClick={handleCreateUser}
+            className="px-8 py-4 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center gap-2 mx-auto shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+          >
+            <UserPlus className="w-5 h-5" />
+            Create Account
+          </button>
+          <p className="text-xs text-gray-400 mt-4">
+            Your data is stored locally in your browser
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -100,12 +180,81 @@ export default function UserAccount({ investments }: UserAccountProps) {
       {activeTab === 'profile' && (
         <div className="space-y-4">
           <div className="bg-slate-700/50 p-4 rounded-xl border border-slate-600/50">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/30">
-                <User className="w-8 h-8 text-orange-400" />
+            <div className="flex items-center gap-4 mb-4">
+              {/* Photo Upload Area */}
+              <div className="relative group">
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-slate-600/50 bg-slate-800/50 flex items-center justify-center">
+                  {user.photo ? (
+                    <img src={user.photo} alt={user.name || 'User'} className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-10 h-10 text-orange-400" />
+                  )}
+                </div>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute bottom-0 right-0 w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border-2 border-slate-800"
+                  title="Upload photo"
+                >
+                  <Camera className="w-4 h-4 text-white" />
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+                {user.photo && (
+                  <button
+                    onClick={handleRemovePhoto}
+                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Remove photo"
+                  >
+                    <X className="w-3 h-3 text-white" />
+                  </button>
+                )}
               </div>
-              <div>
-                <h4 className="text-lg font-bold text-yellow-50">{user.name || 'Guest User'}</h4>
+              <div className="flex-1">
+                {isEditingName ? (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      className="flex-1 px-3 py-1.5 bg-slate-600/50 border border-slate-600/50 rounded-lg text-yellow-50 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleNameSave();
+                        if (e.key === 'Escape') handleNameCancel();
+                      }}
+                    />
+                    <button
+                      onClick={handleNameSave}
+                      className="p-1.5 bg-green-500/20 text-green-400 rounded hover:bg-green-500/30 transition-colors"
+                      title="Save"
+                    >
+                      <Save className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={handleNameCancel}
+                      className="p-1.5 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition-colors"
+                      title="Cancel"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-lg font-bold text-yellow-50">{user.name || 'User'}</h4>
+                    <button
+                      onClick={handleNameEdit}
+                      className="p-1 text-gray-400 hover:text-orange-400 transition-colors"
+                      title="Edit name"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
                   <Mail className="w-4 h-4" />
                   {user.email}

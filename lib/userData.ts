@@ -5,6 +5,7 @@ export interface User {
   id: string;
   email: string;
   name?: string;
+  photo?: string; // Base64 encoded image or data URL
   watchlist: string[]; // Array of investment symbols
   preferences: {
     theme: 'dark' | 'light' | 'auto';
@@ -48,7 +49,8 @@ export function saveUser(user: Partial<User>): User {
   const newUser: User = {
     id: existingUser?.id || `user_${Date.now()}`,
     email: user.email || existingUser?.email || 'guest@example.com',
-    name: user.name || existingUser?.name,
+    name: user.name !== undefined ? user.name : existingUser?.name,
+    photo: user.photo !== undefined ? user.photo : existingUser?.photo,
     watchlist: user.watchlist || existingUser?.watchlist || [],
     preferences: user.preferences || existingUser?.preferences || {
       theme: 'dark',
