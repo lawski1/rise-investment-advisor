@@ -123,7 +123,7 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
       } ${isAnimating ? 'scale-125' : ''} group active:scale-95`}
       title={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
       style={{ 
-        pointerEvents: 'auto !important',
+        pointerEvents: 'auto',
         touchAction: 'manipulation',
         position: 'relative',
         zIndex: 99999,
