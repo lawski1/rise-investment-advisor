@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
-import { addToWatchlist, removeFromWatchlist, isInWatchlist, getCurrentUser, saveUser } from '@/lib/userData';
+import { addToWatchlist, removeFromWatchlist, isInWatchlist } from '@/lib/userData';
 
 interface WatchlistButtonProps {
   symbol: string;
@@ -17,74 +17,81 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   // Check watchlist status on mount and when symbol changes
   useEffect(() => {
     const checkWatchlist = () => {
-      setInWatchlist(isInWatchlist(symbol));
+      const status = isInWatchlist(symbol);
+      setInWatchlist(status);
     };
     
     checkWatchlist();
     
     // Listen for watchlist updates from other components
     const handleWatchlistUpdate = () => {
-      checkWatchlist();
+      setTimeout(checkWatchlist, 50);
     };
     
     window.addEventListener('watchlistUpdated', handleWatchlistUpdate);
     return () => window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
   }, [symbol]);
 
-  const handleToggle = async (e: React.MouseEvent | React.TouchEvent) => {
-    console.log('Watchlist button clicked for:', symbol);
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    
+    // Immediate visual feedback
+    alert(`Watchlist button clicked for ${symbol}! Check console for details.`);
+    
+    console.log('=== WATCHLIST BUTTON CLICKED ===');
+    console.log('Symbol:', symbol);
+    console.log('Current state:', inWatchlist);
+    console.log('Event:', e);
     
     setIsAnimating(true);
     
-    const wasInWatchlist = inWatchlist;
-    let success = false;
-    let newState = wasInWatchlist;
-    
     try {
-      if (wasInWatchlist) {
-        console.log('Removing from watchlist:', symbol);
+      let newState: boolean;
+      let success = false;
+      
+      if (inWatchlist) {
+        console.log('Attempting to REMOVE from watchlist...');
         success = removeFromWatchlist(symbol);
-        if (success) {
-          newState = false;
-          setInWatchlist(false);
-          console.log('Successfully removed from watchlist');
-        } else {
-          console.log('Failed to remove from watchlist');
-        }
+        console.log('Remove result:', success);
+        newState = false;
       } else {
-        console.log('Adding to watchlist:', symbol);
+        console.log('Attempting to ADD to watchlist...');
         success = addToWatchlist(symbol);
-        if (success) {
-          newState = true;
-          setInWatchlist(true);
-          console.log('Successfully added to watchlist');
-        } else {
-          console.log('Failed to add to watchlist');
-        }
+        console.log('Add result:', success);
+        newState = true;
       }
-
-      // Verify the change was successful
+      
       if (success) {
-        // Double-check the state
-        const verifyState = isInWatchlist(symbol);
-        if (verifyState !== newState) {
-          // State mismatch - correct it
-          console.log('State mismatch detected, correcting...');
-          setInWatchlist(verifyState);
-        }
+        // Update state immediately
+        setInWatchlist(newState);
+        console.log('State updated to:', newState);
+        
+        // Verify after a short delay
+        setTimeout(() => {
+          const verified = isInWatchlist(symbol);
+          console.log('Verified state:', verified);
+          setInWatchlist(verified);
+          
+          // Trigger update event
+          window.dispatchEvent(new CustomEvent('watchlistUpdated', { 
+            detail: { symbol, added: newState } 
+          }));
+          
+          alert(`Successfully ${newState ? 'added' : 'removed'} ${symbol} ${newState ? 'to' : 'from'} watchlist!`);
+        }, 100);
+      } else {
+        console.error('Failed to update watchlist');
+        alert(`Failed to update watchlist for ${symbol}. Check console.`);
       }
+      
     } catch (error) {
-      console.error('Error toggling watchlist:', error);
+      console.error('ERROR in watchlist toggle:', error);
+      alert(`Error: ${error}`);
     }
-
+    
     setTimeout(() => setIsAnimating(false), 300);
-
-    // Trigger custom event for watchlist updates
-    if (typeof window !== 'undefined' && success) {
-      window.dispatchEvent(new CustomEvent('watchlistUpdated', { 
-        detail: { symbol, added: !wasInWatchlist } 
-      }));
-    }
   };
 
   const sizeClasses = {
@@ -102,21 +109,7 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   return (
     <button
       type="button"
-      onClick={(e) => {
-        console.log('Button onClick triggered for:', symbol);
-        e.preventDefault();
-        e.stopPropagation();
-        handleToggle(e);
-      }}
-      onMouseDown={(e) => {
-        console.log('Button onMouseDown triggered for:', symbol);
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-      onTouchStart={(e) => {
-        console.log('Button onTouchStart triggered for:', symbol);
-        e.stopPropagation();
-      }}
+      onClick={handleClick}
       className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer ${
         inWatchlist
           ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border-2 border-yellow-500/50'
@@ -126,12 +119,12 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
       style={{ 
         pointerEvents: 'auto',
         touchAction: 'manipulation',
-        WebkitTapHighlightColor: 'transparent',
         position: 'relative',
-        zIndex: 9999,
-        isolation: 'isolate'
+        zIndex: 10000
       }}
       aria-label={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
+      data-symbol={symbol}
+      data-testid={`watchlist-button-${symbol}`}
     >
       <Star
         className={`${iconSizes[size]} ${inWatchlist ? 'fill-yellow-400 text-yellow-400' : 'group-hover:text-yellow-400'} transition-all pointer-events-none`}
