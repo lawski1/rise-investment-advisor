@@ -110,6 +110,12 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     <button
       type="button"
       onClick={handleClick}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        handleClick(e as any);
+      }}
       className={`${sizeClasses[size]} flex items-center justify-center rounded-lg transition-all cursor-pointer ${
         inWatchlist
           ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border-2 border-yellow-500/50'
@@ -117,10 +123,15 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
       } ${isAnimating ? 'scale-125' : ''} group active:scale-95`}
       title={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
       style={{ 
-        pointerEvents: 'auto',
+        pointerEvents: 'auto !important',
         touchAction: 'manipulation',
         position: 'relative',
-        zIndex: 10000
+        zIndex: 99999,
+        cursor: 'pointer',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        MozUserSelect: 'none',
+        msUserSelect: 'none'
       }}
       aria-label={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
       data-symbol={symbol}

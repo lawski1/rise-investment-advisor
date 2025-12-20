@@ -33,9 +33,18 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
   };
 
   return (
-    <div className="card-polished p-6 group hover:scale-[1.02] transition-transform duration-300 relative">
+    <div className="card-polished p-6 group hover:scale-[1.02] transition-transform duration-300 relative" style={{ overflow: 'visible' }}>
       {/* Watchlist button positioned absolutely to avoid any interference */}
-      <div className="absolute top-4 right-4 z-[10000]" style={{ pointerEvents: 'auto' }}>
+      <div 
+        className="absolute top-2 right-2" 
+        style={{ 
+          zIndex: 99999,
+          pointerEvents: 'auto',
+          position: 'absolute',
+          top: '8px',
+          right: '8px'
+        }}
+      >
         <WatchlistButton symbol={investment.symbol} size="sm" />
       </div>
       <div className="flex justify-between items-start mb-5">

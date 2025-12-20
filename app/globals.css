@@ -229,10 +229,20 @@ header {
 
 /* Ensure buttons inside cards are clickable */
 .card-polished button,
-.card-polished [role="button"] {
-  position: relative;
-  z-index: 10000 !important;
+.card-polished [role="button"],
+.card-polished button[type="button"] {
+  position: relative !important;
+  z-index: 99999 !important;
   pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Specifically target watchlist buttons */
+button[data-testid^="watchlist-button"] {
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative !important;
 }
 
 .card-polished:hover {
