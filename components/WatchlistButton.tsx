@@ -37,13 +37,9 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     
-    // Immediate visual feedback
-    alert(`Watchlist button clicked for ${symbol}! Check console for details.`);
-    
     console.log('=== WATCHLIST BUTTON CLICKED ===');
     console.log('Symbol:', symbol);
     console.log('Current state:', inWatchlist);
-    console.log('Event:', e);
     
     setIsAnimating(true);
     
@@ -79,25 +75,25 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
             detail: { symbol, added: newState } 
           }));
           
-          alert(`Successfully ${newState ? 'added' : 'removed'} ${symbol} ${newState ? 'to' : 'from'} watchlist!`);
+          console.log(`Successfully ${newState ? 'added' : 'removed'} ${symbol} ${newState ? 'to' : 'from'} watchlist!`);
         }, 100);
       } else {
         console.error('Failed to update watchlist');
-        alert(`Failed to update watchlist for ${symbol}. Check console.`);
+        console.error('Current user:', typeof window !== 'undefined' ? localStorage.getItem('rise_user') : 'N/A');
       }
       
     } catch (error) {
       console.error('ERROR in watchlist toggle:', error);
-      alert(`Error: ${error}`);
+      console.error('Error details:', error instanceof Error ? error.message : String(error));
     }
     
     setTimeout(() => setIsAnimating(false), 300);
   };
 
   const sizeClasses = {
-    sm: 'w-8 h-8 min-w-[32px] min-h-[32px] p-1',
-    md: 'w-10 h-10 min-w-[40px] min-h-[40px] p-1.5',
-    lg: 'w-12 h-12 min-w-[48px] min-h-[48px] p-2',
+    sm: 'w-10 h-10 min-w-[40px] min-h-[40px] p-2', // Made larger for better clickability
+    md: 'w-12 h-12 min-w-[48px] min-h-[48px] p-2.5',
+    lg: 'w-14 h-14 min-w-[56px] min-h-[56px] p-3',
   };
 
   const iconSizes = {
@@ -125,7 +121,8 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
         userSelect: 'none',
         WebkitUserSelect: 'none',
         MozUserSelect: 'none',
-        msUserSelect: 'none'
+        msUserSelect: 'none',
+        isolation: 'isolate'
       }}
       aria-label={inWatchlist ? `Remove ${symbol} from watchlist` : `Add ${symbol} to watchlist`}
       data-symbol={symbol}
