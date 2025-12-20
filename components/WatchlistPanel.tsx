@@ -24,15 +24,28 @@ export default function WatchlistPanel({ investments, onClose }: WatchlistPanelP
       setWatchlistItems(items);
     };
 
+    // Load immediately
     loadWatchlist();
 
     // Listen for watchlist updates
     const handleWatchlistUpdate = () => {
-      loadWatchlist();
+      // Small delay to ensure localStorage is updated
+      setTimeout(() => {
+        loadWatchlist();
+      }, 100);
     };
 
+    // Also check periodically in case of direct localStorage changes
+    const interval = setInterval(() => {
+      loadWatchlist();
+    }, 1000);
+
     window.addEventListener('watchlistUpdated', handleWatchlistUpdate);
-    return () => window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
+    
+    return () => {
+      window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
+      clearInterval(interval);
+    };
   }, [investments]);
 
   const handleRemove = (symbol: string) => {

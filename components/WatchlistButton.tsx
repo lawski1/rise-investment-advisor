@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
-import { addToWatchlist, removeFromWatchlist, isInWatchlist } from '@/lib/userData';
+import { addToWatchlist, removeFromWatchlist, isInWatchlist, getCurrentUser, saveUser } from '@/lib/userData';
 
 interface WatchlistButtonProps {
   symbol: string;
@@ -14,8 +14,21 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
   const [inWatchlist, setInWatchlist] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Check watchlist status on mount and when symbol changes
   useEffect(() => {
-    setInWatchlist(isInWatchlist(symbol));
+    const checkWatchlist = () => {
+      setInWatchlist(isInWatchlist(symbol));
+    };
+    
+    checkWatchlist();
+    
+    // Listen for watchlist updates from other components
+    const handleWatchlistUpdate = () => {
+      checkWatchlist();
+    };
+    
+    window.addEventListener('watchlistUpdated', handleWatchlistUpdate);
+    return () => window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
   }, [symbol]);
 
   const handleToggle = (e: React.MouseEvent) => {
@@ -24,19 +37,44 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     
     setIsAnimating(true);
     
-    if (inWatchlist) {
-      removeFromWatchlist(symbol);
-      setInWatchlist(false);
+    // Ensure user exists before adding to watchlist
+    let user = getCurrentUser();
+    if (!user) {
+      // Create a guest user if none exists
+      user = saveUser({
+        email: 'guest@example.com',
+        name: 'Guest User',
+        watchlist: [],
+        preferences: {
+          theme: 'dark',
+          notifications: true,
+          defaultView: 'grid',
+        },
+      });
+    }
+    
+    const wasInWatchlist = inWatchlist;
+    let success = false;
+    
+    if (wasInWatchlist) {
+      success = removeFromWatchlist(symbol);
+      if (success) {
+        setInWatchlist(false);
+      }
     } else {
-      addToWatchlist(symbol);
-      setInWatchlist(true);
+      success = addToWatchlist(symbol);
+      if (success) {
+        setInWatchlist(true);
+      }
     }
 
     setTimeout(() => setIsAnimating(false), 300);
 
     // Trigger custom event for watchlist updates
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('watchlistUpdated', { detail: { symbol, added: !inWatchlist } }));
+    if (typeof window !== 'undefined' && success) {
+      window.dispatchEvent(new CustomEvent('watchlistUpdated', { 
+        detail: { symbol, added: !wasInWatchlist } 
+      }));
     }
   };
 

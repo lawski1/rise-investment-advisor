@@ -21,11 +21,23 @@ export default function UserAccount({ investments }: UserAccountProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
-    if (currentUser) {
-      setEditedName(currentUser.name || '');
-    }
+    const loadUser = () => {
+      const currentUser = getCurrentUser();
+      setUser(currentUser);
+      if (currentUser) {
+        setEditedName(currentUser.name || '');
+      }
+    };
+
+    loadUser();
+
+    // Listen for watchlist updates to refresh user data
+    const handleWatchlistUpdate = () => {
+      loadUser();
+    };
+
+    window.addEventListener('watchlistUpdated', handleWatchlistUpdate);
+    return () => window.removeEventListener('watchlistUpdated', handleWatchlistUpdate);
   }, []);
 
   const handlePreferenceChange = (key: keyof UserType['preferences'], value: any) => {
