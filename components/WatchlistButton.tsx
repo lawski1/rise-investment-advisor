@@ -19,7 +19,6 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
     const checkWatchlist = () => {
       const status = isInWatchlist(symbol);
       setInWatchlist(status);
-      console.log(`Watchlist check for ${symbol}:`, status);
     };
     
     // Initial check
@@ -51,10 +50,6 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
       e.nativeEvent.stopImmediatePropagation();
     }
     
-    console.log('=== WATCHLIST BUTTON CLICKED ===');
-    console.log('Symbol:', symbol);
-    console.log('Current state:', inWatchlist);
-    
     setIsAnimating(true);
     
     // Determine the action
@@ -64,37 +59,28 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
       let success = false;
       
       if (shouldAdd) {
-        console.log('Attempting to ADD to watchlist...');
         success = addToWatchlist(symbol);
-        console.log('Add result:', success);
       } else {
-        console.log('Attempting to REMOVE from watchlist...');
         success = removeFromWatchlist(symbol);
-        console.log('Remove result:', success);
       }
       
       if (success) {
         // Update state optimistically
         const newState = shouldAdd;
         setInWatchlist(newState);
-        console.log('State updated to:', newState);
         
         // Verify and sync after a short delay
         setTimeout(() => {
           const verified = isInWatchlist(symbol);
-          console.log('Verified state:', verified);
           setInWatchlist(verified);
           
           // Trigger update event for other components
           window.dispatchEvent(new CustomEvent('watchlistUpdated', { 
             detail: { symbol, added: verified } 
           }));
-          
-          console.log(`Successfully ${verified ? 'added' : 'removed'} ${symbol} ${verified ? 'to' : 'from'} watchlist!`);
         }, 50);
       } else {
-        console.error('Failed to update watchlist');
-        // Re-check actual state
+        // Re-check actual state on failure
         setTimeout(() => {
           const actualState = isInWatchlist(symbol);
           setInWatchlist(actualState);
@@ -102,8 +88,7 @@ export default function WatchlistButton({ symbol, size = 'md', showLabel = false
       }
       
     } catch (error) {
-      console.error('ERROR in watchlist toggle:', error);
-      console.error('Error details:', error instanceof Error ? error.message : String(error));
+      console.error('Error toggling watchlist:', error);
       // Re-check actual state on error
       setTimeout(() => {
         const actualState = isInWatchlist(symbol);
