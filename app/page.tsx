@@ -304,7 +304,9 @@ export default function Home() {
           <FadeWrapper delay={0.12}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               {/* Options Calculator */}
-              <OptionsCalculator />
+              <div id="options-calculator">
+                <OptionsCalculator />
+              </div>
               
               {/* User Account & Watchlist */}
               <UserAccount investments={analysis.investments} />
@@ -335,11 +337,21 @@ export default function Home() {
                   <h4 className="font-semibold text-yellow-50 mb-2">Video Tutorials</h4>
                   <p className="text-sm text-gray-400">Learn through comprehensive videos</p>
                 </Link>
-                <div className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50">
-                  <Calculator className="w-8 h-8 text-orange-400 mb-3" />
+                <a
+                  href="#options-calculator"
+                  className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50 hover:bg-slate-700/70 transition-all group cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const calculator = document.getElementById('options-calculator');
+                    if (calculator) {
+                      calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
+                  <Calculator className="w-8 h-8 text-orange-400 mb-3 group-hover:scale-110 transition-transform" />
                   <h4 className="font-semibold text-yellow-50 mb-2">Options Calculator</h4>
                   <p className="text-sm text-gray-400">Calculate Greeks and P/L (above)</p>
-                </div>
+                </a>
               </div>
             </div>
           </FadeWrapper>

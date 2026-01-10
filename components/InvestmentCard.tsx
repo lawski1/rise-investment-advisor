@@ -54,7 +54,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
           <p className="text-xl font-bold text-yellow-50">${investment.currentPrice.toFixed(2)}</p>
         </div>
         <div className="bg-gradient-to-br from-slate-700/50 to-slate-800/50 p-3 rounded-xl border border-slate-600/50">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Change</p>
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">Change</p>
           <div className="flex items-center">
             {isPositive ? (
               <TrendingUp className="w-5 h-5 text-green-600 mr-1.5" />
@@ -103,8 +103,8 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
               <TrendingUp className="w-4 h-4 text-green-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500 font-medium">1Y Return</p>
-              <p className="font-bold text-gray-900 text-base">{investment.oneYearReturn.toFixed(2)}%</p>
+              <p className="text-xs text-gray-400 font-medium">1Y Return</p>
+              <p className="font-bold text-yellow-50 text-base">{investment.oneYearReturn.toFixed(2)}%</p>
             </div>
           </div>
         )}
@@ -114,12 +114,12 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
               <DollarSign className="w-4 h-4 text-yellow-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500 font-medium">Dividend Yield</p>
-              <p className="font-bold text-gray-900 text-base">{investment.dividendYield.toFixed(2)}%</p>
+              <p className="text-xs text-gray-400 font-medium">Dividend Yield</p>
+              <p className="font-bold text-yellow-50 text-base">{investment.dividendYield.toFixed(2)}%</p>
             </div>
           </div>
         )}
-        <div className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="flex items-center p-2 rounded-lg hover:bg-slate-700/50 transition-colors">
           <div className={`p-2 rounded-lg mr-3 ${
             investment.riskLevel === 'Low' ? 'bg-green-100' :
             investment.riskLevel === 'Medium' ? 'bg-yellow-100' : 'bg-red-100'
@@ -127,7 +127,7 @@ export default function InvestmentCard({ investment, onAddToComparison, showChar
             <Shield className={`w-4 h-4 ${riskColors[investment.riskLevel]}`} />
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-medium">Risk Level</p>
+            <p className="text-xs text-gray-400 font-medium">Risk Level</p>
             <p className={`font-bold text-base ${riskColors[investment.riskLevel]}`}>{investment.riskLevel}</p>
           </div>
         </div>

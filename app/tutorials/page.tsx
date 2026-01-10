@@ -180,10 +180,13 @@ export default function TutorialsPage() {
               <h3 className="font-semibold text-yellow-50 mb-2">Strategy Explanations</h3>
               <p className="text-sm text-gray-400">Detailed written guides on options strategies</p>
             </Link>
-            <div className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50">
+            <Link
+              href="/#options-calculator"
+              className="p-4 bg-slate-700/50 rounded-xl border border-slate-600/50 hover:bg-slate-700/70 transition-colors"
+            >
               <h3 className="font-semibold text-yellow-50 mb-2">Options Calculator</h3>
               <p className="text-sm text-gray-400">Calculate Greeks and profit/loss scenarios</p>
-            </div>
+            </Link>
           </div>
         </div>
 
